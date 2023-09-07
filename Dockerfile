@@ -7,7 +7,7 @@ WORKDIR /app
 # 将应用程序文件复制到容器中
 COPY . .
 
-#EXPOSE 3000
+EXPOSE 8080
 
 # 安装应用程序的依赖
 RUN rm -rf dist && npm install

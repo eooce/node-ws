@@ -13,4 +13,4 @@ COPY . .
 RUN npm install
 
 # 设置默认的命令，即启动应用程序
-CMD ["npm", "start"]
+CMD ["node", "app.js"]

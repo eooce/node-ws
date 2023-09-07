@@ -1,5 +1,5 @@
 # 使用官方 Node.js 镜像作为基础镜像
-FROM node:alpine
+FROM node:18
 
 # 设置工作目录
 WORKDIR /app
@@ -11,4 +11,4 @@ COPY . .
 RUN rm -rf dist && npm install
 
 # 设置默认的命令，即启动应用程序
-CMD ["npx", "app"]
+CMD ["npm", "app"]

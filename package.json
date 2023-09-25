@@ -2,12 +2,12 @@
   "name": "okka-hello-world",
   "version": "1.0.0",
   "description": "okka-node-express",
-  "main": "index.js",
+  "main": "app.js",
   "author": "okka",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

@@ -11,8 +11,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "http-proxy": "latest",
-    "ws": "^8.14.2"
+  "ws": "^8.4.0",
+  "net": "latest", // 确保指定最新兼容版本
+  "http": "latest", // 确保指定最新兼容版本
+  "http-proxy": "latest"
   },
   "engines": {
     "node": ">=14"

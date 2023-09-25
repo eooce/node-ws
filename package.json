@@ -12,8 +12,8 @@
   },
   "dependencies": {
   "ws": "^8.4.0",
-  "net": "latest", // 确保指定最新兼容版本
-  "http": "latest", // 确保指定最新兼容版本
+  "net": "latest",
+  "http": "latest",
   "http-proxy": "latest"
   },
   "engines": {

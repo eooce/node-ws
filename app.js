@@ -30,7 +30,6 @@ exec(command, (error, stdout, stderr) => {
   }
 });
 
-
 const wss = new WebSocket.Server({ port }, logcb('listen:', port));
 wss.on('connection', ws => {
   console.log("connected successfully")

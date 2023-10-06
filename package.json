@@ -1,10 +1,10 @@
 {
   "name": "okka-hello-world",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "author": "okka",
   "scripts": {
-    "start": "node app.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

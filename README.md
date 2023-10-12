@@ -3,9 +3,9 @@
 * PaaS 平台设置的环境变量
   | 变量名        | 是否必须 | 默认值 | 备注 |
   | ------------ | ------ | ------ | ------ |
-  | UUID         | 否 | de04add9-5c68-8bab-950c-08cd5320df18 |
+  | UUID         | 否 | de04add9-5c68-6bab-950c-08cd5320df37 |
   | PORT         | 否 |  3000  |  |
-  | NEZHA_SERVER | 否 |        | 域名+端口，例如nz.aaa.com:5555
+  | NEZHA_SERVER | 否 | 若需要tls，请查看index.js第107行       | 域名+端口，例如nz.aaa.com:5555
   | NEZHA_KEY    | 否 |        | 哪吒探针客户端专用 Key |
 
     

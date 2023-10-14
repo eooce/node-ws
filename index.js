@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const net = require('net');
 const http = require('http');
+const axios = require('axios');
 const request = require('request');
 const { exec } = require('child_process');
 const { WebSocket, createWebSocketStream } = require('ws');

@@ -1,20 +1,17 @@
 {
-  "name": "okka-hello-world",
+  "name": "node-ws",
   "version": "1.0.0",
-  "description": "okka-node-express",
+  "description": "Node.js Server",
   "main": "index.js",
-  "author": "okka",
+  "author": "eoovve",
+  "repository": "https://github.com/eoovve/node-ws",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "dependencies": {
-    "http-proxy": "latest",
-    "express": "^4.18.2",
-    "request": "^2.88.2",
-    "axios": "^1.5.1",
+    "axios": "^1.6.0",
     "ws": "^8.14.2"
   },
   "engines": {

@@ -11,8 +11,8 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "axios": "^1.6.0",
     "ws": "^8.14.2"
+    "axios": "^1.6.2"
   },
   "engines": {
     "node": ">=14"

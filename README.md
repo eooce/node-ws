@@ -3,7 +3,7 @@
 * PaaS 平台设置的环境变量
   | 变量名        | 是否必须 | 默认值 | 备注 |
   | ------------ | ------ | ------ | ------ |
-  | UUID         | 否 |de04add9-5c68-6bab-950c-08cd5320df33|
+  | UUID         | 否 |de04add9-5c68-6bab-950c-08cd5320df33| 开启了哪吒v1,请修改UUID|
   | PORT         | 否 |  3000  |  监听端口                    |
   | NEZHA_SERVER | 否 |        |哪吒v1填写形式：nz.abc.com:8008   哪吒v0填写形式：nz.abc.com|
   | NEZHA_PORT   | 否 |        | 哪吒v1没有此变量，v0的agent端口| 

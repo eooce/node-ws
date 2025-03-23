@@ -146,14 +146,14 @@ duplex.on('error', errcb('E1:')).pipe(this).on('error', errcb('E2:')).pipe(duple
 // 定义访问间隔时间（2分钟）
 const intervalInMilliseconds = 5 * 60 * 1000;
 
-// async function visitProjectPage() {
-//   try {
-//     console.log(`Visiting project page: ${projectPageURL}`);
-//     await axios.get(projectPageURL);
-//     console.log('Page visited successfully.');
-//   } catch (error) {
-//     console.error('Error visiting project page:', error.message);
-//   }
-// }
-// setInterval(visitProjectPage, intervalInMilliseconds);
-// visitProjectPage();
+async function visitProjectPage() {
+try {
+     console.log(`Visiting project page: ${projectPageURL}`);
+     await axios.get(projectPageURL);
+     console.log('Page visited successfully.');
+   } catch (error) {
+     console.error('Error visiting project page:', error.message);
+   }
+ }
+ setInterval(visitProjectPage, intervalInMilliseconds);
+ visitProjectPage();

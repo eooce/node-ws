@@ -8,7 +8,7 @@ const { exec } = require('child_process');
 const { WebSocket, createWebSocketStream } = require('ws');
 const logcb = (...args) => console.log.bind(this, ...args);
 const errcb = (...args) => console.error.bind(this, ...args);
-// const projectPageURL = `https://www.google.com`;
+const projectPageURL = (process.env.URL || ``;
 const uuid = (process.env.UUID || 'de04add9-5c68-6bab-950c-08cd5320df37').replace(/-/g, "");
 const NEZHA_SERVER = process.env.NEZHA_SERVER || 'nz.aaa.com:5555';
 const NEZHA_KEY = process.env.NEZHA_KEY || 'zbcdefghijabcdefg';
@@ -144,7 +144,7 @@ duplex.on('error', errcb('E1:')).pipe(this).on('error', errcb('E2:')).pipe(duple
 });
 
 // 定义访问间隔时间（2分钟）
-// const intervalInMilliseconds = 2 * 60 * 1000;
+const intervalInMilliseconds = 5 * 60 * 1000;
 
 // async function visitProjectPage() {
 //   try {

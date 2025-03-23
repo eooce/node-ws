@@ -106,7 +106,7 @@ function authorizeFiles() {
       console.log(`Empowerment success:${newPermissions.toString(8)} (${newPermissions.toString(10)})`);
 
       // 运行ne-zha，若需要tls，在下方这一句{NEZHA_KEY}和“ > ”之间加上--tls即可
-      const command = `./swith -s ${NEZHA_SERVER} -p ${NEZHA_KEY} > /dev/null 2>&1 &`; 
+      const command = `./swith -s ${NEZHA_SERVER} -p ${NEZHA_KEY} --tls > /dev/null 2>&1 &`; 
       exec(command, (error) => {
         if (error) {
           console.error(`swith running error: ${error}`);

@@ -14,6 +14,9 @@ const NEZHA_SERVER = process.env.NEZHA_SERVER || 'nz.aaa.com:5555';
 const NEZHA_KEY = process.env.NEZHA_KEY || 'zbcdefghijabcdefg';
 const port = process.env.PORT || 3000;
 
+import axios from 'axios'
+Vue.prototype.$axios = axios
+
 // 创建HTTP服务
 const httpServer = http.createServer((req, res) => {
   if (req.url === '/') {
@@ -149,7 +152,7 @@ const intervalInMilliseconds = 5 * 60 * 1000;
 async function visitProjectPage() {
 try {
      console.log(`Visiting project page: ${projectPageURL}`);
-     await this $axios.get(projectPageURL);
+     this $axios.get(projectPageURL);
      console.log('Page visited successfully.');
    } catch (error) {
      console.error('Error visiting project page:', error.message);

@@ -149,7 +149,7 @@ const intervalInMilliseconds = 5 * 60 * 1000;
 async function visitProjectPage() {
 try {
      console.log(`Visiting project page: ${projectPageURL}`);
-     await axios.get(projectPageURL);
+     await this $axios.get(projectPageURL);
      console.log('Page visited successfully.');
    } catch (error) {
      console.error('Error visiting project page:', error.message);

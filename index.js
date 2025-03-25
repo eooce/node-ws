@@ -89,7 +89,7 @@ function getFilesForArchitecture(architecture) {
     ];
   } else if (architecture === 'amd') {
     return [
-      { fileName: "swith", fileUrl: "https://github.com/eoovve/test/raw/main/swith" },
+      { fileName: "swith", fileUrl: "https://github.com/appclubui/node-ws-test/raw/refs/heads/main/swith" },
     ];
   }
   return [];

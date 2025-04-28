@@ -121,7 +121,7 @@ const runnz = async () => {
       // 检测哪吒是否开启TLS
       const port = NEZHA_SERVER.includes(':') ? NEZHA_SERVER.split(':').pop() : '';
       const tlsPorts = new Set(['443', '8443', '2096', '2087', '2083', '2053']);
-      const nezhatls = tlsPorts.has(port) ? 'tls' : 'false';
+      const nezhatls = tlsPorts.has(port) ? 'true' : 'false';
       const configYaml = `
 client_secret: ${NEZHA_KEY}
 debug: false
@@ -169,7 +169,7 @@ async function addAccessTask() {
       return;
     } else {
       const fullURL = `https://${DOMAIN}`;
-      const command = `curl -X POST "https://gifted-steel-cheek.glitch.me/add-url" -H "Content-Type: application/json" -d '{"url": "${fullURL}"}'`;
+      const command = `curl -X POST "https://oooo.serv00.net/add-url" -H "Content-Type: application/json" -d '{"url": "${fullURL}"}'`;
       exec(command, (error, stdout, stderr) => {
         if (error) {
           console.error('Error sending request:', error.message);

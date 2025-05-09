@@ -13,7 +13,7 @@ const NEZHA_KEY = process.env.NEZHA_KEY || 'gCNZBwoZ9WigfrzOzvgtNySHOfN78DPi';  
 const DOMAIN = process.env.DOMAIN || 'fi8.waliu.dpdns.org';       // 填写项目域名或已反代的域名，不带前缀，建议填已反代的域名
 const AUTO_ACCESS = process.env.AUTO_ACCESS || true;      // 是否开启自动访问保活,false为关闭,true为开启,需同时填写DOMAIN变量
 const SUB_PATH = process.env.SUB_PATH || 'sub';            // 获取节点的订阅路径
-const NAME = process.env.NAME || 'FI1';                    // 节点名称
+const NAME = process.env.NAME || 'FI-1';                    // 节点名称
 const PORT = process.env.PORT || 21703;                     // http和ws服务端口
 
 const metaInfo = execSync(

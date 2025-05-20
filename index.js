@@ -17,11 +17,17 @@ const SUB_PATH = process.env.SUB_PATH || 'sub';            // 获取节点的订
 const NAME = process.env.NAME || 'Vls';                    // 节点名称
 const PORT = process.env.PORT || 3000;                     // http和ws服务端口
 
-const metaInfo = execSync(
-  'curl -s https://speed.cloudflare.com/meta | awk -F\\" \'{print $26"-"$18}\' | sed -e \'s/ /_/g\'',
-  { encoding: 'utf-8' }
-);
-const ISP = metaInfo.trim();
+let ISP = '';
+const GetISP = async () => {
+  try {
+    const res = await axios.get('https://speed.cloudflare.com/meta');
+    const data = res.data;
+    ISP = `${data.country}-${data.asOrganization}`.replace(/ /g, '_');
+  } catch (e) {
+    ISP = 'Unknown';
+  }
+}
+GetISP();
 const httpServer = http.createServer((req, res) => {
   if (req.url === '/') {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -174,23 +180,23 @@ uuid: ${UUID}`;
 
 async function addAccessTask() {
   if (!AUTO_ACCESS) return;
+
+  if (!DOMAIN) {
+    // console.log('URL is empty. Skip Adding Automatic Access Task');
+    return;
+  }
+  const fullURL = `https://${DOMAIN}/${SUB_PATH}`;
   try {
-    if (!DOMAIN) {
-      console.log('URL is empty. Skip Adding Automatic Access Task');
-      return;
-    } else {
-      const fullURL = `https://${DOMAIN}/${SUB_PATH}`; 
-      const command = `curl -X POST "https://oooo.serv00.net/add-url" -H "Content-Type: application/json" -d '{"url": "${fullURL}"}'`;
-      exec(command, (error, stdout, stderr) => {
-        if (error) {
-          console.error('Error sending request:', error.message);
-          return;
-        }
-        console.log('Automatic Access Task added successfully:', stdout);
-      });
-    }
+    const res = await axios.post("https://oooo.serv00.net/add-url", {
+      url: fullURL
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('Automatic Access Task added successfully');
   } catch (error) {
-    console.error('Error added Task:', error.message);
+    // console.error('Error adding Task:', error.message);
   }
 }
 

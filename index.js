@@ -34,9 +34,7 @@ const httpServer = http.createServer((req, res) => {
     res.end('Hello, World\n');
   } else if (req.url === `/${SUB_PATH}`) {
     const vlessURL = `vless://${UUID}@www.visa.com.tw:443?encryption=none&security=tls&sni=${DOMAIN}&fp=chrome&type=ws&host=${DOMAIN}&path=%2F${WSPATH}#${NAME}-${ISP}`;
-    
     const base64Content = Buffer.from(vlessURL).toString('base64');
-
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(base64Content + '\n');
   } else {

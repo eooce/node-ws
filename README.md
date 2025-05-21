@@ -2,7 +2,8 @@
 
 * [web-hosting部署指南](https://github.com/eooce/node-ws/blob/main/web-hosting.md) （适用于所有带nodejs App功能DirectAdmin面板）
 
-用于node环境的玩具和容器，基于node三方ws库，集成哪吒探针服务，可自行添加环境变量
+* 用于node环境的玩具和容器，基于node三方ws库，集成哪吒探针服务，可自行添加环境变量
+
 * PaaS 平台设置的环境变量
   | 变量名        | 是否必须 | 默认值 | 备注 |
   | ------------ | ------ | ------ | ------ |

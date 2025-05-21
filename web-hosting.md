@@ -24,8 +24,8 @@ Application root为上一步复制的路径，Application URL留空，Applicatio
 ![image](https://github.com/user-attachments/assets/6e491e76-fab0-499e-9d5e-d93b8451c3d9)
 
 **7：创建完后如下图成功所示后，点击RUN NPM install 按钮 等待30秒**
-![image](https://github.com/user-attachments/assets/48879804-6a98-4e27-87bf-e4c248b85649)
 ![image](https://github.com/user-attachments/assets/57f96ac8-ccad-43e5-bb01-ade95b35a47d)
+![image](https://github.com/user-attachments/assets/48879804-6a98-4e27-87bf-e4c248b85649)
 
 **8：返回创建Nodejs App首页，点击重启，然后即可访问 域名/${SUB_PATH} 获取节点, 如果没有修改${SUB_PATH}变量，则默认订阅连接为 https://域名/sub**
 ![image](https://github.com/user-attachments/assets/758c990b-bb0b-4c21-bd6f-4a8a3333bb35)

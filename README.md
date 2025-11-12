@@ -27,6 +27,28 @@ ENV DOMAIN=space域名
 
 * 域名/${SUB_APTH}查看节点信息，非标端口，域名:端口/${SUB_APTH}
 
+### 使用cloudflare workers 或 snippets 反代域名给xhttp节点套cdn加速
+```
+export default {
+    async fetch(request, env) {
+        let url = new URL(request.url);
+        if (url.pathname.startsWith('/')) {
+            var arrStr = [
+                'your-space.domain', // 此处单引号里填写你的节点伪装域名
+            ];
+            url.protocol = 'https:'
+            url.hostname = getRandomArray(arrStr)
+            let new_request = new Request(url, request);
+            return fetch(new_request);
+        }
+        return env.ASSETS.fetch(request);
+    },
+};
+function getRandomArray(array) {
+  const randomIndex = Math.floor(Math.random() * array.length);
+  return array[randomIndex];
+}
+```
 
 ## 开源协议说明（基于GPL）
 

@@ -1,27 +1,31 @@
-## Node-ws说明   
+## hugggingfface部署指南
 
-## [web-hosting部署指南](https://github.com/eooce/node-ws/blob/main/web-hosting.md) （适用于所有带nodejs App功能DirectAdmin面板）
+1. fork 此项目
+2. 在Actions菜单允许 `I understand my workflows, go ahead and enable them` 按钮
+3. 将hug分支中的index.js填写需要的变量后混淆保存，js混肴地址：https://obfuscator.io 
+4. 在.github/workflows/build-hug-image.yml 44中修改镜像名称
+5. 去huggingface创建空白space，docker
+6. 创建一个新文件，文件名`Dockerfile` 内容如下:
+```
+FROM ghcr.io/github用户名/镜像名:latest
 
-* 用于node环境的玩具和容器，基于node三方ws库，集成哪吒探针服务，可自行添加环境变量
+ENV DOMAIN=space域名
+```
 
 * PaaS 平台设置的环境变量
   | 变量名        | 是否必须 | 默认值 | 备注 |
   | ------------ | ------ | ------ | ------ |
   | UUID         | 否 |de04add9-5c68-6bab-950c-08cd5320df33| 开启了哪吒v1,请修改UUID|
-  | PORT         | 否 |  3000  |  监听端口                    |
+  | PORT         | 否 |  7860  |  监听端口                    |
   | NEZHA_SERVER | 否 |        |哪吒v1填写形式：nz.abc.com:8008   哪吒v0填写形式：nz.abc.com|
   | NEZHA_PORT   | 否 |        | 哪吒v1没有此变量，v0的agent端口| 
   | NEZHA_KEY    | 否 |        | 哪吒v1的NZ_CLIENT_SECRET或v0的agent端口 |
   | NAME         | 否 |        | 节点名称前缀，例如：Glitch |
   | DOMAIN       | 是 |        | 项目分配的域名或已反代的域名，不包括https://前缀  |
   | SUB_PATH     | 否 |  sub   | 订阅路径   |
-  | AUTO_ACCESS  | 否 |  false | 是否开启自动访问保活,false为关闭,true为开启,需同时填写DOMAIN变量 |
+  | AUTO_ACCESS  | 否 |  true | 是否开启自动访问保活,false为关闭,true为开启,需同时填写DOMAIN变量 |
 
-* 域名/sub查看节点信息，也是订阅地址，包含 https:// 或 http:// 前缀，非标端口，域名:端口/sub
-
-    
-* 温馨提示：READAME.md为说明文件，请不要上传。
-* js混肴地址：https://obfuscator.io
+* 域名/${SUB_APTH}查看节点信息，非标端口，域名:端口/${SUB_APTH}
 
 
 ## 开源协议说明（基于GPL）

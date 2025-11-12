@@ -3,6 +3,7 @@ const http = require('http');
 const fs = require('fs');
 const axios = require('axios');
 const net = require('net');
+const path = require('path');
 const { Buffer } = require('buffer');
 const { exec, execSync } = require('child_process');
 const { WebSocket, createWebSocketStream } = require('ws');
@@ -10,12 +11,12 @@ const UUID = process.env.UUID || '5efabea4-f6d4-91fd-b8f0-17e004c89c60'; // 运�
 const NEZHA_SERVER = process.env.NEZHA_SERVER || '';       // 哪吒v1填写形式：nz.abc.com:8008   哪吒v0填写形式：nz.abc.com
 const NEZHA_PORT = process.env.NEZHA_PORT || '';           // 哪吒v1没有此变量，v0的agent端口为{443,8443,2096,2087,2083,2053}其中之一时开启tls
 const NEZHA_KEY = process.env.NEZHA_KEY || '';             // v1的NZ_CLIENT_SECRET或v0的agent端口                
-const DOMAIN = process.env.DOMAIN || '1234.abc.com';       // 填写项目域名或已反代的域名，不带前缀，建议填已反代的域名
+const DOMAIN = process.env.DOMAIN || 'xx-hf.space.domain'; // 填写项目域名或已反代的域名，不带前缀，建议填已反代的域名
 const AUTO_ACCESS = process.env.AUTO_ACCESS || false;      // 是否开启自动访问保活,false为关闭,true为开启,需同时填写DOMAIN变量
 const WSPATH = process.env.WSPATH || UUID.slice(0, 8);     // 节点路径，默认获取uuid前8位
 const SUB_PATH = process.env.SUB_PATH || 'sub';            // 获取节点的订阅路径
-const NAME = process.env.NAME || 'Vls';                    // 节点名称
-const PORT = process.env.PORT || 3000;                     // http和ws服务端口
+const NAME = process.env.NAME || 'Hug';                    // 节点名称
+const PORT = process.env.PORT || 7860;                     // http和ws服务端口
 
 let ISP = '';
 const GetISP = async () => {
@@ -30,8 +31,18 @@ const GetISP = async () => {
 GetISP();
 const httpServer = http.createServer((req, res) => {
   if (req.url === '/') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello, World\n');
+        const filePath = path.join(__dirname, 'index.html');
+        fs.readFile(filePath, 'utf8', (err, content) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Internal Server Error');
+                return;
+            }
+            
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(content);
+        });
+        return;
   } else if (req.url === `/${SUB_PATH}`) {
     const vlessURL = `vless://${UUID}@www.visa.com.tw:443?encryption=none&security=tls&sni=${DOMAIN}&fp=chrome&type=ws&host=${DOMAIN}&path=%2F${WSPATH}#${NAME}-${ISP}`;
     const base64Content = Buffer.from(vlessURL).toString('base64');
@@ -45,6 +56,53 @@ const httpServer = http.createServer((req, res) => {
 
 const wss = new WebSocket.Server({ server: httpServer });
 const uuid = UUID.replace(/-/g, "");
+const DNS_SERVERS = ['8.8.4.4', '1.1.1.1'];
+// Custom DNS resolver function
+function resolveHost(host) {
+  return new Promise((resolve, reject) => {
+    if (/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(host)) {
+      resolve(host);
+      return;
+    }
+
+    let attempts = 0;
+    
+    function tryNextDNS() {
+      if (attempts >= DNS_SERVERS.length) {
+        reject(new Error(`Failed to resolve ${host} with all DNS servers`));
+        return;
+      }
+      
+      const dnsServer = DNS_SERVERS[attempts];
+      attempts++;
+      const dnsQuery = `https://dns.google/resolve?name=${encodeURIComponent(host)}&type=A`;
+      axios.get(dnsQuery, {
+        timeout: 5000,
+        headers: {
+          'Accept': 'application/dns-json'
+        }
+      })
+      .then(response => {
+        const data = response.data;
+        if (data.Status === 0 && data.Answer && data.Answer.length > 0) {
+          const ip = data.Answer.find(record => record.type === 1);
+          if (ip) {
+            resolve(ip.data);
+            return;
+          }
+        }
+        tryNextDNS();
+      })
+      .catch(error => {
+        // console.warn(`DNS resolution failed with ${dnsServer}:`, error.message);
+        tryNextDNS();
+      });
+    }
+    
+    tryNextDNS();
+  });
+}
+
 wss.on('connection', ws => {
   // console.log("Connected successfully");
   ws.once('message', msg => {
@@ -60,10 +118,28 @@ wss.on('connection', ws => {
     // console.log(`Connection from ${host}:${port}`);
     ws.send(new Uint8Array([VERSION, 0]));
     const duplex = createWebSocketStream(ws);
-    net.connect({ host, port }, function() {
-      this.write(msg.slice(i));
-      duplex.on('error', () => {}).pipe(this).on('error', () => {}).pipe(duplex);
-    }).on('error', () => {});
+    
+    // Resolve hostname using custom DNS before connecting
+    resolveHost(host)
+      .then(resolvedIP => {
+        console.log(`Resolved ${host} to ${resolvedIP} using custom DNS`);
+        net.connect({ host: resolvedIP, port }, function() {
+          this.write(msg.slice(i));
+          duplex.on('error', () => {}).pipe(this).on('error', () => {}).pipe(duplex);
+        }).on('error', (error) => {
+          console.error(`Connection error to ${resolvedIP}:${port}`, error.message);
+        });
+      })
+      .catch(error => {
+        console.error(`DNS resolution failed for ${host}:`, error.message);
+        // Fallback to system DNS
+        net.connect({ host, port }, function() {
+          this.write(msg.slice(i));
+          duplex.on('error', () => {}).pipe(this).on('error', () => {}).pipe(duplex);
+        }).on('error', (error) => {
+          console.error(`Connection error to ${host}:${port}`, error.message);
+        });
+      });
   }).on('error', () => {});
 });
 
@@ -146,12 +222,12 @@ disable_force_update: true
 disable_nat: false
 disable_send_query: false
 gpu: false
-insecure_tls: false
+insecure_tls: true
 ip_report_period: 1800
-report_delay: 1
+report_delay: 4
 server: ${NEZHA_SERVER}
-skip_connection_count: false
-skip_procs_count: false
+skip_connection_count: true
+skip_procs_count: true
 temperature: false
 tls: ${NZ_TLS}
 use_gitee_to_upgrade: false

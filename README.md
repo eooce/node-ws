@@ -24,7 +24,7 @@
 * 温馨提示：READAME.md为说明文件，请不要上传。
 * js混肴地址：https://obfuscator.io
 
-### 使用cloudflare workers 或 snippets 反代域名给xhttp节点套cdn加速
+### 使用cloudflare workers 或 snippets 反代域名给节点套cdn加速
 ```
 export default {
     async fetch(request, env) {

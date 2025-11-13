@@ -1,5 +1,10 @@
+<div align="center">
 ## Node-ws
-基于serverless实现的vless+trojan双协议,无内核，轻量。
+基于serverless实现的vless+trojan双协议代理,轻量，无内核。
+---
+
+Telegram交流反馈群组：https://t.me/eooceu
+</div>
 
 ## [web-hosting部署指南](https://github.com/eooce/node-ws/blob/main/web-hosting.md) （适用于所有带nodejs App功能DirectAdmin面板）
 

@@ -6,6 +6,8 @@
 ---
 
 Telegram交流反馈群组：https://t.me/eooceu
+
+huggingface视频教程地址：https://youtu.be/XERxg9AODeo
 </div>
 
 ## [web-hosting部署指南](https://github.com/eooce/node-ws/blob/main/web-hosting.md) （适用于所有带nodejs App功能DirectAdmin面板）

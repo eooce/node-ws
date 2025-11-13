@@ -27,7 +27,7 @@ ENV DOMAIN=space域名
 
 * 域名/${SUB_APTH}查看节点信息，非标端口，域名:端口/${SUB_APTH}
 
-### 使用cloudflare workers 或 snippets 反代域名给xhttp节点套cdn加速
+### 使用cloudflare workers 或 snippets 反代域名给节点套cdn加速
 ```
 export default {
     async fetch(request, env) {

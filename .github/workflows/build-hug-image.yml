@@ -2,7 +2,7 @@ name: Build huggingface Image
 
 on:
   push:
-    branches: [ hug ]
+    branches: [ hugonlyface ]
     paths:
       - 'Dockerfile'
       - 'index.js'

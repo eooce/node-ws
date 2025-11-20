@@ -1,138 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>古风诗词 · 静雅</title>
-<meta name="description" content="极简古风诗词展示页，单文件、快速打开。" />
+<meta charset="UTF-8">
+<title>古风诗词</title>
 <style>
-  /* 极简样式，优先性能（无外部资源） */
-  :root{--bg:#fff8f0;--ink:#2b2b2b;--muted:#7b6f5a;--accent:#8b4b2f;}
-  html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Segoe UI","Noto Sans","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
-  .wrap{max-width:820px;margin:28px auto;padding:18px}
-  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-  .brand{font-weight:700;font-size:18px;color:var(--accent)}
-  .subtitle{color:var(--muted);font-size:13px}
-  main{display:flex;gap:18px;align-items:flex-start}
-  .panel{flex:1;background:rgba(0,0,0,0.03);padding:16px;border-radius:8px}
-  .poem-title{font-size:20px;margin:6px 0 6px;font-weight:700}
-  .poem-author{color:var(--muted);font-size:13px;margin-bottom:10px}
-  .poem-text{white-space:pre-wrap;line-height:1.9;font-size:17px}
-  .side{width:220px}
-  .list{max-height:420px;overflow:auto}
-  .item{padding:8px;border-radius:6px;cursor:pointer;margin-bottom:6px}
-  .item:hover{background:rgba(139,75,47,0.06)}
-  .controls{display:flex;gap:8px;margin-top:12px}
-  button{padding:8px 10px;border-radius:6px;border:0;background:var(--accent);color:#fff;cursor:pointer;font-weight:600}
-  button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(139,75,47,0.12)}
-  footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
-  @media(max-width:760px){main{flex-direction:column}.side{width:100%}}
+    body {
+        margin: 0;
+        padding: 20px;
+        font-family: "STSong", "SimSun", serif;
+        background: #fdfcf7;
+        color: #333;
+        line-height: 1.8;
+    }
+    .title {
+        text-align: center;
+        font-size: 28px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+    .poem {
+        text-align: center;
+        font-size: 20px;
+        white-space: pre-line;
+    }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div>
-        <div class="brand">静雅 · 古风诗词</div>
-        <div class="subtitle">轻快、极简、单文件</div>
-      </div>
-      <div class="subtitle" id="count">0 首</div>
-    </header>
 
-    <main>
-      <section class="panel" aria-labelledby="poem-title">
-        <div id="meta" style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div id="poem-title" class="poem-title">请选择一首诗</div>
-            <div id="poem-author" class="poem-author"></div>
-          </div>
-        </div>
+<div class="title">江南春 · 杜牧</div>
 
-        <div id="poem-text" class="poem-text">右侧选择或点击“随机一首”。（示例均为公有/古典诗词）</div>
+<div class="poem">
+千里莺啼绿映红，  
+水村山郭酒旗风。  
+南朝四百八十寺，  
+多少楼台烟雨中。
+</div>
 
-        <div class="controls">
-          <button onclick="prevPoem()">上 一 首</button>
-          <button onclick="nextPoem()">下 一 首</button>
-          <button onclick="randomPoem()">随机一首</button>
-          <button class="ghost" onclick="downloadCurrent()">下载</button>
-        </div>
-      </section>
-
-      <aside class="side">
-        <div class="panel">
-          <input id="q" type="search" placeholder="搜索诗名或作者" style="width:100%;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.06);margin-bottom:10px" oninput="filterList()">
-          <div class="list" id="poem-list" role="list"></div>
-        </div>
-      </aside>
-    </main>
-
-    <footer>保存为静态页面可离线使用 · 简洁快速</footer>
-  </div>
-
-<script>
-/* 极简 JS，轻量且兼容 */
-const poems = [
-  {title:'静夜思', author:'李白', text:`床前明月光，\n疑是地上霜。\n举头望明月，\n低头思故乡。`},
-  {title:'春晓', author:'孟浩然', text:`春眠不觉晓，\n处处闻啼鸟。\n夜来风雨声，\n花落知多少。`},
-  {title:'江雪', author:'柳宗元', text:`千山鸟飞绝，\n万径人踪灭。\n孤舟蓑笠翁，\n独钓寒江雪。`},
-  {title:'山居秋暝', author:'王维', text:`空山新雨后，\n天气晚来秋。\n明月松间照，\n清泉石上流。\n竹喧归浣女，\n莲动下渔舟。\n随意春芳歇，\n王孙自可留。`},
-  {title:'青玉案·元夕', author:'辛弃疾', text:`东风夜放花千树。更吹落、星如雨。\n宝马雕车香满路。凤箫声动，玉壶光转，\n一夜鱼龙舞。\n众里寻他千百度，蓦然回首，那人却在，灯火阑珊处。`}
-];
-
-const listEl = document.getElementById('poem-list');
-const titleEl = document.getElementById('poem-title');
-const authorEl = document.getElementById('poem-author');
-const textEl = document.getElementById('poem-text');
-const countEl = document.getElementById('count');
-let idx = 0;
-
-function renderList(){
-  listEl.innerHTML = '';
-  poems.forEach((p,i)=>{
-    const d = document.createElement('div');
-    d.className = 'item';
-    d.innerHTML = `<strong>${p.title}</strong><div style="font-size:12px;color:#7b6f5a">${p.author}</div>`;
-    d.onclick = ()=> showPoem(i);
-    listEl.appendChild(d);
-  });
-  countEl.textContent = poems.length + ' 首';
-}
-
-function showPoem(i){
-  if(i<0||i>=poems.length) return;
-  idx = i;
-  const p = poems[i];
-  titleEl.textContent = p.title;
-  authorEl.textContent = p.author;
-  textEl.textContent = p.text;
-}
-
-function nextPoem(){ showPoem((idx+1)%poems.length); }
-function prevPoem(){ showPoem((idx-1+poems.length)%poems.length); }
-function randomPoem(){ showPoem(Math.floor(Math.random()*poems.length)); }
-
-function filterList(){
-  const q = document.getElementById('q').value.trim().toLowerCase();
-  Array.from(listEl.children).forEach((el,i)=>{
-    const p = poems[i];
-    const hay = (p.title+' '+p.author+' '+p.text).toLowerCase();
-    el.style.display = hay.includes(q) ? 'block' : 'none';
-  });
-}
-
-function downloadCurrent(){
-  const p = poems[idx];
-  if(!p) return alert('请先选择诗词');
-  const blob = new Blob([p.title + ' — ' + p.author + '\n\n' + p.text], {type:'text/plain;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = (p.title.replace(/\s+/g,'_') || 'poem') + '.txt';
-  document.body.appendChild(a); a.click(); a.remove();
-}
-
-/* 初始化，默认显示第一首 */
-renderList();
-if(poems.length>0) showPoem(0);
-</script>
 </body>
 </html>

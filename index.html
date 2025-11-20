@@ -1,210 +1,138 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>古风诗词 · 静雅集</title>
-  <meta name="description" content="古风诗词，适合作为个人诗词集或古风主题网站的入口页面。" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;700&family=Sanchez:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --paper:#f7efe6;
-      --ink:#1f2933;
-      --muted:#7b6f5a;
-      --accent:#9b5f3a;
-      --shadow: rgba(27,24,20,0.08);
-      color-scheme: light;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; padding:32px; font-family:'Noto Serif SC', serif; background:linear-gradient(180deg,#fbf7f1,#f3ebe0); color:var(--ink); -webkit-font-smoothing:antialiased;
-    }
-    .container{max-width:980px;margin:0 auto}
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
-    .brand{display:flex;align-items:center;gap:14px}
-    .seal{width:58px;height:58px;border-radius:8px;background:radial-gradient(circle at 30% 30%, #c55, #8b2);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;box-shadow:0 8px 20px var(--shadow)}
-    .title{line-height:1}
-    .title h1{margin:0;font-size:20px;letter-spacing:1px}
-    .title p{margin:2px 0 0;color:var(--muted);font-size:13px}
-
-    nav a{color:var(--muted);text-decoration:none;margin-left:14px;font-weight:600}
-    nav a:hover{color:var(--accent)}
-
-    main{display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start}
-
-    .paper{background:var(--paper);padding:24px;border-radius:12px;box-shadow:0 10px 30px var(--shadow);border:1px solid rgba(0,0,0,0.02)}
-
-    .poem-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .poem-header .meta{color:var(--muted);font-size:13px}
-    .poem-title{font-size:22px;margin:12px 0 6px;font-weight:700}
-    .poem-by{color:var(--muted);font-size:14px;margin-bottom:12px}
-
-    .poem-text{font-size:18px;line-height:2;font-family:'Sanchez', 'Noto Serif SC', serif;white-space:pre-wrap}
-    .poem-text .line{display:block}
-
-    .controls{display:flex;gap:10px;margin-top:14px}
-    .btn{padding:8px 12px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:transparent;cursor:pointer;font-weight:600}
-    .btn.primary{background:var(--accent);color:#fff;border-color:rgba(0,0,0,0.06)}
-
-    /* right column */
-    aside{position:relative}
-    .sidebar .card{padding:18px;margin-bottom:14px}
-    .search input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:transparent}
-    .list{max-height:320px;overflow:auto;padding-right:8px}
-    .item{padding:10px;border-radius:8px;margin-bottom:8px;cursor:pointer}
-    .item:hover{background:linear-gradient(90deg,rgba(155,95,58,0.06),rgba(155,95,58,0.03))}
-    .small{font-size:13px;color:var(--muted)}
-
-    /* decorative */
-    .ribbon{position:absolute;right: -20px;top:-14px;transform:rotate(8deg);background:var(--accent);color:#fff;padding:6px 18px;border-radius:6px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-    .paper::before{content:'';position:absolute;left:-40px;top:60px;width:120px;height:120px;background:radial-gradient(circle at 30% 30%, rgba(0,0,0,0.03), transparent 40%);transform:rotate(-12deg);opacity:0.6;border-radius:18px}
-
-    footer{margin-top:28px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between}
-
-    /* responsive */
-    @media (max-width:880px){
-      main{grid-template-columns:1fr}
-      aside{order:2}
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>古风诗词 · 静雅</title>
+<meta name="description" content="极简古风诗词展示页，单文件、快速打开。" />
+<style>
+  /* 极简样式，优先性能（无外部资源） */
+  :root{--bg:#fff8f0;--ink:#2b2b2b;--muted:#7b6f5a;--accent:#8b4b2f;}
+  html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Segoe UI","Noto Sans","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:820px;margin:28px auto;padding:18px}
+  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .brand{font-weight:700;font-size:18px;color:var(--accent)}
+  .subtitle{color:var(--muted);font-size:13px}
+  main{display:flex;gap:18px;align-items:flex-start}
+  .panel{flex:1;background:rgba(0,0,0,0.03);padding:16px;border-radius:8px}
+  .poem-title{font-size:20px;margin:6px 0 6px;font-weight:700}
+  .poem-author{color:var(--muted);font-size:13px;margin-bottom:10px}
+  .poem-text{white-space:pre-wrap;line-height:1.9;font-size:17px}
+  .side{width:220px}
+  .list{max-height:420px;overflow:auto}
+  .item{padding:8px;border-radius:6px;cursor:pointer;margin-bottom:6px}
+  .item:hover{background:rgba(139,75,47,0.06)}
+  .controls{display:flex;gap:8px;margin-top:12px}
+  button{padding:8px 10px;border-radius:6px;border:0;background:var(--accent);color:#fff;cursor:pointer;font-weight:600}
+  button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(139,75,47,0.12)}
+  footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  @media(max-width:760px){main{flex-direction:column}.side{width:100%}}
+</style>
 </head>
 <body>
-  <div class="container">
+  <div class="wrap">
     <header>
-      <div class="brand">
-        <div class="seal">古</div>
-        <div class="title">
-          <h1>静雅·古风诗词集</h1>
-          <p>清词雅句，皆是烟云一抹</p>
-        </div>
+      <div>
+        <div class="brand">静雅 · 古风诗词</div>
+        <div class="subtitle">轻快、极简、单文件</div>
       </div>
-      <nav>
-        <a href="#">首页</a>
-        <a href="#catalog">诗库</a>
-        <a href="#about">关于</a>
-      </nav>
+      <div class="subtitle" id="count">0 首</div>
     </header>
 
     <main>
-      <section class="paper" aria-labelledby="poem-title">
-        <div class="poem-header">
-          <div class="meta small">精选古风 · 静态展示</div>
-          <div class="meta small" id="poem-count">共有 <span id="count">0</span> 首</div>
+      <section class="panel" aria-labelledby="poem-title">
+        <div id="meta" style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div id="poem-title" class="poem-title">请选择一首诗</div>
+            <div id="poem-author" class="poem-author"></div>
+          </div>
         </div>
 
-        <h2 id="poem-title" class="poem-title">—— 请选择一首诗 ——</h2>
-        <div class="poem-by" id="poem-author"></div>
-        <div class="poem-text" id="poem-text">可从右侧诗库选择，或点击"随机一首"。页面为静态示例，诗词版权请自行确认。</div>
+        <div id="poem-text" class="poem-text">右侧选择或点击“随机一首”。（示例均为公有/古典诗词）</div>
 
         <div class="controls">
-          <button class="btn" onclick="prevPoem()">◀ 上一首</button>
-          <button class="btn" onclick="nextPoem()">下一首 ▶</button>
-          <button class="btn primary" onclick="randomPoem()">随机一首</button>
-          <button class="btn" onclick="downloadPoem()">下载当前</button>
+          <button onclick="prevPoem()">上 一 首</button>
+          <button onclick="nextPoem()">下 一 首</button>
+          <button onclick="randomPoem()">随机一首</button>
+          <button class="ghost" onclick="downloadCurrent()">下载</button>
         </div>
       </section>
 
-      <aside class="sidebar">
-        <div class="ribbon">古风</div>
-        <div class="card paper">
-          <div class="search">
-            <input type="search" id="q" placeholder="搜索诗名、作者或一句话" oninput="filterList()" />
-          </div>
-          <div style="height:10px"></div>
-          <div class="list" id="poem-list" role="list">
-            <!-- 列表由 JS 填充 -->
-          </div>
-          <div class="small">提示：本页面为静态 HTML/CSS/JS，可离线保存与托管。</div>
-        </div>
-
-        <div class="card paper">
-          <h3 style="margin:0 0 8px">关于</h3>
-          <div class="small">此模板适合用作个人诗词集、古风博客或作为古典风格网站的起点。需要我替你导入更多诗词、分页、或导出为 JSON 吗？</div>
+      <aside class="side">
+        <div class="panel">
+          <input id="q" type="search" placeholder="搜索诗名或作者" style="width:100%;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.06);margin-bottom:10px" oninput="filterList()">
+          <div class="list" id="poem-list" role="list"></div>
         </div>
       </aside>
     </main>
 
-    <footer>
-      <div>© <span id="year"></span> 静雅诗词</div>
-      <div>Built with ink & paper · 静观如云</div>
-    </footer>
+    <footer>保存为静态页面可离线使用 · 简洁快速</footer>
   </div>
 
-  <script>
-    // 预置一些古风/唐诗宋词示例（静态示例）
-    const poems = [
-      {title:'静夜思', author:'李白', text:`床前明月光，\n疑是地上霜。\n举头望明月，\n低头思故乡。`},
-      {title:'山居秋暝', author:'王维', text:`空山新雨后，\n天气晚来秋。\n明月松间照，\n清泉石上流。\n竹喧归浣女，\n莲动下渔舟。\n随意春芳歇，\n王孙自可留。`},
-      {title:'春晓', author:'孟浩然', text:`春眠不觉晓，\n处处闻啼鸟。\n夜来风雨声，\n花落知多少。`},
-      {title:'蝶恋花·春景', author:'苏轼', text:`花褪残红青杏小。\n燕子飞时，绿水人家绕。\n枝上柳绵吹又少。\n天涯何处无芳草？\n且共从容。`},
-      {title:'江雪', author:'柳宗元', text:`千山鸟飞绝，\n万径人踪灭。\n孤舟蓑笠翁，\n独钓寒江雪。`},
-      {title:'青玉案·元夕', author:'辛弃疾', text:`东风夜放花千树。更吹落、星如雨。\n宝马雕车香满路。凤箫声动，玉壶光转，\n一夜鱼龙舞。\n蛾儿雪柳黄金缕，笑语盈盈暗香去。\n众里寻他千百度，蓦然回首，那人却在，灯火阑珊处。`} 
-    ];
+<script>
+/* 极简 JS，轻量且兼容 */
+const poems = [
+  {title:'静夜思', author:'李白', text:`床前明月光，\n疑是地上霜。\n举头望明月，\n低头思故乡。`},
+  {title:'春晓', author:'孟浩然', text:`春眠不觉晓，\n处处闻啼鸟。\n夜来风雨声，\n花落知多少。`},
+  {title:'江雪', author:'柳宗元', text:`千山鸟飞绝，\n万径人踪灭。\n孤舟蓑笠翁，\n独钓寒江雪。`},
+  {title:'山居秋暝', author:'王维', text:`空山新雨后，\n天气晚来秋。\n明月松间照，\n清泉石上流。\n竹喧归浣女，\n莲动下渔舟。\n随意春芳歇，\n王孙自可留。`},
+  {title:'青玉案·元夕', author:'辛弃疾', text:`东风夜放花千树。更吹落、星如雨。\n宝马雕车香满路。凤箫声动，玉壶光转，\n一夜鱼龙舞。\n众里寻他千百度，蓦然回首，那人却在，灯火阑珊处。`}
+];
 
-    const listEl = document.getElementById('poem-list');
-    const titleEl = document.getElementById('poem-title');
-    const authorEl = document.getElementById('poem-author');
-    const textEl = document.getElementById('poem-text');
-    const countEl = document.getElementById('count');
-    const yearEl = document.getElementById('year');
-    yearEl.textContent = new Date().getFullYear();
+const listEl = document.getElementById('poem-list');
+const titleEl = document.getElementById('poem-title');
+const authorEl = document.getElementById('poem-author');
+const textEl = document.getElementById('poem-text');
+const countEl = document.getElementById('count');
+let idx = 0;
 
-    let idx = -1;
+function renderList(){
+  listEl.innerHTML = '';
+  poems.forEach((p,i)=>{
+    const d = document.createElement('div');
+    d.className = 'item';
+    d.innerHTML = `<strong>${p.title}</strong><div style="font-size:12px;color:#7b6f5a">${p.author}</div>`;
+    d.onclick = ()=> showPoem(i);
+    listEl.appendChild(d);
+  });
+  countEl.textContent = poems.length + ' 首';
+}
 
-    function renderList(){
-      listEl.innerHTML = '';
-      poems.forEach((p,i)=>{
-        const div = document.createElement('div');
-        div.className = 'item';
-        div.role = 'listitem';n        div.innerHTML = `<strong>${p.title}</strong><div class='small'>${p.author}</div>`;
-        div.onclick = ()=>{ showPoem(i); }
-        listEl.appendChild(div);
-      });
-      countEl.textContent = poems.length;
-    }
+function showPoem(i){
+  if(i<0||i>=poems.length) return;
+  idx = i;
+  const p = poems[i];
+  titleEl.textContent = p.title;
+  authorEl.textContent = p.author;
+  textEl.textContent = p.text;
+}
 
-    function showPoem(i){
-      if(i<0 || i>=poems.length) return;
-      idx = i;
-      const p = poems[i];
-      titleEl.textContent = p.title;
-      authorEl.textContent = p.author;
-      // preserve line breaks and add classical spacing
-      textEl.innerHTML = p.text.split('\n').map(l=>`<span class="line">${l}</span>`).join('');
-    }
+function nextPoem(){ showPoem((idx+1)%poems.length); }
+function prevPoem(){ showPoem((idx-1+poems.length)%poems.length); }
+function randomPoem(){ showPoem(Math.floor(Math.random()*poems.length)); }
 
-    function nextPoem(){ showPoem((idx+1) % poems.length); }
-    function prevPoem(){ showPoem((idx-1 + poems.length) % poems.length); }
-    function randomPoem(){ showPoem(Math.floor(Math.random()*poems.length)); }
+function filterList(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  Array.from(listEl.children).forEach((el,i)=>{
+    const p = poems[i];
+    const hay = (p.title+' '+p.author+' '+p.text).toLowerCase();
+    el.style.display = hay.includes(q) ? 'block' : 'none';
+  });
+}
 
-    function filterList(){
-      const q = document.getElementById('q').value.trim().toLowerCase();
-      const items = Array.from(listEl.children);
-      items.forEach((el, i)=>{
-        const p = poems[i];
-        const hay = (p.title + ' ' + p.author + ' ' + p.text).toLowerCase();
-        el.style.display = hay.includes(q) ? 'block' : 'none';
-      });
-    }
+function downloadCurrent(){
+  const p = poems[idx];
+  if(!p) return alert('请先选择诗词');
+  const blob = new Blob([p.title + ' — ' + p.author + '\n\n' + p.text], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (p.title.replace(/\s+/g,'_') || 'poem') + '.txt';
+  document.body.appendChild(a); a.click(); a.remove();
+}
 
-    function downloadPoem(){
-      if(idx<0){ alert('请先选择一首诗。'); return; }
-      const p = poems[idx];
-      const content = `=== ${p.title} — ${p.author} ===\n\n${p.text}`;
-      const blob = new Blob([content], {type: 'text/plain;charset=utf-8'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${p.title.replace(/\s+/g,'_')}.txt`;
-      document.body.appendChild(a); a.click(); a.remove();
-    }
-
-    // 初始化
-    renderList();
-    // 默认显示第一首
-    if(poems.length>0) showPoem(0);
-  </script>
+/* 初始化，默认显示第一首 */
+renderList();
+if(poems.length>0) showPoem(0);
+</script>
 </body>
 </html>

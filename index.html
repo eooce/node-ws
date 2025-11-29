@@ -3,369 +3,516 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Network - Protect Earth</title>
+    <title>NEXUS - Next Gen Gaming</title>
+    <!-- 引入游戏风格字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --dark-bg: #0f1016;
+            --card-bg: #191b26;
+            --text: #ffffff;
+            --text-muted: #a4b0be;
+            --neon-glow: 0 0 10px rgba(108, 92, 231, 0.7), 0 0 20px rgba(108, 92, 231, 0.5);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --primary: #2e7d32;
-            --secondary: #4caf50;
-            --accent: #8bc34a;
-            --light: #e8f5e9;
-            --dark: #1b5e20;
-            --text: #333333;
-            --white: #ffffff;
+            font-family: 'Rajdhani', sans-serif;
         }
 
         body {
-            background-color: var(--light);
+            background-color: var(--dark-bg);
             color: var(--text);
-            line-height: 1.6;
+            overflow-x: hidden;
         }
 
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* 导航栏 */
         header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
-            padding: 1rem 0;
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .nav-container {
+            width: 100%;
+            padding: 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(15, 16, 22, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 1rem 5%;
+            background: rgba(15, 16, 22, 0.95);
         }
 
         .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 2px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
         }
 
-        .logo i {
-            font-size: 2rem;
+        .logo span {
+            color: var(--secondary);
         }
 
         nav ul {
             display: flex;
             list-style: none;
+            gap: 2rem;
         }
 
-        nav ul li {
-            margin-left: 2rem;
-        }
-
-        nav ul li a {
-            color: var(--white);
+        nav a {
+            color: var(--text);
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            transition: color 0.3s;
             position: relative;
         }
 
-        nav ul li a:hover {
-            color: var(--accent);
+        nav a:hover {
+            color: var(--secondary);
         }
 
-        nav ul li a::after {
+        nav a::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -5px;
             left: 0;
             width: 0;
             height: 2px;
-            background-color: var(--accent);
-            transition: width 0.3s ease;
+            background: var(--secondary);
+            transition: width 0.3s;
+            box-shadow: 0 0 10px var(--secondary);
         }
 
-        nav ul li a:hover::after {
+        nav a:hover::after {
             width: 100%;
         }
 
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 80vh;
+        .auth-btns {
             display: flex;
-            align-items: center;
-            text-align: center;
-            color: var(--white);
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
+            gap: 1rem;
         }
 
         .btn {
-            display: inline-block;
-            background-color: var(--accent);
-            color: var(--white);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            padding: 0.6rem 1.5rem;
             border: none;
+            outline: none;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
         }
 
-        .btn:hover {
-            background-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        .btn-outline {
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid var(--secondary); /* Fallback */
+            box-shadow: inset 0 0 0 1px var(--secondary);
         }
 
+        .btn-outline:hover {
+            background: rgba(0, 206, 201, 0.1);
+            text-shadow: 0 0 8px var(--secondary);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5649c0;
+            box-shadow: var(--neon-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(15, 16, 22, 0.6), var(--dark-bg)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 5%;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(15,16,22,1) 0%, rgba(15,16,22,0.8) 50%, rgba(15,16,22,0) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+
+        .hero-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 15px;
+            border-left: 3px solid var(--accent);
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+        }
+
+        .hero h1 span {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--secondary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        /* Section Styling */
         section {
-            padding: 5rem 0;
+            padding: 5rem 5%;
         }
 
-        .section-title {
-            text-align: center;
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
             margin-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
         }
 
         .section-title h2 {
+            font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
+            text-transform: uppercase;
+        }
+
+        .section-title h2 span {
             color: var(--primary);
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
         }
 
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: var(--accent);
-            border-radius: 2px;
-        }
-
-        .section-title p {
-            color: var(--text);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+        .view-all {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
             align-items: center;
+            gap: 5px;
+            transition: 0.3s;
         }
 
-        .about-img {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        .view-all:hover {
+            color: #fff;
+            transform: translateX(5px);
         }
 
-        .about-img img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-
-        .about-img:hover img {
-            transform: scale(1.05);
-        }
-
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .stats {
+        /* Game Cards */
+        .game-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 2rem 1rem;
-            background-color: var(--white);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-10px);
-        }
-
-        .stat-item i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .stat-item h3 {
-            font-size: 2.5rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-item p {
-            color: var(--text);
-        }
-
-        .initiatives {
-            background-color: var(--white);
-        }
-
-        .initiatives-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
         }
 
-        .initiative-card {
-            background-color: var(--light);
-            border-radius: 10px;
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
+            position: relative;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+            group: card;
         }
 
-        .initiative-card:hover {
+        .game-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: var(--primary);
         }
 
-        .initiative-img {
-            height: 200px;
+        .card-image {
+            height: 350px;
+            position: relative;
             overflow: hidden;
         }
 
-        .initiative-img img {
+        .card-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
 
-        .initiative-card:hover .initiative-img img {
+        .game-card:hover .card-image img {
             transform: scale(1.1);
         }
 
-        .initiative-content {
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, var(--card-bg), transparent);
+            opacity: 0.8;
+        }
+
+        .card-content {
             padding: 1.5rem;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
 
-        .initiative-content h3 {
+        .game-badge {
+            background: var(--primary);
+            color: white;
+            padding: 3px 10px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .game-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .rating {
+            color: #f1c40f;
+        }
+
+        .platform-icons i {
+            margin-left: 8px;
+            color: var(--text-muted);
+        }
+
+        .card-hover-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255,255,255,0.9);
+            color: var(--dark-bg);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
         }
 
-        .initiative-content p {
-            margin-bottom: 1.5rem;
+        .game-card:hover .card-hover-btn {
+            transform: translate(-50%, -50%) scale(1);
         }
 
-        .cta {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
-            text-align: center;
-            padding: 5rem 0;
-        }
-
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .cta p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta .btn {
-            background-color: var(--white);
-            color: var(--primary);
-        }
-
-        .cta .btn:hover {
-            background-color: var(--accent);
-            color: var(--white);
-        }
-
-        footer {
-            background-color: var(--dark);
-            color: var(--white);
-            padding: 3rem 0 1rem;
-        }
-
-        .footer-content {
+        /* Features/Stats Section */
+        .features {
+            background: #13141c;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
-            margin-bottom: 2rem;
+            text-align: center;
         }
 
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 10px;
+        .feature-item {
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
         }
 
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--accent);
+        .feature-item:hover {
+            background: rgba(108, 92, 231, 0.1);
+            border-color: var(--primary);
         }
 
-        .footer-column p {
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
             margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 206, 201, 0.5);
+        }
+
+        .feature-item h3 {
+            font-family: 'Orbitron';
+            margin-bottom: 0.5rem;
+        }
+
+        /* Streamers / Esports Section */
+        .live-section {
+            background: linear-gradient(45deg, #0f1016, #1a1b26);
+        }
+
+        .streamer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .main-stream {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(108, 92, 231, 0.2);
+        }
+
+        .live-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #ff0000;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .main-stream img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .chat-list {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #333;
+            overflow: hidden;
+        }
+        
+        .chat-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .chat-info h4 {
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        .chat-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            background: #08090c;
+            padding: 4rem 5% 1rem;
+            border-top: 1px solid var(--primary);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            font-family: 'Orbitron';
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
         }
 
         .footer-links {
@@ -376,78 +523,64 @@
             margin-bottom: 0.8rem;
         }
 
-        .footer-links li a {
-            color: var(--light);
+        .footer-links a {
+            color: var(--text-muted);
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
 
-        .footer-links li a:hover {
-            color: var(--accent);
+        .footer-links a:hover {
+            color: var(--secondary);
             padding-left: 5px;
         }
 
-        .social-links {
+        .social-icons {
             display: flex;
             gap: 1rem;
         }
 
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        .social-icons a {
             width: 40px;
             height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: var(--white);
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: 0.3s;
+            clip-path: polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%);
         }
 
-        .social-links a:hover {
-            background-color: var(--accent);
+        .social-icons a:hover {
+            background: var(--primary);
             transform: translateY(-5px);
         }
 
         .copyright {
             text-align: center;
             padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
-        .mobile-menu {
+        /* Mobile Menu */
+        .mobile-toggle {
             display: none;
             font-size: 1.5rem;
             cursor: pointer;
+            color: white;
         }
 
         @media (max-width: 992px) {
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .initiatives-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .hero h1 { font-size: 3rem; }
+            .features { grid-template-columns: repeat(2, 1fr); }
+            .streamer-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
-            }
+            .mobile-toggle { display: block; }
             
             nav ul {
                 display: none;
@@ -455,268 +588,319 @@
                 top: 100%;
                 left: 0;
                 width: 100%;
-                background-color: var(--primary);
+                background: var(--card-bg);
                 flex-direction: column;
-                padding: 1rem 0;
                 text-align: center;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                padding: 2rem 0;
+                border-bottom: 1px solid var(--primary);
             }
-            
-            nav ul.active {
-                display: flex;
-            }
-            
-            nav ul li {
-                margin: 0;
-                padding: 0.8rem 0;
-            }
-            
-            .mobile-menu {
-                display: block;
-            }
-            
-            .initiatives-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-            }
-        }
 
-        /* Animation for stats counter */
-        .counter {
-            transition: all 0.5s ease;
+            nav ul.active { display: flex; }
+            
+            .auth-btns { display: none; }
+            
+            .hero h1 { font-size: 2.5rem; }
+            
+            .game-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container nav-container">
-            <div class="logo">
-                <i class="fas fa-seedling"></i>
-                <span>Green Network</span>
-            </div>
-            <nav>
-                <div class="mobile-menu">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#initiatives">Initiatives</a></li>
-                    <li><a href="#get-involved">Get Involved</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+
+    <!-- Navigation -->
+    <header id="header">
+        <div class="logo">
+            <i class="fa-solid fa-gamepad"></i>
+            NEXUS<span>GAMING</span>
+        </div>
+        <nav>
+            <ul id="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#games">Games</a></li>
+                <li><a href="#esports">Esports</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#store">Store</a></li>
+            </ul>
+        </nav>
+        <div class="auth-btns">
+            <button class="btn btn-outline">Log In</button>
+            <button class="btn btn-primary">Sign Up</button>
+        </div>
+        <div class="mobile-toggle" id="mobile-toggle">
+            <i class="fas fa-bars"></i>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="container hero-content">
-            <h1>Protect Our Planet, Preserve Our Future</h1>
-            <p>Join the global movement to create a sustainable world through conservation, education, and community action.</p>
-            <a href="#get-involved" class="btn">Join Our Network</a>
+        <div class="hero-content">
+            <div class="hero-tag">NEW SEASON AVAILABLE</div>
+            <h1>UNLEASH YOUR <br> <span>TRUE POTENTIAL</span></h1>
+            <p>Experience the next generation of immersive gaming. Join over 10 million players in the ultimate battle for supremacy.</p>
+            <div class="hero-btns">
+                <button class="btn btn-primary"><i class="fas fa-play"></i> Play Now</button>
+                <button class="btn btn-outline"><i class="fas fa-film"></i> Watch Trailer</button>
+            </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
+    <!-- Features Stats -->
+    <section class="features">
+        <div class="feature-item">
+            <i class="fas fa-globe feature-icon"></i>
+            <h3>Global Servers</h3>
+            <p>Low latency gameplay anywhere</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-shield-alt feature-icon"></i>
+            <h3>Anti-Cheat</h3>
+            <p>Fair play guaranteed system</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-trophy feature-icon"></i>
+            <h3>Tournaments</h3>
+            <p>Weekly prizes over $50k</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-users feature-icon"></i>
+            <h3>Community</h3>
+            <p>24/7 Active support & forums</p>
+        </div>
+    </section>
+
+    <!-- Games Grid -->
+    <section id="games">
+        <div class="section-header">
             <div class="section-title">
-                <h2>About Green Network</h2>
-                <p>We are a global community dedicated to environmental protection and sustainable development.</p>
+                <h2>Trending <span>Games</span></h2>
             </div>
-            <div class="about-content">
-                <div class="about-img">
-                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Team planting trees">
+            <a href="#" class="view-all">View All Games <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="game-grid">
+            <!-- Card 1 -->
+            <div class="game-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80" alt="Cyber Shooter">
+                    <div class="card-overlay"></div>
+                    <a href="#" class="card-hover-btn"><i class="fas fa-play"></i></a>
                 </div>
-                <div class="about-text">
-                    <h3>Our Mission</h3>
-                    <p>Green Network is committed to creating a sustainable future by protecting natural ecosystems, promoting renewable energy, and empowering communities to take environmental action.</p>
-                    <p>Founded in 2010, we've grown from a small grassroots organization to an international network with over 50,000 members across 120 countries.</p>
-                    <p>Our approach combines scientific research, community engagement, and policy advocacy to address the most pressing environmental challenges of our time.</p>
-                    <a href="#" class="btn">Learn More</a>
+                <div class="card-content">
+                    <span class="game-badge">FPS</span>
+                    <h3 class="game-title">Cyber Strike 2077</h3>
+                    <div class="game-meta">
+                        <span class="rating"><i class="fas fa-star"></i> 4.9</span>
+                        <div class="platform-icons">
+                            <i class="fab fa-windows"></i>
+                            <i class="fab fa-playstation"></i>
+                            <i class="fab fa-xbox"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <i class="fas fa-tree"></i>
-                    <h3 class="counter" data-target="2500000">0</h3>
-                    <p>Trees Planted</p>
+
+            <!-- Card 2 -->
+            <div class="game-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Space RPG">
+                    <div class="card-overlay"></div>
+                    <a href="#" class="card-hover-btn"><i class="fas fa-play"></i></a>
                 </div>
-                <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <h3 class="counter" data-target="50000">0</h3>
-                    <p>Active Members</p>
+                <div class="card-content">
+                    <span class="game-badge">RPG</span>
+                    <h3 class="game-title">Starlight Odyssey</h3>
+                    <div class="game-meta">
+                        <span class="rating"><i class="fas fa-star"></i> 4.7</span>
+                        <div class="platform-icons">
+                            <i class="fab fa-windows"></i>
+                            <i class="fab fa-steam"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <i class="fas fa-globe-americas"></i>
-                    <h3 class="counter" data-target="120">0</h3>
-                    <p>Countries Reached</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="game-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1865&q=80" alt="Racing">
+                    <div class="card-overlay"></div>
+                    <a href="#" class="card-hover-btn"><i class="fas fa-play"></i></a>
                 </div>
-                <div class="stat-item">
-                    <i class="fas fa-recycle"></i>
-                    <h3 class="counter" data-target="1500">0</h3>
-                    <p>Cleanup Projects</p>
+                <div class="card-content">
+                    <span class="game-badge">RACING</span>
+                    <h3 class="game-title">Neon Drift: Tokyo</h3>
+                    <div class="game-meta">
+                        <span class="rating"><i class="fas fa-star"></i> 4.8</span>
+                        <div class="platform-icons">
+                            <i class="fab fa-windows"></i>
+                            <i class="fab fa-playstation"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 4 -->
+             <div class="game-card">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1747&q=80" alt="Strategy">
+                    <div class="card-overlay"></div>
+                    <a href="#" class="card-hover-btn"><i class="fas fa-play"></i></a>
+                </div>
+                <div class="card-content">
+                    <span class="game-badge">STRATEGY</span>
+                    <h3 class="game-title">Empire of Void</h3>
+                    <div class="game-meta">
+                        <span class="rating"><i class="fas fa-star"></i> 4.5</span>
+                        <div class="platform-icons">
+                            <i class="fab fa-windows"></i>
+                            <i class="fab fa-apple"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Initiatives Section -->
-    <section class="initiatives" id="initiatives">
-        <div class="container">
+    <!-- Live Section -->
+    <section class="live-section" id="esports">
+        <div class="section-header">
             <div class="section-title">
-                <h2>Our Initiatives</h2>
-                <p>Discover the key programs and projects we're implementing to protect our planet.</p>
-            </div>
-            <div class="initiatives-grid">
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://dialogue.earth/content/uploads/2021/04/lessons-from-the-rush-to-reforest-china-dialogue-2400x1599.jpg" alt="Reforestation">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Global Reforestation</h3>
-                        <p>Planting millions of trees worldwide to restore ecosystems, combat climate change, and protect biodiversity.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Ocean Conservation">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Ocean Conservation</h3>
-                        <p>Protecting marine ecosystems, reducing plastic pollution, and promoting sustainable fishing practices.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80" alt="Renewable Energy">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Renewable Energy</h3>
-                        <p>Promoting solar, wind, and other clean energy sources to reduce dependence on fossil fuels.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
+                <h2>Live <span>Tournaments</span></h2>
             </div>
         </div>
-    </section>
+        
+        <div class="streamer-grid">
+            <div class="main-stream">
+                <img src="https://images.unsplash.com/photo-1548686304-896884635105?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Esports Arena">
+                <div class="live-badge"><i class="fas fa-circle"></i> LIVE NOW</div>
+                <div class="card-content">
+                    <h3 class="game-title" style="text-shadow: 2px 2px 4px black;">World Championship Finals 2025</h3>
+                    <p style="color: #ddd;">Team Alpha vs. Team Omega - Map 3</p>
+                </div>
+                <a href="#" class="card-hover-btn"><i class="fas fa-play"></i></a>
+            </div>
+            
+            <div class="chat-list">
+                <h3 style="color:white; margin-bottom:1rem; font-family:'Orbitron'">Top Streamers</h3>
+                
+                <div class="chat-item">
+                    <div class="chat-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                    </div>
+                    <div class="chat-info">
+                        <h4>NinjaSlayer</h4>
+                        <p>Playing: Cyber Strike 2077</p>
+                    </div>
+                    <div style="margin-left:auto; color:red; font-size:0.8rem">• 25k</div>
+                </div>
 
-    <!-- CTA Section -->
-    <section class="cta" id="get-involved">
-        <div class="container">
-            <h2>Join Our Global Movement</h2>
-            <p>Together, we can create a sustainable future for generations to come. Every action counts, no matter how small.</p>
-            <a href="#" class="btn">Become a Member</a>
+                <div class="chat-item">
+                    <div class="chat-avatar">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User">
+                    </div>
+                    <div class="chat-info">
+                        <h4>Valkyrie_Queen</h4>
+                        <p>Playing: Starlight Odyssey</p>
+                    </div>
+                    <div style="margin-left:auto; color:red; font-size:0.8rem">• 18k</div>
+                </div>
+
+                <div class="chat-item">
+                    <div class="chat-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="User">
+                    </div>
+                    <div class="chat-info">
+                        <h4>RetroGamer</h4>
+                        <p>Playing: Neon Drift</p>
+                    </div>
+                    <div style="margin-left:auto; color:red; font-size:0.8rem">• 12k</div>
+                </div>
+                
+                <button class="btn btn-outline" style="width:100%; margin-top: auto;">View All Streamers</button>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Green Network</h3>
-                    <p>We are dedicated to protecting our planet through collaborative action, education, and sustainable solutions.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="margin-bottom: 1rem;">
+                    <i class="fa-solid fa-gamepad"></i>
+                    NEXUS
                 </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#initiatives">Initiatives</a></li>
-                        <li><a href="#get-involved">Get Involved</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Our Programs</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Reforestation</a></li>
-                        <li><a href="#">Ocean Cleanup</a></li>
-                        <li><a href="#">Wildlife Protection</a></li>
-                        <li><a href="#">Climate Education</a></li>
-                        <li><a href="#">Sustainable Agriculture</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Copper Creek Drive, New York</p>
-                    <p><i class="fas fa-phone"></i> +1 (312) 171-0771</p>
-                    <p><i class="fas fa-envelope"></i> support@greennetwork.org</p>
+                <p style="color: var(--text-muted); line-height: 1.6;">
+                    The ultimate destination for gamers. Join the community, play the best games, and compete for glory.
+                </p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Explore</h3>
+                <ul class="footer-links">
+                    <li><a href="#">New Releases</a></li>
+                    <li><a href="#">Top Rated</a></li>
+                    <li><a href="#">Coming Soon</a></li>
+                    <li><a href="#">Esports Schedule</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-twitch"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
-            <div class="copyright">
-                <p>&copy; 2025 Green Network. All rights reserved.</p>
-            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Nexus Gaming Inc. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
+        // Header Scroll Effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
         // Mobile Menu Toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('active');
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
         });
 
-        // Counter Animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('.counter');
-            const speed = 200; // The lower the slower
-            
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                
-                const inc = target / speed;
-                
-                if(count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(animateCounters, 1);
-                } else {
-                    counter.innerText = target;
-                }
-            });
-        }
-
-        // Initialize counters when page loads
-        window.addEventListener('load', animateCounters);
-
-        // Smooth scrolling for navigation links
+        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    document.querySelector('nav ul').classList.remove('active');
-                }
+                navLinks.classList.remove('active'); // Close mobile menu on click
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
+        
+        // Simple Console Message
+        console.log("%c Welcome to NEXUS GAMING ", "color: #00cec9; background: #0f1016; font-size: 20px; padding: 10px; border: 2px solid #6c5ce7; border-radius: 5px;");
     </script>
 </body>
-
 </html>

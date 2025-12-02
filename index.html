@@ -1,722 +1,1180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Network - Protect Earth</title>
+    <title>Large Analog Clock</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
-
-        :root {
-            --primary: #2e7d32;
-            --secondary: #4caf50;
-            --accent: #8bc34a;
-            --light: #e8f5e9;
-            --dark: #1b5e20;
-            --text: #333333;
-            --white: #ffffff;
-        }
-
+        
         body {
-            background-color: var(--light);
-            color: var(--text);
-            line-height: 1.6;
+            background: linear-gradient(135deg, #0c2461, #1e3799, #4a69bd);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
         }
-
-        header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
+        
+        /* 语言切换按钮 */
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-
-        .container {
+        
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .lang-btn.active {
+            background: rgba(255, 154, 158, 0.3);
+            border-color: rgba(255, 154, 158, 0.5);
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(255, 154, 158, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+        
+        .main-clock-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            min-height: 70vh;
+        }
+        
+        .clock-container {
+            position: relative;
+            width: 550px;
+            height: 550px;
+            margin-bottom: 30px;
+        }
+        
+        .clock-face {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 0 50px rgba(0, 0, 0, 0.6),
+                inset 0 0 50px rgba(255, 255, 255, 0.1);
+            border: 20px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* 时钟中心装饰环 */
+        .clock-face::before {
+            content: '';
+            position: absolute;
             width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 小时数字 */
+        .hour-number {
+            position: absolute;
+            font-size: 42px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
+            z-index: 2;
+        }
+        
+        /* 中心点 */
+        .center-dot {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: #fff;
+            border-radius: 50%;
+            z-index: 15;
+            box-shadow: 
+                0 0 15px rgba(255, 255, 255, 0.8),
+                0 0 30px rgba(255, 154, 158, 0.5);
+        }
+        
+        /* 时钟指针 */
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            transform-origin: bottom center;
+            border-radius: 10px;
+            transform: translateX(-50%);
+            left: 50%;
+            transition: transform 0.05s cubic-bezier(0.4, 2.3, 0.8, 1);
+        }
+        
+        .hour-hand {
+            width: 12px;
+            height: 160px;
+            background: linear-gradient(to top, #ff9a9e, #fad0c4);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(255, 154, 158, 0.6);
+        }
+        
+        .minute-hand {
+            width: 8px;
+            height: 220px;
+            background: linear-gradient(to top, #a1c4fd, #c2e9fb);
+            z-index: 9;
+            box-shadow: 0 0 15px rgba(161, 196, 253, 0.6);
+        }
+        
+        .second-hand {
+            width: 4px;
+            height: 250px;
+            background: linear-gradient(to top, #ffecd2, #fcb69f);
+            z-index: 8;
+            box-shadow: 0 0 15px rgba(255, 236, 210, 0.9);
+        }
+        
+        /* 秒针末端的圆点 */
+        .second-hand::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #ffecd2;
+            border-radius: 50%;
+            top: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(255, 236, 210, 0.9);
+        }
+        
+        /* 数字时间显示 */
+        .digital-time-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .digital-time {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            letter-spacing: 3px;
+            color: #ff9a9e;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 30px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        
+        .current-date {
+            font-size: 1.8rem;
+            color: #a1c4fd;
+            margin-bottom: 5px;
+        }
+        
+        .timezone {
+            font-size: 1.2rem;
+            color: #c2e9fb;
+        }
+        
+        /* 下方信息区域 */
+        .info-section {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 30px 20px;
+            width: 100%;
+        }
+        
+        .info-container {
             max-width: 1200px;
             margin: 0 auto;
         }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
         }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .logo i {
-            font-size: 2rem;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 2rem;
-        }
-
-        nav ul li a {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
-            position: relative;
-        }
-
-        nav ul li a:hover {
-            color: var(--accent);
-        }
-
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 80vh;
-            display: flex;
-            align-items: center;
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 25px;
             text-align: center;
-            color: var(--white);
+            transition: transform 0.3s, background 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
         }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
         }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .hero p {
+        
+        .info-card h3 {
             font-size: 1.3rem;
-            margin-bottom: 2rem;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: var(--accent);
-            color: var(--white);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn:hover {
-            background-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        section {
-            padding: 5rem 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: var(--accent);
-            border-radius: 2px;
-        }
-
-        .section-title p {
-            color: var(--text);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .about-img {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .about-img img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-
-        .about-img:hover img {
-            transform: scale(1.05);
-        }
-
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 2rem 1rem;
-            background-color: var(--white);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-10px);
-        }
-
-        .stat-item i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .stat-item h3 {
-            font-size: 2.5rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-item p {
-            color: var(--text);
-        }
-
-        .initiatives {
-            background-color: var(--white);
-        }
-
-        .initiatives-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .initiative-card {
-            background-color: var(--light);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .initiative-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .initiative-img {
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .initiative-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .initiative-card:hover .initiative-img img {
-            transform: scale(1.1);
-        }
-
-        .initiative-content {
-            padding: 1.5rem;
-        }
-
-        .initiative-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
-        }
-
-        .initiative-content p {
-            margin-bottom: 1.5rem;
-        }
-
-        .cta {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
-            text-align: center;
-            padding: 5rem 0;
-        }
-
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .cta p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta .btn {
-            background-color: var(--white);
-            color: var(--primary);
-        }
-
-        .cta .btn:hover {
-            background-color: var(--accent);
-            color: var(--white);
-        }
-
-        footer {
-            background-color: var(--dark);
-            color: var(--white);
-            padding: 3rem 0 1rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--accent);
-        }
-
-        .footer-column p {
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links li a {
-            color: var(--light);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links li a:hover {
-            color: var(--accent);
-            padding-left: 5px;
-        }
-
-        .social-links {
+            margin-bottom: 15px;
+            color: #ff9a9e;
             display: flex;
-            gap: 1rem;
-        }
-
-        .social-links a {
-            display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
+            gap: 10px;
+        }
+        
+        .info-card .value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin: 15px 0;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .info-card .description {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+        
+        /* 季节指示器 */
+        .season-indicator {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .season-marker {
+            position: absolute;
+            width: 4px;
+            height: 15px;
+            background: #fff;
+            top: -2.5px;
+            transform: translateX(-50%);
+        }
+        
+        /* 月亮相位 */
+        .moon-phase {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            color: var(--white);
-            text-decoration: none;
-            transition: all 0.3s ease;
+            background: radial-gradient(circle at 30px 40px, #f0f0f0 0%, #aaa 70%);
+            margin: 15px auto;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
         }
-
-        .social-links a:hover {
-            background-color: var(--accent);
-            transform: translateY(-5px);
+        
+        .moon-phase::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #2c3e50;
+            border-radius: 50%;
+            transform: translateX(20%);
         }
-
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        
+        /* 日出日落时间 */
+        .sun-times {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 1.1rem;
         }
-
-        .mobile-menu {
-            display: none;
+        
+        .sun-time {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .sun-time i {
             font-size: 1.5rem;
-            cursor: pointer;
+            margin-bottom: 5px;
+            color: #ff9a9e;
         }
-
-        @media (max-width: 992px) {
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .initiatives-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        
+        /* 时间详情网格 */
+        .time-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
-
+        
+        .time-detail {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .time-detail .label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+        
+        .time-detail .value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        
+        /* 响应式设计 */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
+            .clock-container {
+                width: 400px;
+                height: 400px;
             }
             
-            .hero p {
-                font-size: 1.1rem;
+            .hour-number {
+                font-size: 32px;
             }
             
-            nav ul {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background-color: var(--primary);
-                flex-direction: column;
-                padding: 1rem 0;
-                text-align: center;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            .hour-hand {
+                width: 10px;
+                height: 120px;
             }
             
-            nav ul.active {
-                display: flex;
+            .minute-hand {
+                width: 7px;
+                height: 160px;
             }
             
-            nav ul li {
-                margin: 0;
-                padding: 0.8rem 0;
+            .second-hand {
+                width: 4px;
+                height: 180px;
             }
             
-            .mobile-menu {
-                display: block;
+            .digital-time {
+                font-size: 2.2rem;
             }
             
-            .initiatives-grid {
-                grid-template-columns: 1fr;
+            .current-date {
+                font-size: 1.4rem;
             }
             
-            .footer-content {
-                grid-template-columns: 1fr;
+            h1 {
+                font-size: 2rem;
             }
             
-            .stats {
+            .language-switcher {
+                top: 15px;
+                right: 15px;
+            }
+            
+            .info-grid {
                 grid-template-columns: 1fr;
             }
         }
-
-        /* Animation for stats counter */
-        .counter {
-            transition: all 0.5s ease;
+        
+        @media (max-width: 480px) {
+            .clock-container {
+                width: 320px;
+                height: 320px;
+            }
+            
+            .hour-number {
+                font-size: 26px;
+            }
+            
+            .hour-hand {
+                width: 8px;
+                height: 95px;
+            }
+            
+            .minute-hand {
+                width: 5px;
+                height: 130px;
+            }
+            
+            .second-hand {
+                width: 3px;
+                height: 145px;
+            }
+            
+            .clock-face {
+                border-width: 15px;
+            }
+            
+            .digital-time {
+                font-size: 1.8rem;
+                padding: 8px 20px;
+            }
+            
+            .time-details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .language-switcher {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .lang-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
         }
+        
+        /* 动画效果 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* 加载动画 */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        
+        /* 时钟外圈光环效果 */
+        .clock-glow {
+            position: absolute;
+            width: 105%;
+            height: 105%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 154, 158, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            filter: blur(10px);
+        }
+        
+        /* 季度颜色 */
+        .season-winter { background: linear-gradient(to right, #4a69bd, #6a89cc); }
+        .season-spring { background: linear-gradient(to right, #78e08f, #38ada9); }
+        .season-summer { background: linear-gradient(to right, #f6b93b, #fa983a); }
+        .season-autumn { background: linear-gradient(to right, #e55039, #eb2f06); }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container nav-container">
-            <div class="logo">
-                <i class="fas fa-seedling"></i>
-                <span>Green Network</span>
-            </div>
-            <nav>
-                <div class="mobile-menu">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#initiatives">Initiatives</a></li>
-                    <li><a href="#get-involved">Get Involved</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
+    <!-- 语言切换按钮 -->
+    <div class="language-switcher fade-in">
+        <button class="lang-btn active" id="langEn">
+            <i class="fas fa-globe-americas"></i> English
+        </button>
+        <button class="lang-btn" id="langZh">
+            <i class="fas fa-globe-asia"></i> 中文
+        </button>
+    </div>
+    
+    <header class="header fade-in">
+        <h1 id="title"><i class="fas fa-clock"></i> Large Analog Clock</h1>
+        <p class="subtitle" id="subtitle">A large analog clock with real-time updates and time information display</p>
     </header>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container hero-content">
-            <h1>Protect Our Planet, Preserve Our Future</h1>
-            <p>Join the global movement to create a sustainable world through conservation, education, and community action.</p>
-            <a href="#get-involved" class="btn">Join Our Network</a>
+    
+    <main class="main-clock-section">
+        <div class="clock-glow"></div>
+        <div class="clock-container fade-in">
+            <div class="clock-face" id="clockFace">
+                <!-- 时钟刻度将通过JavaScript生成 -->
+            </div>
+            <div class="center-dot"></div>
+            <div class="hand hour-hand" id="hourHand"></div>
+            <div class="hand minute-hand" id="minuteHand"></div>
+            <div class="hand second-hand" id="secondHand"></div>
+        </div>
+        
+        <div class="digital-time-container fade-in delay-1">
+            <div class="digital-time" id="digitalTime">12:00:00</div>
+            <div class="current-date" id="currentDate">October 1, 2023 Sunday</div>
+            <div class="timezone" id="timezone">Timezone: Asia/Shanghai (UTC+8)</div>
+        </div>
+    </main>
+    
+    <section class="info-section fade-in delay-2">
+        <div class="info-container">
+            <div class="info-grid">
+                <!-- 季节卡片 -->
+                <div class="info-card">
+                    <h3><i class="fas fa-leaf"></i> <span id="seasonTitle">Current Season</span></h3>
+                    <div class="value" id="seasonValue">Winter</div>
+                    <div class="description" id="seasonDesc">
+                        <span id="seasonDays">Days in season: 90</span>
+                    </div>
+                    <div class="season-indicator">
+                        <div class="season-marker" id="seasonMarker"></div>
+                    </div>
+                    <div class="description" id="nextSeason">Next season starts in <span id="daysToNextSeason">90</span> days</div>
+                </div>
+                
+                <!-- 月亮相位卡片 -->
+                <div class="info-card">
+                    <h3><i class="fas fa-moon"></i> <span id="moonTitle">Moon Phase</span></h3>
+                    <div class="moon-phase" id="moonPhase"></div>
+                    <div class="value" id="moonPhaseValue">New Moon</div>
+                    <div class="description" id="moonDesc">
+                        <span id="moonIllumination">Illumination: 0%</span><br>
+                        <span id="nextFullMoon">Next full moon in 15 days</span>
+                    </div>
+                </div>
+                
+                <!-- 日出日落卡片 -->
+                <div class="info-card">
+                    <h3><i class="fas fa-sun"></i> <span id="sunTitle">Sun Times</span></h3>
+                    <div class="value" id="daylightValue">12h 30m</div>
+                    <div class="description" id="daylightDesc">Daylight duration today</div>
+                    <div class="sun-times">
+                        <div class="sun-time">
+                            <i class="fas fa-sunrise"></i>
+                            <span id="sunriseTime">06:30</span>
+                        </div>
+                        <div class="sun-time">
+                            <i class="fas fa-sunset"></i>
+                            <span id="sunsetTime">18:45</span>
+                        </div>
+                    </div>
+                    <div class="description" id="timeToSunset">Sunset in <span id="sunsetCountdown">5h 30m</span></div>
+                </div>
+            </div>
+            
+            <div class="time-details-grid">
+                <div class="time-detail">
+                    <div class="label" id="dayOfYearLabel">Day of Year</div>
+                    <div class="value" id="dayOfYear">1</div>
+                </div>
+                <div class="time-detail">
+                    <div class="label" id="dayOfMonthLabel">Day of Month</div>
+                    <div class="value" id="dayOfMonth">1</div>
+                </div>
+                <div class="time-detail">
+                    <div class="label" id="dayOfWeekLabel">Day of Week</div>
+                    <div class="value" id="dayOfWeek">Sunday</div>
+                </div>
+                <div class="time-detail">
+                    <div class="label" id="unixTimestampLabel">Unix Timestamp</div>
+                    <div class="value" id="unixTimestamp">0</div>
+                </div>
+                <div class="time-detail">
+                    <div class="label" id="isLeapYearLabel">Leap Year</div>
+                    <div class="value" id="isLeapYear">No</div>
+                </div>
+                <div class="time-detail">
+                    <div class="label" id="daysInMonthLabel">Days in Month</div>
+                    <div class="value" id="daysInMonth">31</div>
+                </div>
+            </div>
         </div>
     </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>About Green Network</h2>
-                <p>We are a global community dedicated to environmental protection and sustainable development.</p>
-            </div>
-            <div class="about-content">
-                <div class="about-img">
-                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Team planting trees">
-                </div>
-                <div class="about-text">
-                    <h3>Our Mission</h3>
-                    <p>Green Network is committed to creating a sustainable future by protecting natural ecosystems, promoting renewable energy, and empowering communities to take environmental action.</p>
-                    <p>Founded in 2010, we've grown from a small grassroots organization to an international network with over 50,000 members across 120 countries.</p>
-                    <p>Our approach combines scientific research, community engagement, and policy advocacy to address the most pressing environmental challenges of our time.</p>
-                    <a href="#" class="btn">Learn More</a>
-                </div>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <i class="fas fa-tree"></i>
-                    <h3 class="counter" data-target="2500000">0</h3>
-                    <p>Trees Planted</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <h3 class="counter" data-target="50000">0</h3>
-                    <p>Active Members</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-globe-americas"></i>
-                    <h3 class="counter" data-target="120">0</h3>
-                    <p>Countries Reached</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-recycle"></i>
-                    <h3 class="counter" data-target="1500">0</h3>
-                    <p>Cleanup Projects</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Initiatives Section -->
-    <section class="initiatives" id="initiatives">
-        <div class="container">
-            <div class="section-title">
-                <h2>Our Initiatives</h2>
-                <p>Discover the key programs and projects we're implementing to protect our planet.</p>
-            </div>
-            <div class="initiatives-grid">
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://dialogue.earth/content/uploads/2021/04/lessons-from-the-rush-to-reforest-china-dialogue-2400x1599.jpg" alt="Reforestation">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Global Reforestation</h3>
-                        <p>Planting millions of trees worldwide to restore ecosystems, combat climate change, and protect biodiversity.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Ocean Conservation">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Ocean Conservation</h3>
-                        <p>Protecting marine ecosystems, reducing plastic pollution, and promoting sustainable fishing practices.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80" alt="Renewable Energy">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Renewable Energy</h3>
-                        <p>Promoting solar, wind, and other clean energy sources to reduce dependence on fossil fuels.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta" id="get-involved">
-        <div class="container">
-            <h2>Join Our Global Movement</h2>
-            <p>Together, we can create a sustainable future for generations to come. Every action counts, no matter how small.</p>
-            <a href="#" class="btn">Become a Member</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Green Network</h3>
-                    <p>We are dedicated to protecting our planet through collaborative action, education, and sustainable solutions.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#initiatives">Initiatives</a></li>
-                        <li><a href="#get-involved">Get Involved</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Our Programs</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Reforestation</a></li>
-                        <li><a href="#">Ocean Cleanup</a></li>
-                        <li><a href="#">Wildlife Protection</a></li>
-                        <li><a href="#">Climate Education</a></li>
-                        <li><a href="#">Sustainable Agriculture</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Copper Creek Drive, New York</p>
-                    <p><i class="fas fa-phone"></i> +1 (312) 171-0771</p>
-                    <p><i class="fas fa-envelope"></i> support@greennetwork.org</p>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 Green Network. All rights reserved.</p>
-            </div>
-        </div>
+    
+    <footer class="footer fade-in delay-3">
+        <p id="footerText1">© 2023 Large Analog Clock | Static Page Example | Real-time Updates</p>
+        <p id="footerText2">This is a static HTML page with JavaScript for clock animation</p>
     </footer>
 
     <script>
-        // Mobile Menu Toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('active');
-        });
-
-        // Counter Animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('.counter');
-            const speed = 200; // The lower the slower
-            
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                
-                const inc = target / speed;
-                
-                if(count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(animateCounters, 1);
-                } else {
-                    counter.innerText = target;
-                }
-            });
+        // 语言相关变量
+        let currentLang = 'en'; // 默认英文
+        
+        // 多语言文本
+        const translations = {
+            en: {
+                title: "Large Analog Clock",
+                subtitle: "A large analog clock with real-time updates and time information display",
+                seasonTitle: "Current Season",
+                seasonDesc: "Days in season:",
+                nextSeason: "Next season starts in",
+                moonTitle: "Moon Phase",
+                moonDesc: "Illumination:",
+                nextFullMoon: "Next full moon in",
+                sunTitle: "Sun Times",
+                daylightDesc: "Daylight duration today",
+                timeToSunset: "Sunset in",
+                dayOfYearLabel: "Day of Year",
+                dayOfMonthLabel: "Day of Month",
+                dayOfWeekLabel: "Day of Week",
+                unixTimestampLabel: "Unix Timestamp",
+                isLeapYearLabel: "Leap Year",
+                daysInMonthLabel: "Days in Month",
+                footerText1: "© 2023 Large Analog Clock | Static Page Example | Real-time Updates",
+                footerText2: "This is a static HTML page with JavaScript for clock animation",
+                monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                seasons: ["Winter", "Spring", "Summer", "Autumn"],
+                moonPhases: ["New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous", "Full Moon", "Waning Gibbous", "Last Quarter", "Waning Crescent"],
+                yes: "Yes",
+                no: "No"
+            },
+            zh: {
+                title: "大型指针时钟",
+                subtitle: "大型模拟时钟居中显示，下方展示详细时间信息",
+                seasonTitle: "当前季节",
+                seasonDesc: "本季天数：",
+                nextSeason: "下个季节开始于",
+                moonTitle: "月亮相位",
+                moonDesc: "月相亮度：",
+                nextFullMoon: "下次满月在",
+                sunTitle: "日出日落",
+                daylightDesc: "今日日照时长",
+                timeToSunset: "日落倒计时",
+                dayOfYearLabel: "今年第几天",
+                dayOfMonthLabel: "本月第几天",
+                dayOfWeekLabel: "星期几",
+                unixTimestampLabel: "Unix时间戳",
+                isLeapYearLabel: "是否闰年",
+                daysInMonthLabel: "本月天数",
+                footerText1: "© 2023 大型指针时钟 | 静态页面生成示例 | 时间实时更新",
+                footerText2: "此页面为纯静态HTML，使用JavaScript实现时钟指针动画",
+                monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+                dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+                seasons: ["冬季", "春季", "夏季", "秋季"],
+                moonPhases: ["新月", "娥眉月", "上弦月", "盈凸月", "满月", "亏凸月", "下弦月", "残月"],
+                yes: "是",
+                no: "否"
+            }
+        };
+        
+        // 获取DOM元素
+        const clockFace = document.getElementById('clockFace');
+        const hourHand = document.getElementById('hourHand');
+        const minuteHand = document.getElementById('minuteHand');
+        const secondHand = document.getElementById('secondHand');
+        const digitalTime = document.getElementById('digitalTime');
+        const currentDate = document.getElementById('currentDate');
+        const timezoneElement = document.getElementById('timezone');
+        const dayOfYearElement = document.getElementById('dayOfYear');
+        const dayOfMonthElement = document.getElementById('dayOfMonth');
+        const dayOfWeekElement = document.getElementById('dayOfWeek');
+        const unixTimestampElement = document.getElementById('unixTimestamp');
+        const isLeapYearElement = document.getElementById('isLeapYear');
+        const daysInMonthElement = document.getElementById('daysInMonth');
+        
+        // 新卡片元素
+        const seasonValue = document.getElementById('seasonValue');
+        const seasonDesc = document.getElementById('seasonDesc');
+        const seasonMarker = document.getElementById('seasonMarker');
+        const daysToNextSeason = document.getElementById('daysToNextSeason');
+        const moonPhase = document.getElementById('moonPhase');
+        const moonPhaseValue = document.getElementById('moonPhaseValue');
+        const moonDesc = document.getElementById('moonDesc');
+        const moonIllumination = document.getElementById('moonIllumination');
+        const nextFullMoon = document.getElementById('nextFullMoon');
+        const daylightValue = document.getElementById('daylightValue');
+        const daylightDesc = document.getElementById('daylightDesc');
+        const sunriseTime = document.getElementById('sunriseTime');
+        const sunsetTime = document.getElementById('sunsetTime');
+        const timeToSunset = document.getElementById('timeToSunset');
+        const sunsetCountdown = document.getElementById('sunsetCountdown');
+        
+        // 语言切换相关元素
+        const titleElement = document.getElementById('title');
+        const subtitleElement = document.getElementById('subtitle');
+        const seasonTitle = document.getElementById('seasonTitle');
+        const moonTitle = document.getElementById('moonTitle');
+        const sunTitle = document.getElementById('sunTitle');
+        const dayOfYearLabel = document.getElementById('dayOfYearLabel');
+        const dayOfMonthLabel = document.getElementById('dayOfMonthLabel');
+        const dayOfWeekLabel = document.getElementById('dayOfWeekLabel');
+        const unixTimestampLabel = document.getElementById('unixTimestampLabel');
+        const isLeapYearLabel = document.getElementById('isLeapYearLabel');
+        const daysInMonthLabel = document.getElementById('daysInMonthLabel');
+        const footerText1 = document.getElementById('footerText1');
+        const footerText2 = document.getElementById('footerText2');
+        const langEnBtn = document.getElementById('langEn');
+        const langZhBtn = document.getElementById('langZh');
+        
+        // 季节计算函数
+        function getSeason(month, day) {
+            // 简单季节计算（北半球）
+            if ((month === 12 && day >= 21) || month <= 2 || (month === 3 && day < 20)) {
+                return {season: 0, daysInSeason: 90, nextSeasonStart: getNextSeasonStart(month, day, 0)}; // Winter
+            } else if ((month === 3 && day >= 20) || month === 4 || month === 5 || (month === 6 && day < 21)) {
+                return {season: 1, daysInSeason: 92, nextSeasonStart: getNextSeasonStart(month, day, 1)}; // Spring
+            } else if ((month === 6 && day >= 21) || month === 7 || month === 8 || (month === 9 && day < 23)) {
+                return {season: 2, daysInSeason: 93, nextSeasonStart: getNextSeasonStart(month, day, 2)}; // Summer
+            } else {
+                return {season: 3, daysInSeason: 89, nextSeasonStart: getNextSeasonStart(month, day, 3)}; // Autumn
+            }
         }
-
-        // Initialize counters when page loads
-        window.addEventListener('load', animateCounters);
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
+        
+        function getNextSeasonStart(currentMonth, currentDay, currentSeason) {
+            const now = new Date();
+            const year = now.getFullYear();
+            let nextSeasonStart;
+            
+            switch(currentSeason) {
+                case 0: // Winter -> Spring
+                    nextSeasonStart = new Date(year, 2, 20); // March 20
+                    break;
+                case 1: // Spring -> Summer
+                    nextSeasonStart = new Date(year, 5, 21); // June 21
+                    break;
+                case 2: // Summer -> Autumn
+                    nextSeasonStart = new Date(year, 8, 23); // September 23
+                    break;
+                case 3: // Autumn -> Winter
+                    nextSeasonStart = new Date(year, 11, 21); // December 21
+                    break;
+            }
+            
+            // 如果已经过了今年的开始日期，计算明年的
+            if (now > nextSeasonStart) {
+                nextSeasonStart.setFullYear(year + 1);
+            }
+            
+            return nextSeasonStart;
+        }
+        
+        // 月亮相位计算（简化版）
+        function getMoonPhase(dayOfYear, year) {
+            // 简化计算，基于农历近似
+            const lunarCycle = 29.53; // 天
+            const knownNewMoon = new Date(year, 0, 6); // 假设的已知新月日期
+            const now = new Date();
+            
+            const daysSinceNewMoon = (now - knownNewMoon) / (1000 * 60 * 60 * 24);
+            const phase = (daysSinceNewMoon % lunarCycle) / lunarCycle;
+            
+            let phaseIndex = Math.floor(phase * 8);
+            let illumination = phase <= 0.5 ? phase * 2 : (1 - phase) * 2;
+            
+            // 计算距离下次满月的天数
+            const daysToFullMoon = phase < 0.5 ? 
+                (0.5 - phase) * lunarCycle : 
+                (1.5 - phase) * lunarCycle;
+            
+            return {
+                phase: phaseIndex,
+                illumination: illumination * 100,
+                daysToFullMoon: Math.round(daysToFullMoon)
+            };
+        }
+        
+        // 日出日落计算（简化版，基于纬度和日期）
+        function getSunTimes(latitude, month, day) {
+            // 简化计算，实际应使用更精确的算法
+            const dayOfYear = getDayOfYear(month, day);
+            
+            // 计算日照时长（简化公式）
+            const declination = 23.45 * Math.sin((2 * Math.PI / 365) * (dayOfYear - 81));
+            const hourAngle = Math.acos(-Math.tan(latitude * Math.PI/180) * Math.tan(declination * Math.PI/180));
+            const daylightHours = (2 * hourAngle * 180/Math.PI) / 15;
+            
+            // 日出时间（假设正午是12:00）
+            const sunriseHour = 12 - daylightHours / 2;
+            const sunsetHour = 12 + daylightHours / 2;
+            
+            // 格式化时间
+            const sunrise = formatTime(sunriseHour);
+            const sunset = formatTime(sunsetHour);
+            
+            // 计算距离日落的时间
+            const now = new Date();
+            const sunsetToday = new Date();
+            sunsetToday.setHours(Math.floor(sunsetHour), Math.round((sunsetHour % 1) * 60), 0);
+            
+            let timeToSunsetMs = sunsetToday - now;
+            if (timeToSunsetMs < 0) {
+                // 如果今天已经日落，计算明天的日落
+                sunsetToday.setDate(sunsetToday.getDate() + 1);
+                timeToSunsetMs = sunsetToday - now;
+            }
+            
+            const hoursToSunset = Math.floor(timeToSunsetMs / (1000 * 60 * 60));
+            const minutesToSunset = Math.floor((timeToSunsetMs % (1000 * 60 * 60)) / (1000 * 60));
+            
+            return {
+                sunrise: sunrise,
+                sunset: sunset,
+                daylightHours: daylightHours,
+                timeToSunset: `${hoursToSunset}h ${minutesToSunset}m`
+            };
+        }
+        
+        function getDayOfYear(month, day) {
+            const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            let dayOfYear = day;
+            for (let i = 0; i < month; i++) {
+                dayOfYear += monthDays[i];
+            }
+            return dayOfYear;
+        }
+        
+        function formatTime(decimalHours) {
+            const hours = Math.floor(decimalHours);
+            const minutes = Math.round((decimalHours - hours) * 60);
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        }
+        
+        // 创建时钟刻度
+        function createClockMarks() {
+            // 清空现有刻度
+            clockFace.innerHTML = '';
+            
+            // 创建小时数字
+            for (let i = 1; i <= 12; i++) {
+                const hourNumber = document.createElement('div');
+                hourNumber.className = 'hour-number';
+                hourNumber.textContent = i;
                 
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
+                // 计算位置
+                const angle = (i * 30) * (Math.PI / 180);
+                const radius = 220;
+                const x = Math.sin(angle) * radius;
+                const y = -Math.cos(angle) * radius;
                 
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
+                hourNumber.style.left = `calc(50% + ${x}px)`;
+                hourNumber.style.top = `calc(50% + ${y}px)`;
+                hourNumber.style.transform = 'translate(-50%, -50%)';
+                
+                clockFace.appendChild(hourNumber);
+                
+                // 小时刻度线
+                const hourMark = document.createElement('div');
+                hourMark.style.position = 'absolute';
+                hourMark.style.width = '6px';
+                hourMark.style.height = '30px';
+                hourMark.style.background = 'rgba(255, 255, 255, 0.9)';
+                hourMark.style.borderRadius = '3px';
+                hourMark.style.transformOrigin = 'bottom center';
+                hourMark.style.transform = `rotate(${i * 30}deg)`;
+                hourMark.style.top = '25px';
+                hourMark.style.left = '50%';
+                hourMark.style.marginLeft = '-3px';
+                
+                clockFace.appendChild(hourMark);
+            }
+            
+            // 创建分钟刻度
+            for (let i = 1; i <= 60; i++) {
+                if (i % 5 !== 0) {
+                    const minuteMark = document.createElement('div');
+                    minuteMark.style.position = 'absolute';
+                    minuteMark.style.width = '3px';
+                    minuteMark.style.height = '15px';
+                    minuteMark.style.background = 'rgba(255, 255, 255, 0.6)';
+                    minuteMark.style.borderRadius = '1.5px';
+                    minuteMark.style.transformOrigin = 'bottom center';
+                    minuteMark.style.transform = `rotate(${i * 6}deg)`;
+                    minuteMark.style.top = '30px';
+                    minuteMark.style.left = '50%';
+                    minuteMark.style.marginLeft = '-1.5px';
                     
-                    document.querySelector('nav ul').classList.remove('active');
+                    clockFace.appendChild(minuteMark);
                 }
-            });
+            }
+            
+            // 添加中心装饰
+            const centerRing = document.createElement('div');
+            centerRing.style.position = 'absolute';
+            centerRing.style.width = '40px';
+            centerRing.style.height = '40px';
+            centerRing.style.borderRadius = '50%';
+            centerRing.style.border = '3px solid rgba(255, 255, 255, 0.2)';
+            centerRing.style.top = '50%';
+            centerRing.style.left = '50%';
+            centerRing.style.transform = 'translate(-50%, -50%)';
+            centerRing.style.zIndex = '5';
+            
+            clockFace.appendChild(centerRing);
+        }
+        
+        // 切换语言
+        function switchLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // 更新按钮状态
+            if (lang === 'en') {
+                langEnBtn.classList.add('active');
+                langZhBtn.classList.remove('active');
+            } else {
+                langZhBtn.classList.add('active');
+                langEnBtn.classList.remove('active');
+            }
+            
+            // 更新页面文本
+            titleElement.innerHTML = `<i class="fas fa-clock"></i> ${t.title}`;
+            subtitleElement.textContent = t.subtitle;
+            seasonTitle.textContent = t.seasonTitle;
+            moonTitle.textContent = t.moonTitle;
+            sunTitle.textContent = t.sunTitle;
+            dayOfYearLabel.textContent = t.dayOfYearLabel;
+            dayOfMonthLabel.textContent = t.dayOfMonthLabel;
+            dayOfWeekLabel.textContent = t.dayOfWeekLabel;
+            unixTimestampLabel.textContent = t.unixTimestampLabel;
+            isLeapYearLabel.textContent = t.isLeapYearLabel;
+            daysInMonthLabel.textContent = t.daysInMonthLabel;
+            footerText1.textContent = t.footerText1;
+            footerText2.textContent = t.footerText2;
+            
+            // 更新季节卡片描述
+            seasonDesc.innerHTML = `${t.seasonDesc} <span id="seasonDays">90</span>`;
+            
+            // 更新月亮卡片描述
+            moonDesc.innerHTML = `${t.moonDesc} <span id="moonIllumination">0%</span><br>${t.nextFullMoon} <span id="nextFullMoonDays">15</span> ${currentLang === 'en' ? 'days' : '天'}`;
+            
+            // 更新太阳卡片描述
+            daylightDesc.textContent = t.daylightDesc;
+            timeToSunset.innerHTML = `${t.timeToSunset} <span id="sunsetCountdown">5h 30m</span>`;
+            
+            // 立即更新所有显示
+            updateDateDisplay();
+            updateInfoCards();
+        }
+        
+        // 更新日期显示（考虑语言）
+        function updateDateDisplay() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = translations[currentLang].monthNames[now.getMonth()];
+            const date = now.getDate();
+            const day = translations[currentLang].dayNames[now.getDay()];
+            
+            if (currentLang === 'zh') {
+                currentDate.textContent = `${year}年${month}${date}日 ${day}`;
+            } else {
+                currentDate.textContent = `${month} ${date}, ${year} ${day}`;
+            }
+            
+            // 更新星期几显示
+            dayOfWeekElement.textContent = translations[currentLang].dayNames[now.getDay()];
+            
+            // 更新闰年显示
+            const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+            isLeapYearElement.textContent = isLeapYear ? translations[currentLang].yes : translations[currentLang].no;
+        }
+        
+        // 更新信息卡片
+        function updateInfoCards() {
+            const now = new Date();
+            const month = now.getMonth();
+            const day = now.getDate();
+            const year = now.getFullYear();
+            
+            // 更新季节信息
+            const seasonInfo = getSeason(month + 1, day);
+            seasonValue.textContent = translations[currentLang].seasons[seasonInfo.season];
+            
+            // 更新季节指示器
+            const seasonProgress = (day / seasonInfo.daysInSeason) * 100;
+            seasonMarker.style.left = `${seasonProgress}%`;
+            
+            // 更新季节卡片描述
+            const seasonDaysElement = document.getElementById('seasonDays');
+            if (seasonDaysElement) {
+                seasonDaysElement.textContent = seasonInfo.daysInSeason;
+            }
+            
+            // 计算距离下个季节的天数
+            const daysToNext = Math.ceil((seasonInfo.nextSeasonStart - now) / (1000 * 60 * 60 * 24));
+            daysToNextSeason.textContent = daysToNext;
+            
+            // 更新月亮相位
+            const moonInfo = getMoonPhase(getDayOfYear(month, day), year);
+            moonPhaseValue.textContent = translations[currentLang].moonPhases[moonInfo.phase];
+            
+            // 更新月亮亮度
+            const moonIlluminationElement = document.getElementById('moonIllumination');
+            if (moonIlluminationElement) {
+                moonIlluminationElement.textContent = `${moonInfo.illumination.toFixed(1)}%`;
+            }
+            
+            // 更新下次满月天数
+            const nextFullMoonDays = document.getElementById('nextFullMoonDays');
+            if (nextFullMoonDays) {
+                nextFullMoonDays.textContent = moonInfo.daysToFullMoon;
+            }
+            
+            // 更新日出日落时间（使用上海纬度：31.23°N）
+            const sunInfo = getSunTimes(31.23, month, day);
+            sunriseTime.textContent = sunInfo.sunrise;
+            sunsetTime.textContent = sunInfo.sunset;
+            
+            // 更新日照时长
+            const daylightHours = Math.floor(sunInfo.daylightHours);
+            const daylightMinutes = Math.round((sunInfo.daylightHours - daylightHours) * 60);
+            daylightValue.textContent = `${daylightHours}h ${daylightMinutes}m`;
+            
+            // 更新日落倒计时
+            sunsetCountdown.textContent = sunInfo.timeToSunset;
+            
+            // 更新季节卡片颜色
+            const seasonCard = document.querySelector('.info-card:first-child');
+            seasonCard.className = 'info-card fade-in delay-2';
+            seasonCard.classList.add(`season-${translations[currentLang].seasons[seasonInfo.season].toLowerCase()}`);
+        }
+        
+        // 更新时间函数
+        function updateTime() {
+            const now = new Date();
+            
+            // 获取时间各部分
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const milliseconds = now.getMilliseconds();
+            
+            // 计算指针角度
+            const secondAngle = (seconds + milliseconds / 1000) * 6;
+            const minuteAngle = (minutes + seconds / 60) * 6;
+            const hourAngle = (hours % 12 + minutes / 60) * 30;
+            
+            // 更新指针角度
+            secondHand.style.transform = `translateX(-50%) rotate(${secondAngle}deg)`;
+            minuteHand.style.transform = `translateX(-50%) rotate(${minuteAngle}deg)`;
+            hourHand.style.transform = `translateX(-50%) rotate(${hourAngle}deg)`;
+            
+            // 更新数字时间
+            const formattedHours = hours.toString().padStart(2, '0');
+            const formattedMinutes = minutes.toString().padStart(2, '0');
+            const formattedSeconds = seconds.toString().padStart(2, '0');
+            digitalTime.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+            
+            // 更新时区信息
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const timezoneOffset = -now.getTimezoneOffset() / 60;
+            const offsetSign = timezoneOffset >= 0 ? '+' : '-';
+            
+            if (currentLang === 'zh') {
+                timezoneElement.textContent = `时区：${timezone} (UTC${offsetSign}${Math.abs(timezoneOffset)})`;
+            } else {
+                timezoneElement.textContent = `Timezone: ${timezone} (UTC${offsetSign}${Math.abs(timezoneOffset)})`;
+            }
+            
+            // 计算一年中的第几天
+            const startOfYear = new Date(now.getFullYear(), 0, 0);
+            const diff = now - startOfYear;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            dayOfYearElement.textContent = dayOfYear;
+            
+            // 计算月份中的第几天
+            const dayOfMonth = now.getDate();
+            dayOfMonthElement.textContent = dayOfMonth;
+            
+            // 显示Unix时间戳
+            const unixTimestamp = Math.floor(now.getTime() / 1000);
+            unixTimestampElement.textContent = unixTimestamp;
+            
+            // 计算本月天数
+            const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            daysInMonthElement.textContent = lastDayOfMonth;
+            
+            // 更新日期显示
+            updateDateDisplay();
+            
+            // 更新信息卡片（每分钟更新一次，避免频繁计算）
+            if (seconds === 0) {
+                updateInfoCards();
+            }
+            
+            // 整点脉动效果
+            if (minutes === 0 && seconds === 0) {
+                clockFace.classList.add('pulse');
+                setTimeout(() => {
+                    clockFace.classList.remove('pulse');
+                }, 2000);
+            }
+        }
+        
+        // 平滑动画循环
+        function animateClock() {
+            updateTime();
+            requestAnimationFrame(animateClock);
+        }
+        
+        // 页面加载时初始化
+        window.addEventListener('load', () => {
+            // 创建时钟刻度
+            createClockMarks();
+            
+            // 设置语言切换事件
+            langEnBtn.addEventListener('click', () => switchLanguage('en'));
+            langZhBtn.addEventListener('click', () => switchLanguage('zh'));
+            
+            // 初始更新信息卡片
+            updateInfoCards();
+            
+            // 开始动画
+            animateClock();
+            
+            // 添加页面加载动画
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
         });
     </script>
 </body>
-
 </html>

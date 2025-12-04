@@ -1,7 +1,7 @@
 const os = require('os');
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
-const axios = require('axios');
 const net = require('net');
 const path = require('path');
 const crypto = require('crypto');
@@ -10,24 +10,24 @@ const { exec, execSync } = require('child_process');
 const vmsServer = require('jsvms/protocols/vmess/server');
 const Validator = require('jsvms/protocols/vmess/validator');
 const { WebSocket, createWebSocketStream } = require('ws');
-const UUID = process.env.UUID || '5efabea4-f6d4-91fd-b8f0-17e004c89c60'; // 运行哪吒v1,在不同的平台需要改UUID,否则会被覆盖
-const NEZHA_SERVER = process.env.NEZHA_SERVER || '';       // 哪吒v1填写形式：nz.abc.com:8008   哪吒v0填写形式：nz.abc.com
-const NEZHA_PORT = process.env.NEZHA_PORT || '';           // 哪吒v1没有此变量，v0的agent端口为{443,8443,2096,2087,2083,2053}其中之一时开启tls
-const NEZHA_KEY = process.env.NEZHA_KEY || '';             // v1的NZ_CLIENT_SECRET或v0的agent端口                
-const DOMAIN = process.env.DOMAIN || 'your-domain.com';    // 填写项目域名或已反代的域名，不带前缀，建议填已反代的域名
-const AUTO_ACCESS = process.env.AUTO_ACCESS || false;      // 是否开启自动访问保活,false为关闭,true为开启,需同时填写DOMAIN变量
-const WSPATH = process.env.WSPATH || UUID.slice(0, 8);     // 节点路径，默认获取uuid前8位
-const SUB_PATH = process.env.SUB_PATH || 'sub';            // 获取节点的订阅路径
-const NAME = process.env.NAME || '';                       // 节点名称
-const PORT = process.env.PORT || 3000;                     // http和ws服务端口
+const UUID = process.env.UUID || '5efabea4-f6d4-91fd-b8f0-17e004c89c60';
+const NEZHA_SERVER = process.env.NEZHA_SERVER || '';
+const NEZHA_PORT = process.env.NEZHA_PORT || '';
+const NEZHA_KEY = process.env.NEZHA_KEY || '';
+const DOMAIN = process.env.DOMAIN || '';
+const AUTO_ACCESS = process.env.AUTO_ACCESS || false;
+const WSPATH = process.env.WSPATH || UUID.slice(0, 8);
+const SUB_PATH = process.env.SUB_PATH || 'sub';
+const NAME = process.env.NAME || '';
+const PORT = process.env.PORT || 3000;
 
 let uuid = UUID.replace(/-/g, ""), CurrentDomain = DOMAIN, Tls = 'tls', CurrentPort = 443, ISP = '';
 const vmsUser = { id: UUID, alterId: 0, security: 'auto' };
-Validator.init({tag: 'inbound',users: [vmsUser]});
+Validator.init({ tag: 'inbound', users: [vmsUser] });
 const DNS_SERVERS = ['8.8.4.4', '1.1.1.1']; // custom dns
 const BLOCKED_DOMAINS = [
     'speedtest.net', 'fast.com', 'speedtest.cn', 'speed.cloudflare.com', 'speedof.me',
-     'testmy.net', 'bandwidth.place', 'speed.io', 'librespeed.org', 'speedcheck.org'
+    'testmy.net', 'bandwidth.place', 'speed.io', 'librespeed.org', 'speedcheck.org'
 ];
 // block speedtest domain
 function isBlockedDomain(host) {
@@ -37,19 +37,78 @@ function isBlockedDomain(host) {
         return hostLower === blocked || hostLower.endsWith('.' + blocked);
     });
 }
+// HTTP GET helper function to replace axios
+const httpGet = (url, options = {}) => {
+    return new Promise((resolve, reject) => {
+        const timeout = options.timeout || 10000;
+        const protocol = url.startsWith('https') ? https : http;
+        const req = protocol.get(url, { timeout }, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+                try {
+                    const jsonData = JSON.parse(data);
+                    resolve({ data: jsonData });
+                } catch (e) {
+                    resolve({ data: data });
+                }
+            });
+        });
+        req.on('error', reject);
+        req.on('timeout', () => {
+            req.destroy();
+            reject(new Error('Request timeout'));
+        });
+    });
+};
+
+// HTTP POST helper function
+const httpPost = (url, postData, options = {}) => {
+    return new Promise((resolve, reject) => {
+        const urlObj = new URL(url);
+        const data = JSON.stringify(postData);
+        const reqOptions = {
+            hostname: urlObj.hostname,
+            port: urlObj.port || 443,
+            path: urlObj.pathname,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': data.length,
+                ...options.headers
+            }
+        };
+        const req = https.request(reqOptions, (res) => {
+            let responseData = '';
+            res.on('data', chunk => responseData += chunk);
+            res.on('end', () => resolve({ data: responseData }));
+        });
+        req.on('error', reject);
+        req.write(data);
+        req.end();
+    });
+};
+
 // get config
-const GetConfig = async () => {    
+const GetConfig = async () => {
     try {
-        const res = await axios.get('https://speed.cloudflare.com/meta');
+        // Use ip-api.com (free, no strict rate limits)
+        const res = await httpGet('http://ip-api.com/json/?fields=status,country,countryCode,isp,as', { timeout: 8000 });
         const data = res.data;
-        ISP = `${data.country}-${data.asOrganization}`.replace(/ /g, '_');
+
+        if (data && data.status === 'success' && data.countryCode) {
+            const org = data.isp || data.as || 'ISP';
+            ISP = `${data.countryCode}-${org}`.replace(/ /g, '_');
+        } else {
+            ISP = 'Unknown';
+        }
     } catch (e) {
         ISP = 'Unknown';
     }
 
     if (!DOMAIN || DOMAIN === 'your-domain.com') {
         try {
-            const res = await axios.get('https://api.ip.sb/ip', { timeout: 8000 });
+            const res = await httpGet('https://api.ip.sb/ip', { timeout: 8000 });
             const ip = res.data.trim();
             CurrentDomain = ip, Tls = 'none', CurrentPort = PORT;
         } catch (e) {
@@ -75,7 +134,7 @@ const httpServer = http.createServer((req, res) => {
         });
         return;
     } else if (req.url === `/${SUB_PATH}`) {
-        GetConfig().then(() => { 
+        GetConfig().then(() => {
             const namePart = NAME ? `${NAME}-${ISP}` : ISP;
             const tlsParam = Tls === 'tls' ? 'tls' : 'none';
             const ssTlsParam = Tls === 'tls' ? 'tls;' : '';
@@ -112,12 +171,7 @@ function resolveHost(host) {
             const dnsServer = DNS_SERVERS[attempts];
             attempts++;
             const dnsQuery = `https://dns.google/resolve?name=${encodeURIComponent(host)}&type=A`;
-            axios.get(dnsQuery, {
-                timeout: 5000,
-                headers: {
-                    'Accept': 'application/dns-json'
-                }
-            })
+            httpGet(dnsQuery, { timeout: 5000 })
                 .then(response => {
                     const data = response.data;
                     if (data.Status === 0 && data.Answer && data.Answer.length > 0) {
@@ -148,7 +202,7 @@ function handleVlsConnection(ws, msg) {
     const host = ATYP == 1 ? msg.slice(i, i += 4).join('.') :
         (ATYP == 2 ? new TextDecoder().decode(msg.slice(i + 1, i += 1 + msg.slice(i, i + 1).readUInt8())) :
             (ATYP == 3 ? msg.slice(i, i += 16).reduce((s, b, i, a) => (i % 2 ? s.concat(a.slice(i - 1, i + 1)) : s), []).map(b => b.readUInt16BE(0).toString(16)).join(':') : ''));
-    if (isBlockedDomain(host)) {ws.close();return false;}
+    if (isBlockedDomain(host)) { ws.close(); return false; }
     ws.send(new Uint8Array([VERSION, 0]));
     const duplex = createWebSocketStream(ws);
     resolveHost(host)
@@ -217,7 +271,7 @@ function handleTrojConnection(ws, msg) {
         if (offset < msg.length && msg[offset] === 0x0d && msg[offset + 1] === 0x0a) {
             offset += 2;
         }
-        if (isBlockedDomain(host)) {ws.close();return false;}
+        if (isBlockedDomain(host)) { ws.close(); return false; }
         const duplex = createWebSocketStream(ws);
 
         resolveHost(host)
@@ -270,7 +324,7 @@ function handleSsConnection(ws, msg) {
 
         port = msg.readUInt16BE(offset);
         offset += 2;
-        if (isBlockedDomain(host)) {ws.close();return false;}
+        if (isBlockedDomain(host)) { ws.close(); return false; }
         const duplex = createWebSocketStream(ws);
         resolveHost(host)
             .then(resolvedIP => {
@@ -415,10 +469,10 @@ const downloadFile = async () => {
 
     try {
         const url = getDownloadUrl();
-        const response = await axios({
-            method: 'get',
-            url: url,
-            responseType: 'stream'
+        const response = await new Promise((resolve, reject) => {
+            https.get(url, (res) => {
+                resolve({ data: res });
+            }).on('error', reject);
         });
 
         const writer = fs.createWriteStream('npm');
@@ -505,12 +559,8 @@ async function addAccessTask() {
     }
     const fullURL = `https://${DOMAIN}/${SUB_PATH}`;
     try {
-        const res = await axios.post("https://oooo.serv00.net/add-url", {
+        const res = await httpPost("https://oooo.serv00.net/add-url", {
             url: fullURL
-        }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
         });
         console.log('Automatic Access Task added successfully');
     } catch (error) {

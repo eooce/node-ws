@@ -6,11 +6,14 @@ on:
     paths:
       - 'index.js'
       - 'package.json'
+      - 'index.html'
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
     - name: Checkout repository
@@ -24,118 +27,86 @@ jobs:
         node-version: 18
         cache: 'npm'
 
-    - name: Generate package-lock.json
-      run: |
-        npm install --package-lock-only
-
     - name: Install dependencies
       run: |
-        # Try npm ci first
-        npm ci --no-scripts --legacy-peer-deps || \
-        # If that fails, try npm install
-        npm install --no-scripts --legacy-peer-deps || \
-        # If that also fails, try with unsafe-perm
-        npm install --no-scripts --unsafe-perm
+        npm ci || npm install
 
-    - name: Install pkg globally
+    - name: Build binaries
       run: |
-        npm install -g pkg
+        npm run build
 
-    - name: Create dist directory
+    - name: Rename binaries
       run: |
-        mkdir -p dist
-
-    - name: Build Linux AMD64 binary
-      run: |
-        pkg . --targets node18-linux-x64 --output dist/nodews_linux_amd64
+        mv dist/node-ws-linux-x64 dist/nodews_linux_amd64
+        mv dist/node-ws-linux-arm64 dist/nodews_linux_arm64
         chmod +x dist/nodews_linux_amd64
-
-    - name: Build Linux ARM64 binary
-      run: |
-        pkg . --targets node18-linux-arm64 --output dist/nodews_linux_arm64
         chmod +x dist/nodews_linux_arm64
 
-    - name: Upload Linux AMD64 artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: nodews_linux_amd64
-        path: dist/nodews_linux_amd64
-
-    - name: Upload Linux ARM64 artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: nodews_linux_arm64
-        path: dist/nodews_linux_arm64
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Get current date
-      id: date
-      run: |
-        echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
-
     - name: Delete existing release
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
+      continue-on-error: true
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          try {
-            // Get all releases
-            const releases = await github.rest.repos.listReleases({
+          const releases = await github.rest.repos.listReleases({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          });
+          
+          const release = releases.data.find(r => r.tag_name === 'node-ws-binary');
+          if (release) {
+            await github.rest.repos.deleteRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
+              release_id: release.id,
             });
-            
-            // Find our specific release
-            const existingRelease = releases.data.find(release => release.name === 'node-ws-binary');
-            if (existingRelease) {
-              await github.rest.repos.deleteRelease({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                release_id: existingRelease.id,
-              });
-              console.log('Deleted existing release');
-            }
-          } catch (error) {
-            console.log('No existing release to delete or error occurred:', error.message);
+            console.log('Deleted existing release');
           }
 
-    - name: Wait for release deletion
+    - name: Delete existing tag
+      continue-on-error: true
       run: |
-        sleep 5
+        git push --delete origin node-ws-binary || true
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Wait for deletion
+      run: sleep 3
+
+    - name: Create or Update Release
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: node-ws-binary-${{ steps.date.outputs.date }}
-        release_name: node-ws-binary
+        tag_name: node-ws-binary
+        name: node-ws-binary
         draft: false
         prerelease: false
-
-    - name: Download all artifacts
-      uses: actions/download-artifact@v4
-
-    - name: Upload Linux AMD64 binary to release
-      uses: actions/upload-release-asset@v1
+        files: |
+          dist/nodews_linux_amd64
+          dist/nodews_linux_arm64
+        body: |
+          ## Node WebSocket Server Binary (Latest Dev Build)
+          
+          **⚠️ This release is automatically updated with each push to dev branch**
+          
+          ### 📦 Binaries
+          - `nodews_linux_amd64` - Linux AMD64/x86_64
+          - `nodews_linux_arm64` - Linux ARM64/aarch64
+          
+          ### 🚀 Quick Start
+          ```bash
+          # Download (AMD64)
+          wget https://github.com/${{ github.repository }}/releases/download/node-ws-binary/nodews_linux_amd64
+          
+          # Make executable
+          chmod +x nodews_linux_amd64
+          
+          # Run
+          ./nodews_linux_amd64
+          ```
+          
+          ### 📝 Environment Variables
+          - `UUID` - User UUID
+          - `PORT` - Server port (default: 3000)
+          - `DOMAIN` - Domain or IP (If empty,auto-fetch)
+          - `NAME` - Custom server name
+          - `WSPATH` - WebSocket path 
+          - `SUB_PATH` - Subscription path (default: sub)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./nodews_linux_amd64/nodews_linux_amd64
-        asset_name: nodews_linux_amd64
-        asset_content_type: application/octet-stream
-
-    - name: Upload Linux ARM64 binary to release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./nodews_linux_arm64/nodews_linux_arm64
-        asset_name: nodews_linux_arm64
-        asset_content_type: application/octet-stream

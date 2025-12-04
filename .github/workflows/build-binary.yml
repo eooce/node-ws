@@ -1,0 +1,160 @@
+name: Build and Release Binary
+
+on:
+  push:
+    branches: [ dev ]
+    paths:
+      - 'index.js'
+      - 'package.json'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        node-version: [20]
+        os: [ubuntu-latest]
+        target: [linux-x64, linux-arm64, freebsd-x64]
+        
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: dev
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install pkg globally
+      run: npm install -g pkg
+
+    - name: Create dist directory
+      run: mkdir -p dist
+
+    - name: Build Linux AMD64 binary
+      if: matrix.target == 'linux-x64'
+      run: |
+        pkg . --targets node20-linux-x64 --output dist/nodews_linux_amd64
+        chmod +x dist/nodews_linux_amd64
+
+    - name: Build Linux ARM64 binary
+      if: matrix.target == 'linux-arm64'
+      run: |
+        pkg . --targets node20-linux-arm64 --output dist/nodews_linux_arm64
+        chmod +x dist/nodews_linux_arm64
+
+    - name: Build FreeBSD AMD64 binary
+      if: matrix.target == 'freebsd-x64'
+      run: |
+        pkg . --targets node20-freebsd-x64 --output dist/nodews_freebsd_amd64
+        chmod +x dist/nodews_freebsd_amd64
+
+    - name: Upload Linux AMD64 artifact
+      if: matrix.target == 'linux-x64'
+      uses: actions/upload-artifact@v4
+      with:
+        name: nodews_linux_amd64
+        path: dist/nodews_linux_amd64
+
+    - name: Upload Linux ARM64 artifact
+      if: matrix.target == 'linux-arm64'
+      uses: actions/upload-artifact@v4
+      with:
+        name: nodews_linux_arm64
+        path: dist/nodews_linux_arm64
+
+    - name: Upload FreeBSD AMD64 artifact
+      if: matrix.target == 'freebsd-x64'
+      uses: actions/upload-artifact@v4
+      with:
+        name: nodews_freebsd_amd64
+        path: dist/nodews_freebsd_amd64
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Delete existing release
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          try {
+            // Get all releases
+            const releases = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            // Find our specific release
+            const existingRelease = releases.data.find(release => release.name === 'node-ws-binary');
+            if (existingRelease) {
+              await github.rest.repos.deleteRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: existingRelease.id,
+              });
+              console.log('Deleted existing release');
+            }
+          } catch (error) {
+            console.log('No existing release to delete or error occurred:', error.message);
+          }
+
+    - name: Wait for release deletion
+      run: sleep 5
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: node-ws-binary-${{ steps.date.outputs.date }}
+        release_name: node-ws-binary
+        draft: false
+        prerelease: false
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Upload Linux AMD64 binary to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./nodews_linux_amd64/nodews_linux_amd64
+        asset_name: nodews_linux_amd64
+        asset_content_type: application/octet-stream
+
+    - name: Upload Linux ARM64 binary to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./nodews_linux_arm64/nodews_linux_arm64
+        asset_name: nodews_linux_arm64
+        asset_content_type: application/octet-stream
+
+    - name: Upload FreeBSD AMD64 binary to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./nodews_freebsd_amd64/nodews_freebsd_amd64
+        asset_name: nodews_freebsd_amd64
+        asset_content_type: application/octet-stream

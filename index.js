@@ -108,7 +108,7 @@ const GetConfig = async () => {
 
     if (!DOMAIN || DOMAIN === 'your-domain.com') {
         try {
-            const res = await httpGet('https://api.ip.sb/ip', { timeout: 8000 });
+            const res = await httpGet('https://api-ipv4.ip.sb/ip', { timeout: 8000 });
             const ip = res.data.trim();
             CurrentDomain = ip, Tls = 'none', CurrentPort = PORT;
         } catch (e) {

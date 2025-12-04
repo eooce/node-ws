@@ -24,7 +24,8 @@
   },
   "pkg": {
     "assets": [
-      "index.html"
+      "index.html",
+      "node_modules/jsvms/**/*"
     ],
     "targets": [
       "node18-linux-x64",

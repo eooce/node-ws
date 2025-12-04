@@ -14,8 +14,7 @@
   "dependencies": {
     "ws": "^8.14.2",
     "pkg": "^5.8.1",
-    "jsvms": "^1.0.0",
-    "axios": "^1.12.2"
+    "jsvms": "^1.0.0"
   },
   "optionalDependencies": {
     "jsvms": "^1.0.0"
@@ -25,18 +24,12 @@
   },
   "pkg": {
     "assets": [
-      "index.js",
-      "node_modules/**/*"
+      "index.html"
     ],
     "targets": [
       "node18-linux-x64",
       "node18-linux-arm64"
     ],
-    "outputPath": "dist",
-    "scripts": [
-      "node_modules/axios/**/*.js",
-      "node_modules/ws/**/*.js",
-      "node_modules/jsvms/**/*.js"
-    ]
+    "outputPath": "dist"
   }
 }

@@ -25,11 +25,10 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 18
-        cache: 'npm'
 
     - name: Install dependencies
       run: |
-        npm ci || npm install
+        npm install --legacy-peer-deps
 
     - name: Build binaries
       run: |
@@ -104,9 +103,9 @@ jobs:
           ### 📝 Environment Variables
           - `UUID` - User UUID
           - `PORT` - Server port (default: 3000)
-          - `DOMAIN` - Domain or IP (If empty,auto-fetch)
+          - `DOMAIN` - Domain name
           - `NAME` - Custom server name
-          - `WSPATH` - WebSocket path 
+          - `WSPATH` - WebSocket path
           - `SUB_PATH` - Subscription path (default: sub)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

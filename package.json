@@ -17,6 +17,9 @@
     "jsvms": "^1.0.0",
     "axios": "^1.12.2"
   },
+  "optionalDependencies": {
+    "jsvms": "^1.0.0"
+  },
   "engines": {
     "node": ">=14"
   },
@@ -30,6 +33,11 @@
       "node20-linux-arm64",
       "node20-freebsd-x64"
     ],
-    "outputPath": "dist"
+    "outputPath": "dist",
+    "scripts": [
+      "node_modules/axios/**/*.js",
+      "node_modules/ws/**/*.js",
+      "node_modules/jsvms/**/*.js"
+    ]
   }
 }

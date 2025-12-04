@@ -8,7 +8,7 @@
   "private": false,
   "scripts": {
     "start": "node index.js",
-    "build": "pkg . --targets node20-linux-x64,node20-linux-arm64,node20-freebsd-x64 --output dist/node-ws"
+    "build": "pkg . --targets node18-linux-x64,node18-linux-arm64 --output dist/node-ws"
   },
   "bin": "index.js",
   "dependencies": {
@@ -29,9 +29,8 @@
       "node_modules/**/*"
     ],
     "targets": [
-      "node20-linux-x64",
-      "node20-linux-arm64",
-      "node20-freebsd-x64"
+      "node18-linux-x64",
+      "node18-linux-arm64"
     ],
     "outputPath": "dist",
     "scripts": [

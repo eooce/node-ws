@@ -30,7 +30,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        npm ci
+        # Try npm ci first
+        npm ci --no-scripts --legacy-peer-deps || \
+        # If that fails, try npm install
+        npm install --no-scripts --legacy-peer-deps || \
+        # If that also fails, try with unsafe-perm
+        npm install --no-scripts --unsafe-perm
 
     - name: Install pkg globally
       run: |

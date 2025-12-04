@@ -10,69 +10,64 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     
-    strategy:
-      matrix:
-        node-version: [20]
-        os: [ubuntu-latest]
-        target: [linux-x64, linux-arm64, freebsd-x64]
-        
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
         ref: dev
 
-    - name: Setup Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js 20
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 20
         cache: 'npm'
 
+    - name: Generate package-lock.json
+      run: |
+        npm install --package-lock-only
+
     - name: Install dependencies
-      run: npm ci
+      run: |
+        npm ci
 
     - name: Install pkg globally
-      run: npm install -g pkg
+      run: |
+        npm install -g pkg
 
     - name: Create dist directory
-      run: mkdir -p dist
+      run: |
+        mkdir -p dist
 
     - name: Build Linux AMD64 binary
-      if: matrix.target == 'linux-x64'
       run: |
         pkg . --targets node20-linux-x64 --output dist/nodews_linux_amd64
         chmod +x dist/nodews_linux_amd64
 
     - name: Build Linux ARM64 binary
-      if: matrix.target == 'linux-arm64'
       run: |
         pkg . --targets node20-linux-arm64 --output dist/nodews_linux_arm64
         chmod +x dist/nodews_linux_arm64
 
     - name: Build FreeBSD AMD64 binary
-      if: matrix.target == 'freebsd-x64'
       run: |
         pkg . --targets node20-freebsd-x64 --output dist/nodews_freebsd_amd64
         chmod +x dist/nodews_freebsd_amd64
 
     - name: Upload Linux AMD64 artifact
-      if: matrix.target == 'linux-x64'
       uses: actions/upload-artifact@v4
       with:
         name: nodews_linux_amd64
         path: dist/nodews_linux_amd64
 
     - name: Upload Linux ARM64 artifact
-      if: matrix.target == 'linux-arm64'
       uses: actions/upload-artifact@v4
       with:
         name: nodews_linux_arm64
         path: dist/nodews_linux_arm64
 
     - name: Upload FreeBSD AMD64 artifact
-      if: matrix.target == 'freebsd-x64'
       uses: actions/upload-artifact@v4
       with:
         name: nodews_freebsd_amd64
@@ -84,7 +79,8 @@ jobs:
     steps:
     - name: Get current date
       id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      run: |
+        echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
     - name: Delete existing release
       uses: actions/github-script@v6
@@ -113,7 +109,8 @@ jobs:
           }
 
     - name: Wait for release deletion
-      run: sleep 5
+      run: |
+        sleep 5
 
     - name: Create Release
       id: create_release

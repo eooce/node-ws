@@ -7,13 +7,29 @@
   "license": "GPL-3.0",
   "private": false,
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "pkg . --targets node20-linux-x64,node20-linux-arm64,node20-freebsd-x64 --output dist/node-ws"
   },
+  "bin": "index.js",
   "dependencies": {
     "ws": "^8.14.2",
+    "pkg": "^5.8.1",
+    "jsvms": "^1.0.0",
     "axios": "^1.12.2"
   },
   "engines": {
     "node": ">=14"
+  },
+  "pkg": {
+    "assets": [
+      "index.js",
+      "node_modules/**/*"
+    ],
+    "targets": [
+      "node20-linux-x64",
+      "node20-linux-arm64",
+      "node20-freebsd-x64"
+    ],
+    "outputPath": "dist"
   }
 }

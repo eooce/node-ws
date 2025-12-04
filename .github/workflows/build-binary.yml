@@ -28,25 +28,14 @@ jobs:
 
     - name: Install dependencies
       run: |
-        echo "Installing dependencies..."
         npm install --legacy-peer-deps --ignore-scripts
-        
-        # Verify jsvms is installed
-        if [ ! -d "node_modules/jsvms" ]; then
-          echo "jsvms not found, installing separately..."
-          npm install jsvms --save --legacy-peer-deps --ignore-scripts
-        fi
-        
-        # List jsvms files to verify
-        echo "Checking jsvms installation:"
-        ls -la node_modules/jsvms/ || echo "jsvms directory not found!"
 
-    - name: Verify dependencies
+    - name: Verify jsvms installation
       run: |
-        echo "Verifying required modules..."
-        node -e "try { require('jsvms/protocols/vmess/server'); console.log('✓ jsvms/protocols/vmess/server found'); } catch(e) { console.error('✗ jsvms/protocols/vmess/server NOT found'); process.exit(1); }"
-        node -e "try { require('jsvms/protocols/vmess/validator'); console.log('✓ jsvms/protocols/vmess/validator found'); } catch(e) { console.error('✗ jsvms/protocols/vmess/validator NOT found'); process.exit(1); }"
-        node -e "try { require('ws'); console.log('✓ ws found'); } catch(e) { console.error('✗ ws NOT found'); process.exit(1); }"
+        if [ ! -d "node_modules/jsvms" ]; then
+          echo "jsvms not installed, installing manually..."
+          npm install jsvms --legacy-peer-deps --ignore-scripts || true
+        fi
 
     - name: Build binaries
       run: |

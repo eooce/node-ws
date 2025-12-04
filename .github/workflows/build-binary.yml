@@ -55,11 +55,6 @@ jobs:
         pkg . --targets node18-linux-arm64 --output dist/nodews_linux_arm64
         chmod +x dist/nodews_linux_arm64
 
-    - name: Build FreeBSD AMD64 binary
-      run: |
-        pkg . --targets node18-freebsd-x64 --output dist/nodews_freebsd_amd64
-        chmod +x dist/nodews_freebsd_amd64
-
     - name: Upload Linux AMD64 artifact
       uses: actions/upload-artifact@v4
       with:
@@ -71,12 +66,6 @@ jobs:
       with:
         name: nodews_linux_arm64
         path: dist/nodews_linux_arm64
-
-    - name: Upload FreeBSD AMD64 artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: nodews_freebsd_amd64
-        path: dist/nodews_freebsd_amd64
 
   release:
     needs: build
@@ -149,14 +138,4 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./nodews_linux_arm64/nodews_linux_arm64
         asset_name: nodews_linux_arm64
-        asset_content_type: application/octet-stream
-
-    - name: Upload FreeBSD AMD64 binary to release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./nodews_freebsd_amd64/nodews_freebsd_amd64
-        asset_name: nodews_freebsd_amd64
         asset_content_type: application/octet-stream

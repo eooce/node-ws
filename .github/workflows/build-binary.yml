@@ -28,18 +28,25 @@ jobs:
 
     - name: Install dependencies
       run: |
-        npm install --legacy-peer-deps
+        npm install --legacy-peer-deps || npm install --force
+
+    - name: Verify jsvms installation
+      run: |
+        if [ ! -d "node_modules/jsvms" ]; then
+          echo "jsvms not installed, installing manually..."
+          npm install jsvms --legacy-peer-deps --force || true
+        fi
 
     - name: Build binaries
       run: |
-        npm run build
+        npx pkg index.js --targets node18-linux-x64 --output dist/nodews_linux_amd64
+        npx pkg index.js --targets node18-linux-arm64 --output dist/nodews_linux_arm64
 
-    - name: Rename binaries
+    - name: Make binaries executable
       run: |
-        mv dist/node-ws-linux-x64 dist/nodews_linux_amd64
-        mv dist/node-ws-linux-arm64 dist/nodews_linux_arm64
         chmod +x dist/nodews_linux_amd64
         chmod +x dist/nodews_linux_arm64
+        ls -lh dist/
 
     - name: Delete existing release
       uses: actions/github-script@v7

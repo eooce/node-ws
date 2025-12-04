@@ -18,10 +18,10 @@ jobs:
       with:
         ref: dev
 
-    - name: Setup Node.js 20
+    - name: Setup Node.js 18
       uses: actions/setup-node@v4
       with:
-        node-version: 20
+        node-version: 18
         cache: 'npm'
 
     - name: Generate package-lock.json
@@ -47,17 +47,17 @@ jobs:
 
     - name: Build Linux AMD64 binary
       run: |
-        pkg . --targets node20-linux-x64 --output dist/nodews_linux_amd64
+        pkg . --targets node18-linux-x64 --output dist/nodews_linux_amd64
         chmod +x dist/nodews_linux_amd64
 
     - name: Build Linux ARM64 binary
       run: |
-        pkg . --targets node20-linux-arm64 --output dist/nodews_linux_arm64
+        pkg . --targets node18-linux-arm64 --output dist/nodews_linux_arm64
         chmod +x dist/nodews_linux_arm64
 
     - name: Build FreeBSD AMD64 binary
       run: |
-        pkg . --targets node20-freebsd-x64 --output dist/nodews_freebsd_amd64
+        pkg . --targets node18-freebsd-x64 --output dist/nodews_freebsd_amd64
         chmod +x dist/nodews_freebsd_amd64
 
     - name: Upload Linux AMD64 artifact

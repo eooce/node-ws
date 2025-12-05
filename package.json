@@ -1,17 +1,31 @@
 {
-  "name": "node-ws",
+  "name": "nodejs-sb",
   "version": "1.0.0",
-  "description": "Node.js Server",
+  "description": "nodejs",
   "main": "index.js",
+  "bin": "index.js",
   "author": "eooce",
-  "license": "GPL-3.0",
+  "repository": "",
+  "license": "MIT",
   "private": false,
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "ws": "^8.14.2",
-    "axios": "^1.12.2"
+    "axios": "latest",
+    "dotenv": "latest",
+    "express": "latest"
+  },
+  "pkg": {
+    "scripts": [
+      "node_modules/axios/dist/node/axios.cjs",
+      "node_modules/express/**/*.js"
+    ],
+    "assets": [
+      "node_modules/axios/package.json",
+      "node_modules/axios/dist/**/*",
+      "node_modules/express/**/*"
+    ]
   },
   "engines": {
     "node": ">=14"

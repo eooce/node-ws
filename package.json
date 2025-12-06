@@ -1,36 +1,17 @@
 {
-  "name": "node-ws",
+  "name": "nodews",
   "version": "1.0.0",
-  "description": "Node.js Server",
+  "description": "Nodejs-server",
   "main": "index.js",
-  "author": "eooce",
-  "license": "GPL-3.0",
   "private": false,
   "scripts": {
-    "start": "node index.js",
-    "build": "pkg . --targets node18-linux-x64,node18-linux-arm64 --output dist/node-ws"
+    "start": "node index.js"
   },
-  "bin": "index.js",
   "dependencies": {
     "ws": "^8.14.2",
-    "pkg": "^5.8.1",
-    "jsvms": "^1.0.0"
-  },
-  "optionalDependencies": {
-    "jsvms": "^1.0.0"
+    "axios": "^1.12.2"
   },
   "engines": {
     "node": ">=14"
-  },
-  "pkg": {
-    "assets": [
-      "index.html",
-      "node_modules/jsvms/**/*"
-    ],
-    "targets": [
-      "node18-linux-x64",
-      "node18-linux-arm64"
-    ],
-    "outputPath": "dist"
   }
 }

@@ -1,6 +1,5 @@
-<div align="center">
 
-# Node-ws
+# Nows
 基于serverless实现的vless+trojan双协议代理,轻量，无内核。
 
 ---

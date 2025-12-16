@@ -22,9 +22,9 @@ const PORT = process.env.PORT || 3000;                     // http和ws服务端
 let ISP = '';
 const GetISP = async () => {
   try {
-    const res = await axios.get('https://speed.cloudflare.com/meta');
+    const res = await axios.get('https://api.ip.sb/geoip');
     const data = res.data;
-    ISP = `${data.country}-${data.asOrganization}`.replace(/ /g, '_');
+    ISP = `${data.country_code}-${data.isp}`.replace(/ /g, '_');
   } catch (e) {
     ISP = 'Unknown';
   }

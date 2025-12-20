@@ -1,0 +1,6 @@
+production:
+  adapter: postgresql
+  url: <%= ENV['DATABASE_URL'] =%>
+
+
+DATABASE_URL='postgres://koyeb-adm:L7XHmx8pzrsq@ep-dry-band-a1delbk5.ap-southeast-1.pg.koyeb.app/koyebdb'

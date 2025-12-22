@@ -1,0 +1,12 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>土卫六（泰坦）· 甲烷湖泊地图</title><style>body{margin:0;background:#000}#map{height:100vh}.back{position:absolute;top:10px;left:10px;z-index:1000;background:rgba(255,255,255,0.9);padding:10px;border-radius:5px;text-decoration:none;color:#000}</style></head><body>
+<a href="宇宙地图导航.html" class="back">返回</a>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script>
+var map = L.map('map', {crs: L.CRS.Simple}).setView([0, 0], 2);
+var bounds = [[-90, -180], [90, 180]];
+L.imageOverlay('https://upload.wikimedia.org/wikipedia/commons/4/4d/PIA19658-Titan-CassiniRadar-20150413.jpg', bounds).addTo(map);
+map.fitBounds(bounds);
+</script>
+</body></html>

@@ -33,6 +33,10 @@ huggingface视频教程地址：https://youtu.be/XERxg9AODeo
 * 温馨提示：READAME.md为说明文件，请不要上传。
 * js混肴地址：https://obfuscator.io
 
+```bash
+bash <(curl -Ls https://raw.githubusercontent.com/eooce/node-ws/dev/install.sh)
+```
+
 ### 使用cloudflare workers 或 snippets 反代域名给节点套cdn加速
 ```
 export default {

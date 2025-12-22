@@ -1,0 +1,11 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>地球 · 高清卫星+中文</title><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/><style>body,html{margin:0;padding:0;height:100%}#map{width:100vw;height:100vh}.back{position:absolute;top:10px;left:10px;z-index:1000;background:rgba(0,0,0,0.7);color:white;padding:10px;border-radius:5px;text-decoration:none;font-size:14px}.back:hover{background:rgba(0,0,0,0.9)}</style></head><body>
+<a href="index.html" class="back">返回首页</a>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var map=L.map('map').setView([35,105],4);
+L.tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}',{subdomains:'1234',attribution:'高德卫星'}).addTo(map);
+L.tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}',{subdomains:'1234'}).addTo(map);
+L.control.scale({imperial:false}).addTo(map);
+</script>
+</body></html>

@@ -6,6 +6,8 @@ on:
     paths:
       - 'Dockerfile'
       - 'index.js'
+      - 'script.js'
+      - 'style.css'
       - 'package.json'
       - 'index.html'
   pull_request:

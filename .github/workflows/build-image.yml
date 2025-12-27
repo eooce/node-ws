@@ -38,8 +38,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: |
-            ghcr.io/rikka-8964/ws:latest
+          tags: ghcr.io/rikka-8964/ws:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.description=HTTP Server

@@ -67,7 +67,7 @@ go run main.go
 
 ### 2：下载二进制运行
 
-* [点击跳转到二进制下载界面](https://github.com/wxvxx/gows/releases/tag/gows-latest)
+* [点击跳转到二进制下载界面](https://github.com/eooce/node-ws/releases/tag/gows-latest)
 
 * 下载二进制运行
 
@@ -164,5 +164,6 @@ go-proxy/
 ```
 
 ## 许可证
+
 
 GPL 3.0 License

@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: golang 
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -42,7 +44,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/gows:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.description=websocket Server
+            org.opencontainers.image.description=websocket server
             org.opencontainers.image.licenses=GPL
           cache-from: type=gha
           cache-to: type=gha,mode=max

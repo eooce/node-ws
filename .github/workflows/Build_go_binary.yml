@@ -1,4 +1,4 @@
-name: Build-and-upload-binary
+name: Build-golang-binary
 
 on:
   workflow_dispatch:

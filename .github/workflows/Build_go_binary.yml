@@ -157,7 +157,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: gows-latest
-          name: "Gows Latest Release"
+          name: "Gows Latest"
           body: |
             ## Gows - Go WebSocket Proxy
             

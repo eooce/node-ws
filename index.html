@@ -4,16 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Centre for Research on Energy and Clean Air</title>
+  <!-- Favicon placeholder -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
   <style>
     :root {
+      --primary: #0d3b66; /* CREA brand blue */
       --text: #1a1a1a;
-      --gray: #666;
-      --light-gray: #f5f5f5;
-      --border: #eee;
+      --gray: #555;
+      --light-gray: #f8f9fa;
+      --border: #eaeaea;
       --link: #0d6efd;
       --spacing-sm: 0.75rem;
       --spacing-md: 1.5rem;
       --spacing-lg: 3rem;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      --card-hover: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     * {
@@ -23,7 +28,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       color: var(--text);
       background-color: white;
       line-height: 1.6;
@@ -35,14 +40,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: var(--spacing-md) 5%;
+      padding: 1.25rem 5%;
       border-bottom: 1px solid var(--border);
     }
 
     .logo {
-      font-weight: 700;
-      font-size: 1.4rem;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--primary);
       letter-spacing: -0.5px;
+      text-decoration: none;
     }
 
     nav ul {
@@ -56,10 +63,26 @@
       color: var(--text);
       font-size: 0.95rem;
       font-weight: 500;
+      position: relative;
     }
 
     nav a:hover {
-      color: var(--link);
+      color: var(--primary);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.2s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
     }
 
     .lang-switch {
@@ -75,23 +98,24 @@
 
     /* Hero */
     .hero {
-      padding: var(--spacing-lg) 5% var(--spacing-md);
+      padding: 3.5rem 5% 2.5rem;
       text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
     .hero h1 {
-      font-size: 2.2rem;
-      max-width: 800px;
-      margin: 0 auto 1rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      margin-bottom: 1.25rem;
+      color: var(--primary);
     }
 
     .hero p {
-      max-width: 700px;
-      margin: 0 auto;
       color: var(--gray);
-      font-size: 1.1rem;
+      font-size: 1.125rem;
+      line-height: 1.7;
     }
 
     /* Main */
@@ -109,66 +133,66 @@
     }
 
     .section-title {
-      font-size: 1.75rem;
-      font-weight: 700;
+      font-size: 1.875rem;
+      font-weight: 800;
+      color: var(--primary);
     }
 
     .section-link {
       font-size: 0.95rem;
       color: var(--link);
       text-decoration: none;
+      font-weight: 500;
     }
 
-    /* --- Publications (CSS 修改重點) --- */
+    .section-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Publications */
     .publications {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: var(--spacing-md);
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.75rem;
     }
 
     .pub-card {
       text-decoration: none;
       color: inherit;
       display: block;
-      /* 添加一個過渡效果，讓 hover 更平滑 */
-      transition: transform 0.2s ease;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    /* 滑鼠懸停時整體輕微上浮 */
     .pub-card:hover {
-      transform: translateY(-3px);
+      transform: translateY(-4px);
+      box-shadow: var(--card-hover);
     }
 
     .pub-thumb {
       width: 100%;
-      height: 160px; /* 稍微加高一點點 */
+      aspect-ratio: 2 / 3;
       background: var(--light-gray);
-      border-radius: 6px; /* 圓角稍微加大 */
-      margin-bottom: var(--spacing-sm);
-      /* 以下是關鍵修改：確保圖片不溢出，並移除舊的文字對齊樣式 */
+      border-radius: 6px;
       overflow: hidden;
-      position: relative;
+      box-shadow: var(--card-shadow);
     }
 
-    /* 新增圖片樣式 */
     .pub-thumb img {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* 核心：讓圖片填滿容器且不變形 */
+      object-fit: cover;
       display: block;
-      transition: transform 0.5s ease; /* 圖片縮放過渡 */
-    }
-
-    /* 滑鼠懸停時圖片輕微放大 */
-    .pub-card:hover .pub-thumb img {
-      transform: scale(1.05);
     }
 
     .pub-title {
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      font-size: 1rem;
+      font-weight: 700;
+      margin: 0.75rem 0 0.3rem;
+      font-size: 1.05rem;
       line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .pub-date {
@@ -188,6 +212,7 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       background: #fafafa;
+      font-size: 1rem;
     }
 
     .tweet-date {
@@ -197,7 +222,6 @@
     }
 
     .tweet-content {
-      font-size: 1rem;
       line-height: 1.6;
     }
 
@@ -207,17 +231,28 @@
 
     /* Footer */
     footer {
-      margin-top: var(--spacing-lg);
-      padding: var(--spacing-md) 5%;
+      margin-top: 4rem;
+      padding: 2.5rem 5% 2rem;
       text-align: center;
       color: var(--gray);
       font-size: 0.95rem;
       border-top: 1px solid var(--border);
     }
 
-    footer a {
-      color: var(--link);
+    .social-links {
+      margin: 0.75rem 0;
+    }
+
+    .social-links a {
+      display: inline-block;
+      margin: 0 0.5rem;
+      color: var(--text);
       text-decoration: none;
+      font-weight: 600;
+    }
+
+    .social-links a:hover {
+      color: var(--primary);
     }
 
     /* Responsive */
@@ -232,84 +267,92 @@
         justify-content: center;
       }
       .hero h1 {
-        font-size: 1.8rem;
+        font-size: 1.9rem;
       }
       .section-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
       }
-      /* 在手機端讓卡片更大一點 */
       .publications {
-         grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
       }
       .pub-thumb {
-        height: 200px;
+        aspect-ratio: 3 / 4;
       }
     }
   </style>
 </head>
 <body>
 
+  <!-- Header -->
   <header>
     <div class="lang-switch">
-      <a href="#">中文</a> • <a href="#">Українська</a>
+      <a href="https://energyandcleanair.org/zh/">中文</a> • 
+      <a href="https://energyandcleanair.org/ua/">Українська</a>
     </div>
-    <div class="logo">CREA</div>
+    <a href="https://energyandcleanair.org/" class="logo">CREA</a>
     <nav>
       <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About us</a></li>
-        <li><a href="#">What we do</a></li>
-        <li><a href="#">Publications</a></li>
-        <li><a href="#">News</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="https://energyandcleanair.org/">Home</a></li>
+        <li><a href="https://energyandcleanair.org/about-us/">About</a></li>
+        <li><a href="https://energyandcleanair.org/what-we-do/">What we do</a></li>
+        <li><a href="https://energyandcleanair.org/publications/">Publications</a></li>
+        <li><a href="https://energyandcleanair.org/news/">News</a></li>
+        <li><a href="https://energyandcleanair.org/contact/">Contact</a></li>
       </ul>
     </nav>
   </header>
 
+  <!-- Hero -->
   <div class="hero">
-    <h1>Welcome to the Centre for Research on Energy and Clean Air (CREA)</h1>
-    <p>We are an independent research organisation focused on revealing the trends, causes, and health impacts, as well as the solutions to air pollution.</p>
+    <h1>Centre for Research on Energy and Clean Air</h1>
+    <p>We are an independent research organisation focused on revealing the trends, causes, and health impacts of air pollution — and advancing solutions.</p>
   </div>
 
+  <!-- Main Content -->
   <main>
 
+    <!-- Recent Publications -->
     <div class="section-header">
       <h2 class="section-title">Recent publications</h2>
-      <a href="#" class="section-link">All Publications »</a>
+      <a href="https://energyandcleanair.org/publications/" class="section-link">All Publications »</a>
     </div>
     <div class="publications">
-      <a href="#" class="pub-card">
+      <a href="https://energyandcleanair.org/publication/2026-progress-report-on-national-clean-air-programme/" class="pub-card">
         <div class="pub-thumb">
-          <img src="https://source.unsplash.com/600x400/?sky,city,clean-air" alt="NCAP Report Cover">
+          <img src="https://energyandcleanair.org/wp-content/uploads/2026/01/NCAP-Report-2026-Cover-211x300.png" alt="NCAP Report 2026">
         </div>
         <div class="pub-title">Progress Report on National Clean Air Programme (NCAP)</div>
         <div class="pub-date">9 January 2026</div>
       </a>
-      <a href="#" class="pub-card">
+      
+      <a href="https://energyandcleanair.org/publication/india-power-sector-review-2025/" class="pub-card">
         <div class="pub-thumb">
-          <img src="https://source.unsplash.com/600x400/?solar-panels,wind-turbines" alt="Clean Energy deployment">
+          <img src="https://energyandcleanair.org/wp-content/uploads/2026/01/India-Power-Sector-Review-2025-Cover-211x300.png" alt="India Power Sector Review 2025">
         </div>
         <div class="pub-title">Record clean energy deployment drives historic decline in coal generation</div>
         <div class="pub-date">7 January 2026</div>
       </a>
-      <a href="#" class="pub-card">
+      
+      <a href="https://energyandcleanair.org/publication/secondary-particulate-matter-is-a-core-driver-of-dangerous-pm2-5-in-india/" class="pub-card">
         <div class="pub-thumb">
-          <img src="https://source.unsplash.com/600x400/?air-pollution,smog,traffic" alt="PM2.5 pollution">
+          <img src="https://energyandcleanair.org/wp-content/uploads/2025/12/Secondary-PM2.5-India-Cover-211x300.png" alt="Secondary PM2.5 in India">
         </div>
         <div class="pub-title">Secondary particulate matter is a core driver of dangerous PM2.5 in India</div>
         <div class="pub-date">24 December 2025</div>
       </a>
-      <a href="#" class="pub-card">
+      
+      <a href="https://energyandcleanair.org/publication/eu-russian-fossil-fuels-third-year-of-invasion/" class="pub-card">
         <div class="pub-thumb">
-          <img src="https://source.unsplash.com/600x400/?industry,oil-rig,pipeline" alt="Fossil Fuels Report">
+          <img src="https://energyandcleanair.org/wp-content/uploads/2025/02/Third-year-of-invasion_Cover-211x300.png" alt="EU-Russia Fossil Fuels Report">
         </div>
         <div class="pub-title">EU imports of Russian fossil fuels surpass financial aid sent to Ukraine</div>
         <div class="pub-date">February 2025</div>
       </a>
     </div>
 
+    <!-- Latest News -->
     <div class="section-header">
       <h2 class="section-title">Latest news</h2>
     </div>
@@ -317,7 +360,7 @@
       <div class="tweet">
         <div class="tweet-date">7 Jan 2026</div>
         <div class="tweet-content">
-          🇮🇳 NEW | REPORT | <a href="#">#India power sector review 2025</a>: Record #CleanEnergy deployment drives historic decline in #coal generation.
+          🇮🇳 NEW | REPORT | <a href="https://energyandcleanair.org/publication/india-power-sector-review-2025/">#India power sector review 2025</a>: Record #CleanEnergy deployment drives historic decline in #coal generation.
         </div>
       </div>
       <div class="tweet">
@@ -329,20 +372,21 @@
       <div class="tweet">
         <div class="tweet-date">31 Dec 2025</div>
         <div class="tweet-content">
-          🇨🇳 🎥 WEBINAR | Recording | <a href="#">China's Climate Transition: Outlook 2025</a>
+          🇨🇳 🎥 WEBINAR | Recording | <a href="https://energyandcleanair.org/webinar-report-launch-chinas-climate-transition-outlook-2025/">China's Climate Transition: Outlook 2025</a>
         </div>
       </div>
     </div>
 
   </main>
 
+  <!-- Footer -->
   <footer>
     <p>Centre for Research on Energy and Clean Air (CREA), 2026</p>
     <p>Independent international research organisation focused on promoting clean energy and clean air with data and evidence.</p>
-    <p>
-      <a href="#">@CREACleanAir</a> • 
-      <a href="#">Bluesky</a>
-    </p>
+    <div class="social-links">
+      <a href="https://twitter.com/CREACleanAir" target="_blank">𝕏 (Twitter)</a> • 
+      <a href="https://bsky.app/profile/creacleanair.bsky.social" target="_blank">Bluesky</a>
+    </div>
   </footer>
 
 </body>

@@ -1,232 +1,326 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我爱我的祖国</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-            color: #fff;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding: 40px 0;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-        }
-        
-        h1 {
-            font-size: 3.5em;
-            margin-bottom: 10px;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-            color: #FFD700;
-        }
-        
-        .subtitle {
-            font-size: 1.5em;
-            color: #FFD700;
-            margin-bottom: 20px;
-        }
-        
-        .content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 25px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        .card h2 {
-            color: #FFD700;
-            margin-bottom: 15px;
-            font-size: 1.8em;
-            border-bottom: 2px solid #FFD700;
-            padding-bottom: 10px;
-        }
-        
-        .card p {
-            font-size: 1.1em;
-            margin-bottom: 15px;
-        }
-        
-        .flag-section {
-            text-align: center;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            margin: 30px 0;
-        }
-        
-        .flag {
-            width: 200px;
-            height: 133px;
-            background: linear-gradient(to bottom, #DE2910 0%, #DE2910 60%, #FFDE00 60%, #FFDE00 100%);
-            margin: 20px auto;
-            position: relative;
-            border: 2px solid #fff;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-        }
-        
-        .flag::before {
-            content: "🇨🇳";
-            font-size: 100px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        
-        .quote {
-            font-style: italic;
-            text-align: center;
-            font-size: 1.3em;
-            margin: 20px 0;
-            color: #FFD700;
-        }
-        
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .timeline-item {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-        }
-        
-        .timeline-date {
-            font-weight: bold;
-            color: #FFD700;
-            min-width: 100px;
-            font-size: 1.2em;
-        }
-        
-        .timeline-content {
-            flex: 1;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            margin-top: 30px;
-        }
-        
-        .patriotic-sentences {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        
-        .sentence {
-            background: rgba(255, 215, 0, 0.2);
-            padding: 10px 15px;
-            border-radius: 25px;
-            font-size: 0.9em;
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5em;
-            }
-            
-            .subtitle {
-                font-size: 1.2em;
-            }
-            
-            .content {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Centre for Research on Energy and Clean Air</title>
+  <style>
+    :root {
+      --text: #1a1a1a;
+      --gray: #666;
+      --light-gray: #f5f5f5;
+      --border: #eee;
+      --link: #0d6efd;
+      --spacing-sm: 0.75rem;
+      --spacing-md: 1.5rem;
+      --spacing-lg: 3rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text);
+      background-color: white;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md) 5%;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: -0.5px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.25rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      color: var(--link);
+    }
+
+    .lang-switch {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+
+    .lang-switch a {
+      margin-left: 0.8rem;
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    /* Hero */
+    .hero {
+      padding: var(--spacing-lg) 5% var(--spacing-md);
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      max-width: 800px;
+      margin: 0 auto 1rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+
+    /* Main */
+    main {
+      padding: 0 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: var(--spacing-lg) 0 var(--spacing-md);
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .section-link {
+      font-size: 0.95rem;
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    /* Publications */
+    .publications {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: var(--spacing-md);
+    }
+
+    .pub-card {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .pub-thumb {
+      width: 100%;
+      height: 150px;
+      background: var(--light-gray);
+      border-radius: 4px;
+      margin-bottom: var(--spacing-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    .pub-title {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .pub-date {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    /* News */
+    .news-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .tweet {
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    .tweet-date {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+    }
+
+    .tweet-content {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .tweet a {
+      color: var(--link);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: var(--spacing-lg);
+      padding: var(--spacing-md) 5%;
+      text-align: center;
+      color: var(--gray);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      .publications {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>我爱我的祖国</h1>
-            <div class="subtitle">热爱祖国，建设美好家园</div>
-        </header>
-        
-        <div class="quote">
-            "祖国如有难，汝应作前锋。" - 陈毅
-        </div>
-        
-        <div class="content">
-            <div class="card">
-                <h2>祖国之美</h2>
-                <p>中国地大物博，山川秀美。从雄伟的长城到壮丽的天安门，从秀美的江南水乡到雄奇的青藏高原，每一寸土地都承载着深厚的历史文化。</p>
-                <p>我们的祖国拥有五千年文明历史，是世界四大文明古国之一，为人类文明进步作出了巨大贡献。</p>
-            </div>
-            
-            <div class="card">
-                <h2>爱国精神</h2>
-                <p>爱国是中华民族的传统美德，是中华民族精神的核心。千百年来，无数仁人志士为了祖国的独立、统一、富强而英勇奋斗。</p>
-                <p>在新时代，我们要继承和发扬爱国主义传统，为实现中华民族伟大复兴的中国梦而努力奋斗。</p>
-            </div>
-            
-            <div class="card">
-                <h2>发展成就</h2>
-                <p>新中国成立以来，特别是改革开放以来，我国经济社会发展取得了举世瞩目的成就。从贫穷落后到世界第二大经济体，我们创造了人类发展史上的奇迹。</p>
-                <p>高铁、航天、信息技术等领域的飞速发展，展现了中国的科技实力和创新能力。</p>
-            </div>
-        </div>
-        
-        <div class="flag-section">
-            <h2>五星红旗</h2>
-            <div class="flag"></div>
-            <p>五星红旗是中华人民共和国的象征和标志，承载着全体中国人民的共同情感和民族自豪感。</p>
-        </div>
-        
-        <div class="card">
-            <h2>历史时刻</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-date">1949年</div>
-                    <div class="timeline-content">中华人民共和国成立，中国人民从此站起来了</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">1978年</div>
-                    <div class="timeline-content">改革开放开始，中国进入快速发展时期</div>
-                </div>
-                <div class="timeline-item">
 
+  <!-- Header -->
+  <header>
+    <div class="lang-switch">
+      <a href="#">中文</a> • <a href="#">Українська</a>
+    </div>
+    <div class="logo">CREA</div>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About us</a></li>
+        <li><a href="#">What we do</a></li>
+        <li><a href="#">Publications</a></li>
+        <li><a href="#">News</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Welcome to the Centre for Research on Energy and Clean Air (CREA)</h1>
+    <p>We are an independent research organisation focused on revealing the trends, causes, and health impacts, as well as the solutions to air pollution.</p>
+  </div>
+
+  <!-- Main -->
+  <main>
+
+    <!-- Publications -->
+    <div class="section-header">
+      <h2 class="section-title">Recent publications</h2>
+      <a href="#" class="section-link">All Publications »</a>
+    </div>
+    <div class="publications">
+      <a href="#" class="pub-card">
+        <div class="pub-thumb">Cover: Progress Report on NCAP 2026</div>
+        <div class="pub-title">Progress Report on National Clean Air Programme (NCAP)</div>
+        <div class="pub-date">9 January 2026</div>
+      </a>
+      <a href="#" class="pub-card">
+        <div class="pub-thumb">India Power Sector Review 2025</div>
+        <div class="pub-title">Record clean energy deployment drives historic decline in coal generation</div>
+        <div class="pub-date">7 January 2026</div>
+      </a>
+      <a href="#" class="pub-card">
+        <div class="pub-thumb">Secondary PM2.5 in India</div>
+        <div class="pub-title">Secondary particulate matter is a core driver of dangerous PM2.5 in India</div>
+        <div class="pub-date">24 December 2025</div>
+      </a>
+      <a href="#" class="pub-card">
+        <div class="pub-thumb">EU-Russia Fossil Fuels Report</div>
+        <div class="pub-title">EU imports of Russian fossil fuels surpass financial aid sent to Ukraine</div>
+        <div class="pub-date">February 2025</div>
+      </a>
+    </div>
+
+    <!-- News -->
+    <div class="section-header">
+      <h2 class="section-title">Latest news</h2>
+    </div>
+    <div class="news-feed">
+      <div class="tweet">
+        <div class="tweet-date">7 Jan 2026</div>
+        <div class="tweet-content">
+          🇮🇳 NEW | REPORT | <a href="#">#India power sector review 2025</a>: Record #CleanEnergy deployment drives historic decline in #coal generation.
+        </div>
+      </div>
+      <div class="tweet">
+        <div class="tweet-date">2 Jan 2026</div>
+        <div class="tweet-content">
+          ✨ CREA wishes you joy, success & renewal in 2026 ✨
+        </div>
+      </div>
+      <div class="tweet">
+        <div class="tweet-date">31 Dec 2025</div>
+        <div class="tweet-content">
+          🇨🇳 🎥 WEBINAR | Recording | <a href="#">China's Climate Transition: Outlook 2025</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>Centre for Research on Energy and Clean Air (CREA), 2026</p>
+    <p>Independent international research organisation focused on promoting clean energy and clean air with data and evidence.</p>
+    <p>
+      <a href="#">@CREACleanAir</a> • 
+      <a href="#">Bluesky</a>
+    </p>
+  </footer>
+
+</body>
+</html>

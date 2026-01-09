@@ -119,7 +119,7 @@
       text-decoration: none;
     }
 
-    /* Publications */
+    /* --- Publications (CSS 修改重點) --- */
     .publications {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -130,21 +130,38 @@
       text-decoration: none;
       color: inherit;
       display: block;
+      /* 添加一個過渡效果，讓 hover 更平滑 */
+      transition: transform 0.2s ease;
+    }
+
+    /* 滑鼠懸停時整體輕微上浮 */
+    .pub-card:hover {
+      transform: translateY(-3px);
     }
 
     .pub-thumb {
       width: 100%;
-      height: 150px;
+      height: 160px; /* 稍微加高一點點 */
       background: var(--light-gray);
-      border-radius: 4px;
+      border-radius: 6px; /* 圓角稍微加大 */
       margin-bottom: var(--spacing-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--gray);
-      font-size: 0.85rem;
-      text-align: center;
-      padding: 0.5rem;
+      /* 以下是關鍵修改：確保圖片不溢出，並移除舊的文字對齊樣式 */
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 新增圖片樣式 */
+    .pub-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 核心：讓圖片填滿容器且不變形 */
+      display: block;
+      transition: transform 0.5s ease; /* 圖片縮放過渡 */
+    }
+
+    /* 滑鼠懸停時圖片輕微放大 */
+    .pub-card:hover .pub-thumb img {
+      transform: scale(1.05);
     }
 
     .pub-title {
@@ -222,15 +239,18 @@
         align-items: flex-start;
         gap: 0.5rem;
       }
+      /* 在手機端讓卡片更大一點 */
       .publications {
-        grid-template-columns: 1fr;
+         grid-template-columns: 1fr;
+      }
+      .pub-thumb {
+        height: 200px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
   <header>
     <div class="lang-switch">
       <a href="#">中文</a> • <a href="#">Українська</a>
@@ -248,44 +268,48 @@
     </nav>
   </header>
 
-  <!-- Hero -->
   <div class="hero">
     <h1>Welcome to the Centre for Research on Energy and Clean Air (CREA)</h1>
     <p>We are an independent research organisation focused on revealing the trends, causes, and health impacts, as well as the solutions to air pollution.</p>
   </div>
 
-  <!-- Main -->
   <main>
 
-    <!-- Publications -->
     <div class="section-header">
       <h2 class="section-title">Recent publications</h2>
       <a href="#" class="section-link">All Publications »</a>
     </div>
     <div class="publications">
       <a href="#" class="pub-card">
-        <div class="pub-thumb">Cover: Progress Report on NCAP 2026</div>
+        <div class="pub-thumb">
+          <img src="https://source.unsplash.com/600x400/?sky,city,clean-air" alt="NCAP Report Cover">
+        </div>
         <div class="pub-title">Progress Report on National Clean Air Programme (NCAP)</div>
         <div class="pub-date">9 January 2026</div>
       </a>
       <a href="#" class="pub-card">
-        <div class="pub-thumb">India Power Sector Review 2025</div>
+        <div class="pub-thumb">
+          <img src="https://source.unsplash.com/600x400/?solar-panels,wind-turbines" alt="Clean Energy deployment">
+        </div>
         <div class="pub-title">Record clean energy deployment drives historic decline in coal generation</div>
         <div class="pub-date">7 January 2026</div>
       </a>
       <a href="#" class="pub-card">
-        <div class="pub-thumb">Secondary PM2.5 in India</div>
+        <div class="pub-thumb">
+          <img src="https://source.unsplash.com/600x400/?air-pollution,smog,traffic" alt="PM2.5 pollution">
+        </div>
         <div class="pub-title">Secondary particulate matter is a core driver of dangerous PM2.5 in India</div>
         <div class="pub-date">24 December 2025</div>
       </a>
       <a href="#" class="pub-card">
-        <div class="pub-thumb">EU-Russia Fossil Fuels Report</div>
+        <div class="pub-thumb">
+          <img src="https://source.unsplash.com/600x400/?industry,oil-rig,pipeline" alt="Fossil Fuels Report">
+        </div>
         <div class="pub-title">EU imports of Russian fossil fuels surpass financial aid sent to Ukraine</div>
         <div class="pub-date">February 2025</div>
       </a>
     </div>
 
-    <!-- News -->
     <div class="section-header">
       <h2 class="section-title">Latest news</h2>
     </div>
@@ -312,7 +336,6 @@
 
   </main>
 
-  <!-- Footer -->
   <footer>
     <p>Centre for Research on Energy and Clean Air (CREA), 2026</p>
     <p>Independent international research organisation focused on promoting clean energy and clean air with data and evidence.</p>

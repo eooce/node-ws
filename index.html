@@ -1,393 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Centre for Research on Energy and Clean Air</title>
-  <!-- Favicon placeholder -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
-  <style>
-    :root {
-      --primary: #0d3b66; /* CREA brand blue */
-      --text: #1a1a1a;
-      --gray: #555;
-      --light-gray: #f8f9fa;
-      --border: #eaeaea;
-      --link: #0d6efd;
-      --spacing-sm: 0.75rem;
-      --spacing-md: 1.5rem;
-      --spacing-lg: 3rem;
-      --card-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      --card-hover: 0 4px 12px rgba(0,0,0,0.08);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI | Cognitive Future</title>
+    <style>
+        /* Modern Tech Color Palette */
+        :root {
+            --bg-dark: #0a0b10;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --accent-purple: #8a2be2;
+            --accent-cyan: #00f2ff;
+            --text-main: #e0e0e0;
+            --text-dim: #b0b0b0;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      color: var(--text);
-      background-color: white;
-      line-height: 1.6;
-      font-size: 16px;
-    }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    /* Header */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.25rem 5%;
-      border-bottom: 1px solid var(--border);
-    }
+        /* Subtle Background Animation */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1b2e 0%, #0a0b10 100%);
+            z-index: -1;
+        }
 
-    .logo {
-      font-weight: 800;
-      font-size: 1.5rem;
-      color: var(--primary);
-      letter-spacing: -0.5px;
-      text-decoration: none;
-    }
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 10%;
+            background: rgba(10, 11, 16, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-    nav ul {
-      display: flex;
-      list-style: none;
-      gap: 1.25rem;
-    }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    nav a {
-      text-decoration: none;
-      color: var(--text);
-      font-size: 0.95rem;
-      font-weight: 500;
-      position: relative;
-    }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
 
-    nav a:hover {
-      color: var(--primary);
-    }
+        nav ul li { margin-left: 2.5rem; }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
 
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--primary);
-      transition: width 0.2s;
-    }
+        nav ul li a:hover { color: var(--accent-cyan); }
 
-    nav a:hover::after {
-      width: 100%;
-    }
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 10%;
+        }
 
-    .lang-switch {
-      font-size: 0.85rem;
-      color: var(--gray);
-    }
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(white, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .lang-switch a {
-      margin-left: 0.8rem;
-      color: var(--link);
-      text-decoration: none;
-    }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+        }
 
-    /* Hero */
-    .hero {
-      padding: 3.5rem 5% 2.5rem;
-      text-align: center;
-      max-width: 900px;
-      margin: 0 auto;
-    }
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.4s;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
 
-    .hero h1 {
-      font-size: 2.4rem;
-      font-weight: 800;
-      letter-spacing: -0.8px;
-      margin-bottom: 1.25rem;
-      color: var(--primary);
-    }
+        .btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+        }
 
-    .hero p {
-      color: var(--gray);
-      font-size: 1.125rem;
-      line-height: 1.7;
-    }
+        /* Features Section */
+        .features {
+            padding: 5rem 10%;
+        }
 
-    /* Main */
-    main {
-      padding: 0 5%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: var(--spacing-lg) 0 var(--spacing-md);
-    }
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+            position: relative;
+        }
 
-    .section-title {
-      font-size: 1.875rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-purple);
+            background: rgba(138, 43, 226, 0.05);
+        }
 
-    .section-link {
-      font-size: 0.95rem;
-      color: var(--link);
-      text-decoration: none;
-      font-weight: 500;
-    }
+        .card h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
 
-    .section-link:hover {
-      text-decoration: underline;
-    }
+        .card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
 
-    /* Publications */
-    .publications {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1.75rem;
-    }
+        /* Neural Background Decoration */
+        .neon-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--accent-purple);
+            filter: blur(150px);
+            opacity: 0.1;
+            top: 20%;
+            right: 10%;
+            z-index: -1;
+        }
 
-    .pub-card {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .pub-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--card-hover);
-    }
-
-    .pub-thumb {
-      width: 100%;
-      aspect-ratio: 2 / 3;
-      background: var(--light-gray);
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: var(--card-shadow);
-    }
-
-    .pub-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .pub-title {
-      font-weight: 700;
-      margin: 0.75rem 0 0.3rem;
-      font-size: 1.05rem;
-      line-height: 1.4;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .pub-date {
-      color: var(--gray);
-      font-size: 0.9rem;
-    }
-
-    /* News */
-    .news-feed {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .tweet {
-      padding: 1.25rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: #fafafa;
-      font-size: 1rem;
-    }
-
-    .tweet-date {
-      font-size: 0.85rem;
-      color: var(--gray);
-      margin-bottom: 0.5rem;
-    }
-
-    .tweet-content {
-      line-height: 1.6;
-    }
-
-    .tweet a {
-      color: var(--link);
-    }
-
-    /* Footer */
-    footer {
-      margin-top: 4rem;
-      padding: 2.5rem 5% 2rem;
-      text-align: center;
-      color: var(--gray);
-      font-size: 0.95rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .social-links {
-      margin: 0.75rem 0;
-    }
-
-    .social-links a {
-      display: inline-block;
-      margin: 0 0.5rem;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .social-links a:hover {
-      color: var(--primary);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
-      nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .hero h1 {
-        font-size: 1.9rem;
-      }
-      .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-      }
-      .publications {
-        grid-template-columns: 1fr;
-      }
-      .pub-thumb {
-        aspect-ratio: 3 / 4;
-      }
-    }
-  </style>
+        footer {
+            text-align: center;
+            padding: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="lang-switch">
-      <a href="https://energyandcleanair.org/zh/">中文</a> • 
-      <a href="https://energyandcleanair.org/ua/">Українська</a>
-    </div>
-    <a href="https://energyandcleanair.org/" class="logo">CREA</a>
+    <div class="neon-glow"></div>
+
     <nav>
-      <ul>
-        <li><a href="https://energyandcleanair.org/">Home</a></li>
-        <li><a href="https://energyandcleanair.org/about-us/">About</a></li>
-        <li><a href="https://energyandcleanair.org/what-we-do/">What we do</a></li>
-        <li><a href="https://energyandcleanair.org/publications/">Publications</a></li>
-        <li><a href="https://energyandcleanair.org/news/">News</a></li>
-        <li><a href="https://energyandcleanair.org/contact/">Contact</a></li>
-      </ul>
+        <div class="logo">NEXUS AI</div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#tech">Technology</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
     </nav>
-  </header>
 
-  <!-- Hero -->
-  <div class="hero">
-    <h1>Centre for Research on Energy and Clean Air</h1>
-    <p>We are an independent research organisation focused on revealing the trends, causes, and health impacts of air pollution — and advancing solutions.</p>
-  </div>
+    <section class="hero" id="home">
+        <h1>Intelligence Evolved.</h1>
+        <p>Harnessing the power of neural networks to solve complex global challenges. Nexus AI is building the bridge between human intuition and machine precision.</p>
+        <a href="#tech" class="btn">Explore Ecosystem</a>
+    </section>
 
-  <!-- Main Content -->
-  <main>
+    <section class="features" id="tech">
+        <div class="grid">
+            <div class="card">
+                <h3>Neural NLP</h3>
+                <p>Advanced language models capable of understanding context, nuance, and sentiment with human-like accuracy.</p>
+            </div>
+            <div class="card">
+                <h3>Computer Vision</h3>
+                <p>Real-time spatial awareness and object recognition for autonomous robotics and medical imaging.</p>
+            </div>
+            <div class="card">
+                <h3>Deep Learning</h3>
+                <p>Scalable architectures that learn from vast datasets to predict trends and optimize infrastructure.</p>
+            </div>
+        </div>
+    </section>
 
-    <!-- Recent Publications -->
-    <div class="section-header">
-      <h2 class="section-title">Recent publications</h2>
-      <a href="https://energyandcleanair.org/publications/" class="section-link">All Publications »</a>
-    </div>
-    <div class="publications">
-      <a href="https://energyandcleanair.org/publication/2026-progress-report-on-national-clean-air-programme/" class="pub-card">
-        <div class="pub-thumb">
-          <img src="https://energyandcleanair.org/wp-content/uploads/2026/01/NCAP-Report-2026-Cover-211x300.png" alt="NCAP Report 2026">
-        </div>
-        <div class="pub-title">Progress Report on National Clean Air Programme (NCAP)</div>
-        <div class="pub-date">9 January 2026</div>
-      </a>
-      
-      <a href="https://energyandcleanair.org/publication/india-power-sector-review-2025/" class="pub-card">
-        <div class="pub-thumb">
-          <img src="https://energyandcleanair.org/wp-content/uploads/2026/01/India-Power-Sector-Review-2025-Cover-211x300.png" alt="India Power Sector Review 2025">
-        </div>
-        <div class="pub-title">Record clean energy deployment drives historic decline in coal generation</div>
-        <div class="pub-date">7 January 2026</div>
-      </a>
-      
-      <a href="https://energyandcleanair.org/publication/secondary-particulate-matter-is-a-core-driver-of-dangerous-pm2-5-in-india/" class="pub-card">
-        <div class="pub-thumb">
-          <img src="https://energyandcleanair.org/wp-content/uploads/2025/12/Secondary-PM2.5-India-Cover-211x300.png" alt="Secondary PM2.5 in India">
-        </div>
-        <div class="pub-title">Secondary particulate matter is a core driver of dangerous PM2.5 in India</div>
-        <div class="pub-date">24 December 2025</div>
-      </a>
-      
-      <a href="https://energyandcleanair.org/publication/eu-russian-fossil-fuels-third-year-of-invasion/" class="pub-card">
-        <div class="pub-thumb">
-          <img src="https://energyandcleanair.org/wp-content/uploads/2025/02/Third-year-of-invasion_Cover-211x300.png" alt="EU-Russia Fossil Fuels Report">
-        </div>
-        <div class="pub-title">EU imports of Russian fossil fuels surpass financial aid sent to Ukraine</div>
-        <div class="pub-date">February 2025</div>
-      </a>
-    </div>
-
-    <!-- Latest News -->
-    <div class="section-header">
-      <h2 class="section-title">Latest news</h2>
-    </div>
-    <div class="news-feed">
-      <div class="tweet">
-        <div class="tweet-date">7 Jan 2026</div>
-        <div class="tweet-content">
-          🇮🇳 NEW | REPORT | <a href="https://energyandcleanair.org/publication/india-power-sector-review-2025/">#India power sector review 2025</a>: Record #CleanEnergy deployment drives historic decline in #coal generation.
-        </div>
-      </div>
-      <div class="tweet">
-        <div class="tweet-date">2 Jan 2026</div>
-        <div class="tweet-content">
-          ✨ CREA wishes you joy, success & renewal in 2026 ✨
-        </div>
-      </div>
-      <div class="tweet">
-        <div class="tweet-date">31 Dec 2025</div>
-        <div class="tweet-content">
-          🇨🇳 🎥 WEBINAR | Recording | <a href="https://energyandcleanair.org/webinar-report-launch-chinas-climate-transition-outlook-2025/">China's Climate Transition: Outlook 2025</a>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <p>Centre for Research on Energy and Clean Air (CREA), 2026</p>
-    <p>Independent international research organisation focused on promoting clean energy and clean air with data and evidence.</p>
-    <div class="social-links">
-      <a href="https://twitter.com/CREACleanAir" target="_blank">𝕏 (Twitter)</a> • 
-      <a href="https://bsky.app/profile/creacleanair.bsky.social" target="_blank">Bluesky</a>
-    </div>
-  </footer>
+    <footer>
+        <p>&copy; 2026 NEXUS ARTIFICIAL INTELLIGENCE LABS. ALL RIGHTS RESERVED.</p>
+        <p style="margin-top: 10px; color: var(--accent-cyan);">Empowering the Singularity.</p>
+    </footer>
 
 </body>
 </html>

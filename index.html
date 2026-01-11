@@ -3,42 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI | Cognitive Future</title>
+    <title>Synthetix | Machine Learning & AI Systems</title>
     <style>
-        /* Modern Tech Color Palette */
         :root {
-            --bg-dark: #0a0b10;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --accent-purple: #8a2be2;
-            --accent-cyan: #00f2ff;
-            --text-main: #e0e0e0;
-            --text-dim: #b0b0b0;
+            --bg-color: #05070a;
+            --accent-blue: #00d2ff;
+            --accent-purple: #9d50bb;
+            --text-primary: #f0f2f5;
+            --text-secondary: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* Subtle Background Animation */
-        body::before {
-            content: "";
+        /* Gradient Background Blobs */
+        .blob {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a1b2e 0%, #0a0b10 100%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 210, 255, 0.1) 0%, rgba(5, 7, 10, 0) 70%);
             z-index: -1;
+            filter: blur(80px);
         }
 
         /* Navigation */
@@ -46,180 +43,173 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 10%;
-            background: rgba(10, 11, 16, 0.8);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            padding: 2rem 10%;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
-            letter-spacing: 2px;
-            background: linear-gradient(to right, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            color: var(--text-primary);
         }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
+        .logo span { color: var(--accent-blue); }
 
-        nav ul li { margin-left: 2.5rem; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 3rem; }
         nav ul li a {
             text-decoration: none;
-            color: var(--text-dim);
+            color: var(--text-secondary);
             font-size: 0.9rem;
             transition: 0.3s;
         }
-
-        nav ul li a:hover { color: var(--accent-cyan); }
+        nav ul li a:hover { color: var(--accent-blue); }
 
         /* Hero Section */
-        .hero {
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        header {
+            padding: 8rem 10% 4rem;
             text-align: center;
-            padding: 0 10%;
         }
 
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 900;
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--accent-blue);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
             margin-bottom: 1.5rem;
-            background: linear-gradient(white, #888);
+            background: linear-gradient(to bottom, #fff 40%, #666);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            max-width: 700px;
-            margin-bottom: 2.5rem;
+        .hero-desc {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 3rem;
         }
 
-        .btn {
-            padding: 15px 35px;
-            border-radius: 50px;
+        .btn-group { display: flex; justify-content: center; gap: 1rem; }
+        .btn-primary {
+            padding: 1rem 2rem;
+            background: var(--accent-blue);
+            color: #000;
             text-decoration: none;
-            font-weight: bold;
-            transition: 0.4s;
-            border: 1px solid var(--accent-cyan);
-            color: var(--accent-cyan);
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
         }
 
-        .btn:hover {
-            background: var(--accent-cyan);
-            color: var(--bg-dark);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+        /* Machine Learning Workflow Section */
+        .workflow-section {
+            padding: 6rem 10%;
+            background: rgba(255,255,255,0.01);
         }
 
-        /* Features Section */
-        .features {
-            padding: 5rem 10%;
+        .section-tag {
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            color: var(--accent-purple);
+            margin-bottom: 1rem;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
+            margin-top: 4rem;
         }
 
         .card {
-            background: var(--card-bg);
-            padding: 2.5rem;
+            padding: 3rem 2rem;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.05);
             border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: 0.3s;
-            position: relative;
+            transition: 0.4s;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-purple);
-            background: rgba(138, 43, 226, 0.05);
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.05);
         }
 
-        .card h3 {
-            color: var(--accent-cyan);
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-        }
-
-        .card p {
-            color: var(--text-dim);
-            font-size: 0.95rem;
-        }
-
-        /* Neural Background Decoration */
-        .neon-glow {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: var(--accent-purple);
-            filter: blur(150px);
-            opacity: 0.1;
-            top: 20%;
-            right: 10%;
-            z-index: -1;
-        }
+        .card h3 { margin-bottom: 1rem; font-size: 1.5rem; }
+        .card p { color: var(--text-secondary); font-size: 0.95rem; }
 
         footer {
+            padding: 4rem 10%;
             text-align: center;
-            padding: 3rem;
             border-top: 1px solid rgba(255,255,255,0.05);
-            color: var(--text-dim);
-            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="neon-glow"></div>
+    <div class="blob" style="top: -100px; right: -100px;"></div>
+    <div class="blob" style="bottom: -100px; left: -100px; background: radial-gradient(circle, rgba(157, 80, 187, 0.1) 0%, transparent 70%);"></div>
 
     <nav>
-        <div class="logo">NEXUS AI</div>
+        <div class="logo">SYNTHETIX<span>.AI</span></div>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#tech">Technology</a></li>
-            <li><a href="#research">Research</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#">Solutions</a></li>
+            <li><a href="#">Models</a></li>
+            <li><a href="#">Research</a></li>
+            <li><a href="#">Docs</a></li>
         </ul>
     </nav>
 
-    <section class="hero" id="home">
-        <h1>Intelligence Evolved.</h1>
-        <p>Harnessing the power of neural networks to solve complex global challenges. Nexus AI is building the bridge between human intuition and machine precision.</p>
-        <a href="#tech" class="btn">Explore Ecosystem</a>
-    </section>
+    <header>
+        <span class="badge">Next-Gen Machine Learning Framework</span>
+        <h1>From Raw Data<br>To Pure Intelligence.</h1>
+        <p class="hero-desc">Deploy state-of-the-art neural networks, optimize predictive models, and scale your AI infrastructure with Synthetix.</p>
+        <div class="btn-group">
+            <a href="#" class="btn-primary">Get Started</a>
+            <a href="#" style="color: white; text-decoration: none; align-self: center;">View Documentation →</a>
+        </div>
+    </header>
 
-    <section class="features" id="tech">
+    <section class="workflow-section">
+        <div class="section-tag">Core Capabilities</div>
+        <h2 style="text-align: center; font-size: 2.5rem;">The AI Lifecycle</h2>
+        
         <div class="grid">
             <div class="card">
-                <h3>Neural NLP</h3>
-                <p>Advanced language models capable of understanding context, nuance, and sentiment with human-like accuracy.</p>
+                <h3>01. Data Ingestion</h3>
+                <p>Seamlessly collect and clean petabytes of unstructured data for model training pipelines.</p>
             </div>
             <div class="card">
-                <h3>Computer Vision</h3>
-                <p>Real-time spatial awareness and object recognition for autonomous robotics and medical imaging.</p>
+                <h3>02. Model Training</h3>
+                <p>Distributed training across GPU clusters with built-in hyperparameter optimization.</p>
             </div>
             <div class="card">
-                <h3>Deep Learning</h3>
-                <p>Scalable architectures that learn from vast datasets to predict trends and optimize infrastructure.</p>
+                <h3>03. Edge Deployment</h3>
+                <p>Deploy lightweight inference engines to IoT devices and mobile hardware with zero latency.</p>
             </div>
         </div>
     </section>
 
+    
+
+[Image of Machine Learning Data Pipeline]
+
+
     <footer>
-        <p>&copy; 2026 NEXUS ARTIFICIAL INTELLIGENCE LABS. ALL RIGHTS RESERVED.</p>
-        <p style="margin-top: 10px; color: var(--accent-cyan);">Empowering the Singularity.</p>
+        <p>&copy; 2026 Synthetix Systems Inc. Built for the era of AGI.</p>
     </footer>
 
 </body>

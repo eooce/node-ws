@@ -1,0 +1,183 @@
+name: Build-golang-binary
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    strategy:
+      matrix:
+        include:
+          # Linux
+          - os: ubuntu-latest
+            goos: linux
+            goarch: 386
+            goarm: ""
+            filename: gows_linux_amd
+          - os: ubuntu-latest
+            goos: linux
+            goarch: amd64
+            goarm: ""
+            filename: gows_linux_amd64
+          - os: ubuntu-latest
+            goos: linux
+            goarch: arm
+            goarm: "6"
+            filename: gows_linux_arm
+          - os: ubuntu-latest
+            goos: linux
+            goarch: arm64
+            goarm: ""
+            filename: gows_linux_arm64
+          
+          # FreeBSD
+          - os: ubuntu-latest
+            goos: freebsd
+            goarch: amd64
+            goarm: ""
+            filename: gows_freebsd_amd64
+          - os: ubuntu-latest
+            goos: freebsd
+            goarch: arm64
+            goarm: ""
+            filename: gows_freebsd_arm64
+          
+          # Windows
+          - os: ubuntu-latest
+            goos: windows
+            goarch: amd64
+            goarm: ""
+            filename: gows_windows_amd64.exe
+          - os: ubuntu-latest
+            goos: windows
+            goarch: arm64
+            goarm: ""
+            filename: gows_windows_arm64.exe
+          
+          # macOS (macOS jobs will run on macos runners in a real scenario, but for this workflow we'll use cross-compilation)
+          - os: macos-latest
+            goos: darwin
+            goarch: amd64
+            goarm: ""
+            filename: gows_macos_amd64
+          - os: macos-latest
+            goos: darwin
+            goarch: arm64
+            goarm: ""
+            filename: gows_macos_arm64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: golang
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Get dependencies
+        run: |
+          go mod tidy
+          go mod download
+
+      - name: Build binary
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          GOARM: ${{ matrix.goarm }}
+          CGO_ENABLED: 0
+        run: |
+          go build -ldflags="-s -w -extldflags -static" -o ${{ matrix.filename }} .
+          
+      - name: Upload go.mod and go.sum
+        if: matrix.goos == 'linux' && matrix.goarch == 'amd64'  # Only upload once
+        uses: actions/upload-artifact@v4
+        with:
+          name: go-dependencies
+          path: |
+            go.mod
+            go.sum
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.filename }}
+          path: ${{ matrix.filename }}
+
+
+
+  release:
+    needs: build-and-release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: golang
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Get dependencies
+        run: |
+          go mod tidy
+          go mod download
+
+      - name: Create binaries directory
+        run: mkdir -p ./binaries
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./temp-binaries
+
+      - name: Move binaries to correct location
+        run: |
+          find ./temp-binaries -type f -exec mv {} ./binaries/ \;
+          ls -la ./binaries/
+
+      - name: Download dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: go-dependencies
+          path: ./binaries
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: gows-latest
+          name: "Gows Latest"
+          body: |
+            ## Gows - Go WebSocket Proxy
+            
+            This release includes binaries for multiple platforms:
+            - Linux: amd, amd64, arm, arm64
+            - FreeBSD: amd64, arm64
+            - Windows: amd64, arm64
+            - macOS: amd64, arm64
+            
+            For usage instructions, please refer to the README.md
+          files: |
+            ./binaries/gows_linux_amd
+            ./binaries/gows_linux_amd64
+            ./binaries/gows_linux_arm
+            ./binaries/gows_linux_arm64
+            ./binaries/gows_freebsd_amd64
+            ./binaries/gows_freebsd_arm64
+            ./binaries/gows_windows_amd64.exe
+            ./binaries/gows_windows_arm64.exe
+            ./binaries/gows_macos_amd64
+            ./binaries/gows_macos_arm64
+          draft: false
+          prerelease: false

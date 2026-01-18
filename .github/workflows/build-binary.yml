@@ -1,0 +1,129 @@
+name: Build and Release Binary
+
+on:
+  push:
+    branches: [ dev ]
+    paths:
+      - 'index.js'
+      - 'package.json'
+      - 'index.html'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: dev
+
+    - name: Setup Node.js 18
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: |
+        echo "Installing dependencies..."
+        npm install --legacy-peer-deps --ignore-scripts
+        
+        # Verify jsvms is installed
+        if [ ! -d "node_modules/jsvms" ]; then
+          echo "jsvms not found, installing separately..."
+          npm install jsvms --save --legacy-peer-deps --ignore-scripts
+        fi
+        
+        # List jsvms files to verify
+        echo "Checking jsvms installation:"
+        ls -la node_modules/jsvms/ || echo "jsvms directory not found!"
+
+    - name: Verify dependencies
+      run: |
+        echo "Verifying required modules..."
+        node -e "try { require('jsvms/protocols/vmess/server'); console.log('✓ jsvms/protocols/vmess/server found'); process.exit(0); } catch(e) { console.error('✗ jsvms/protocols/vmess/server NOT found'); process.exit(1); }"
+        node -e "try { require('jsvms/protocols/vmess/validator'); console.log('✓ jsvms/protocols/vmess/validator found'); process.exit(0); } catch(e) { console.error('✗ jsvms/protocols/vmess/validator NOT found'); process.exit(1); }"
+        node -e "try { require('ws'); console.log('✓ ws found'); process.exit(0); } catch(e) { console.error('✗ ws NOT found'); process.exit(1); }"
+
+    - name: Build binaries
+      run: |
+        npx pkg index.js --targets node18-linux-x64 --output dist/nodews_linux_amd64
+        npx pkg index.js --targets node18-linux-arm64 --output dist/nodews_linux_arm64
+
+    - name: Make binaries executable
+      run: |
+        chmod +x dist/nodews_linux_amd64
+        chmod +x dist/nodews_linux_arm64
+        ls -lh dist/
+
+    - name: Delete existing release
+      uses: actions/github-script@v7
+      continue-on-error: true
+      with:
+        script: |
+          const releases = await github.rest.repos.listReleases({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          });
+          
+          const release = releases.data.find(r => r.tag_name === 'node-ws-binary');
+          if (release) {
+            await github.rest.repos.deleteRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release.id,
+            });
+            console.log('Deleted existing release');
+          }
+
+    - name: Delete existing tag
+      continue-on-error: true
+      run: |
+        git push --delete origin node-ws-binary || true
+
+    - name: Wait for deletion
+      run: sleep 3
+
+    - name: Create or Update Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: node-ws-binary
+        name: node-ws-binary
+        draft: false
+        prerelease: false
+        files: |
+          dist/nodews_linux_amd64
+          dist/nodews_linux_arm64
+        body: |
+          ## Node WebSocket Server Binary (Latest Dev Build)
+          
+          **⚠️ This release is automatically updated with each push to dev branch**
+          
+          ### 📦 Binaries
+          - `nodews_linux_amd64` - Linux AMD64/x86_64
+          - `nodews_linux_arm64` - Linux ARM64/aarch64
+          
+          ### 🚀 Quick Start
+          ```bash
+          # Download (AMD64)
+          wget https://github.com/${{ github.repository }}/releases/download/node-ws-binary/nodews_linux_amd64
+          
+          # Make executable
+          chmod +x nodews_linux_amd64
+          
+          # Run
+          ./nodews_linux_amd64
+          ```
+          
+          ### 📝 Environment Variables
+          - `UUID` - User UUID
+          - `PORT` - Server port (default: 3000)
+          - `DOMAIN` - Domain name
+          - `NAME` - Custom server name
+          - `WSPATH` - WebSocket path
+          - `SUB_PATH` - Subscription path (default: sub)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

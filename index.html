@@ -1,47 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Network - Protect Earth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>探索世界 | 足迹旅行 - 发现自然与人文之美</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Roboto', 'Poppins', sans-serif;
         }
 
         :root {
-            --primary: #2e7d32;
-            --secondary: #4caf50;
-            --accent: #8bc34a;
-            --light: #e8f5e9;
-            --dark: #1b5e20;
-            --text: #333333;
+            --primary: #0b5e7c;      /* 深海蓝绿，旅游主题 */
+            --secondary: #20b2aa;    /* 浅海洋绿 */
+            --accent: #f4a261;       /* 暖橙色，代表阳光与冒险 */
+            --light: #f0f9ff;        /* 轻盈天空色 */
+            --dark: #1e3a5f;         /* 沉稳夜空蓝 */
+            --text: #2d3e50;
             --white: #ffffff;
+            --shadow-sm: 0 10px 20px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 15px 25px rgba(0, 0, 0, 0.1);
         }
 
         body {
             background-color: var(--light);
             color: var(--text);
             line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
+        /* 头部样式 */
         header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: var(--white);
             padding: 1rem 0;
             position: sticky;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .container {
             width: 90%;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
@@ -49,34 +53,34 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 1.9rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         .logo i {
-            font-size: 2rem;
+            font-size: 2.2rem;
+            color: var(--accent);
         }
 
         nav ul {
             display: flex;
             list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 2rem;
+            gap: 2rem;
         }
 
         nav ul li a {
             color: var(--white);
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            transition: 0.3s;
             padding: 0.5rem 0;
             position: relative;
         }
@@ -91,62 +95,74 @@
             bottom: 0;
             left: 0;
             width: 0;
-            height: 2px;
-            background-color: var(--accent);
-            transition: width 0.3s ease;
+            height: 2.5px;
+            background: var(--accent);
+            transition: width 0.25s;
+            border-radius: 2px;
         }
 
         nav ul li a:hover::after {
             width: 100%;
         }
 
+        /* 移动菜单 */
+        .mobile-menu {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* HERO 旅游大图 */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80');
+            background: linear-gradient(rgba(0, 20, 40, 0.65), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2074&auto=format');
             background-size: cover;
-            background-position: center;
-            height: 80vh;
+            background-position: center 30%;
+            height: 85vh;
             display: flex;
             align-items: center;
             text-align: center;
-            color: var(--white);
         }
 
         .hero-content {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
+            animation: fadeInUp 1s ease;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            letter-spacing: -0.02em;
         }
 
         .hero p {
             font-size: 1.3rem;
             margin-bottom: 2rem;
+            backdrop-filter: blur(2px);
         }
 
         .btn {
             display: inline-block;
-            background-color: var(--accent);
+            background: var(--accent);
             color: var(--white);
-            padding: 0.8rem 2rem;
+            padding: 0.9rem 2.2rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .btn:hover {
-            background-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            background: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 18px rgba(0,0,0,0.2);
         }
 
+        /* 通用区块 */
         section {
             padding: 5rem 0;
         }
@@ -159,7 +175,7 @@
         .section-title h2 {
             font-size: 2.5rem;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             position: relative;
             display: inline-block;
         }
@@ -167,21 +183,22 @@
         .section-title h2::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -12px;
             left: 50%;
             transform: translateX(-50%);
             width: 80px;
             height: 4px;
-            background-color: var(--accent);
-            border-radius: 2px;
+            background: var(--accent);
+            border-radius: 4px;
         }
 
         .section-title p {
-            color: var(--text);
             max-width: 700px;
-            margin: 0 auto;
+            margin: 1rem auto 0;
+            color: #4a627a;
         }
 
+        /* 关于目的地 */
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -190,32 +207,29 @@
         }
 
         .about-img {
-            border-radius: 10px;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-md);
         }
 
         .about-img img {
             width: 100%;
             height: auto;
+            transition: transform 0.6s;
             display: block;
-            transition: transform 0.5s ease;
         }
 
         .about-img:hover img {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            margin-bottom: 1.2rem;
             color: var(--dark);
         }
 
-        .about-text p {
-            margin-bottom: 1.5rem;
-        }
-
+        /* 统计数据集 (旅行成就) */
         .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -225,118 +239,119 @@
 
         .stat-item {
             text-align: center;
+            background: var(--white);
             padding: 2rem 1rem;
-            background-color: var(--white);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
+            border-radius: 30px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
         }
 
         .stat-item:hover {
-            transform: translateY(-10px);
+            transform: translateY(-8px);
+            background: #fff9f0;
         }
 
         .stat-item i {
-            font-size: 2.5rem;
-            color: var(--primary);
+            font-size: 2.6rem;
+            color: var(--secondary);
             margin-bottom: 1rem;
         }
 
         .stat-item h3 {
-            font-size: 2.5rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--primary);
         }
 
-        .stat-item p {
-            color: var(--text);
+        /* 旅行目的地网格 */
+        .destinations {
+            background: var(--white);
         }
 
-        .initiatives {
-            background-color: var(--white);
-        }
-
-        .initiatives-grid {
+        .destinations-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
         }
 
-        .initiative-card {
-            background-color: var(--light);
-            border-radius: 10px;
+        .card {
+            background: var(--white);
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.07);
+            transition: 0.3s;
         }
 
-        .initiative-card:hover {
-            transform: translateY(-10px);
+        .card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 30px rgba(0, 0, 0, 0.12);
         }
 
-        .initiative-img {
-            height: 200px;
+        .card-img {
+            height: 230px;
             overflow: hidden;
         }
 
-        .initiative-img img {
+        .card-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.5s;
         }
 
-        .initiative-card:hover .initiative-img img {
-            transform: scale(1.1);
+        .card:hover .card-img img {
+            transform: scale(1.08);
         }
 
-        .initiative-content {
+        .card-content {
             padding: 1.5rem;
         }
 
-        .initiative-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+        .card-content h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.6rem;
             color: var(--dark);
         }
 
-        .initiative-content p {
-            margin-bottom: 1.5rem;
+        .card-content i {
+            color: var(--accent);
+            margin-right: 4px;
         }
 
+        .price {
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* CTA */
         .cta {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
+            background: linear-gradient(110deg, var(--primary), #117a65);
+            color: white;
             text-align: center;
-            padding: 5rem 0;
+            padding: 4rem 0;
         }
 
         .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .cta p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: 2.3rem;
         }
 
         .cta .btn {
-            background-color: var(--white);
+            background: var(--white);
             color: var(--primary);
         }
 
         .cta .btn:hover {
-            background-color: var(--accent);
-            color: var(--white);
+            background: var(--accent);
+            color: white;
         }
 
+        /* 页脚 */
         footer {
-            background-color: var(--dark);
-            color: var(--white);
+            background: var(--dark);
+            color: #eef2f8;
             padding: 3rem 0 1rem;
         }
 
@@ -348,24 +363,20 @@
         }
 
         .footer-column h3 {
+            margin-bottom: 1.2rem;
             font-size: 1.3rem;
-            margin-bottom: 1.5rem;
             position: relative;
-            padding-bottom: 10px;
+            padding-bottom: 0.5rem;
         }
 
         .footer-column h3::after {
             content: '';
             position: absolute;
-            bottom: 0;
             left: 0;
+            bottom: 0;
             width: 40px;
             height: 2px;
-            background-color: var(--accent);
-        }
-
-        .footer-column p {
-            margin-bottom: 1rem;
+            background: var(--accent);
         }
 
         .footer-links {
@@ -373,16 +384,16 @@
         }
 
         .footer-links li {
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.7rem;
         }
 
-        .footer-links li a {
-            color: var(--light);
+        .footer-links a {
+            color: #cbd5e6;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: 0.2s;
         }
 
-        .footer-links li a:hover {
+        .footer-links a:hover {
             color: var(--accent);
             padding-left: 5px;
         }
@@ -390,333 +401,370 @@
         .social-links {
             display: flex;
             gap: 1rem;
+            margin-top: 1rem;
         }
 
         .social-links a {
+            background: rgba(255,255,255,0.1);
+            width: 38px;
+            height: 38px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            color: var(--white);
-            text-decoration: none;
-            transition: all 0.3s ease;
+            color: white;
+            transition: all 0.2s;
         }
 
         .social-links a:hover {
-            background-color: var(--accent);
-            transform: translateY(-5px);
+            background: var(--accent);
+            transform: translateY(-4px);
         }
 
         .copyright {
             text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.8rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
         }
 
-        .mobile-menu {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
+        /* 响应式 */
         @media (max-width: 992px) {
-            .about-content {
+            .about-content, .destinations-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .initiatives-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
             .stats {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2,1fr);
+            }
+            .footer-content {
+                grid-template-columns: repeat(2,1fr);
             }
         }
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.4rem;
             }
-            
-            .hero p {
-                font-size: 1.1rem;
+            .mobile-menu {
+                display: block;
             }
-            
             nav ul {
                 display: none;
                 position: absolute;
                 top: 100%;
                 left: 0;
                 width: 100%;
-                background-color: var(--primary);
+                background: var(--primary);
                 flex-direction: column;
                 padding: 1rem 0;
+                gap: 0;
                 text-align: center;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 12px 20px rgba(0,0,0,0.15);
             }
-            
             nav ul.active {
                 display: flex;
             }
-            
             nav ul li {
                 margin: 0;
-                padding: 0.8rem 0;
+                padding: 0.8rem;
             }
-            
-            .mobile-menu {
-                display: block;
-            }
-            
-            .initiatives-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
             .stats {
                 grid-template-columns: 1fr;
             }
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .footer-column h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
         }
 
-        /* Animation for stats counter */
-        .counter {
-            transition: all 0.5s ease;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container nav-container">
-            <div class="logo">
-                <i class="fas fa-seedling"></i>
-                <span>Green Network</span>
+
+<header>
+    <div class="container nav-container">
+        <div class="logo">
+            <i class="fas fa-compass"></i>
+            <span>足迹旅行</span>
+        </div>
+        <nav>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
             </div>
-            <nav>
-                <div class="mobile-menu">
-                    <i class="fas fa-bars"></i>
+            <ul>
+                <li><a href="#home">首页</a></li>
+                <li><a href="#about">探索</a></li>
+                <li><a href="#destinations">目的地</a></li>
+                <li><a href="#get-involved">同行计划</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- 主视觉 Home -->
+<section class="hero" id="home">
+    <div class="container hero-content">
+        <h1>奔赴山海，自由与热爱</h1>
+        <p>从雨林秘镜到极光冰川，从千年古镇到蔚蓝海岸，每一次出发都是与地球的深度对话。</p>
+        <a href="#destinations" class="btn">开启旅程 <i class="fas fa-arrow-right"></i></a>
+    </div>
+</section>
+
+<!-- 关于我们的旅行理念 -->
+<section id="about">
+    <div class="container">
+        <div class="section-title">
+            <h2>旅行·新生</h2>
+            <p>不止于观光，而是负责任的探索，让美景永续留存。</p>
+        </div>
+        <div class="about-content">
+            <div class="about-img">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format" alt="远足山川">
+            </div>
+            <div class="about-text">
+                <h3>重新定义可持续旅行</h3>
+                <p>「足迹旅行」诞生于对自然的热爱，我们联合全球生态向导与本地社区，打造低碳且深度的路线。过去5年，我们支持了超过200个生态修复项目，让旅行成为守护地球的力量。</p>
+                <p>每一段旅程我们都遵循“不留痕”原则，鼓励公共交通、环保住宿，并链接当地文化传承人，带给你独一无二的体验。</p>
+                <a href="#" class="btn">了解我们的故事</a>
+            </div>
+        </div>
+        <!-- 荣誉数据 动态数字 -->
+        <div class="stats">
+            <div class="stat-item">
+                <i class="fas fa-hiking"></i>
+                <h3 class="counter" data-target="18000">0</h3>
+                <p>快乐旅客</p>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-tree"></i>
+                <h3 class="counter" data-target="126">0</h3>
+                <p>生态线路</p>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-map-marked-alt"></i>
+                <h3 class="counter" data-target="45">0</h3>
+                <p>国家和地区</p>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-hand-holding-heart"></i>
+                <h3 class="counter" data-target="3700">0</h3>
+                <p>公益贡献(吨碳抵消)</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 精选目的地网格 (特色旅游卡片) -->
+<section class="destinations" id="destinations">
+    <div class="container">
+        <div class="section-title">
+            <h2>心之所向 · 行之所往</h2>
+            <p>从热门秘境到遗世独立，挑选你的下一站奇遇。</p>
+        </div>
+        <div class="destinations-grid">
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f7?q=80&w=2070&auto=format" alt="挪威峡湾">
                 </div>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#initiatives">Initiatives</a></li>
-                    <li><a href="#get-involved">Get Involved</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                <div class="card-content">
+                    <h3>挪威·奇迹石</h3>
+                    <p><i class="fas fa-map-pin"></i> 斯塔万格 | 悬空勇者之石</p>
+                    <p>徒步三大奇石，俯瞰吕瑟峡湾，感受心跳与自然共鸣。</p>
+                    <span class="price">¥ 9,800 起</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1533130061792-64b345e4a833?q=80&w=2070&auto=format" alt="冰岛极光">
+                </div>
+                <div class="card-content">
+                    <h3>冰岛·极光秘境</h3>
+                    <p><i class="fas fa-map-pin"></i> 黄金圈 + 黑沙滩</p>
+                    <p>冬季限定追寻欧若拉，冰川徒步，蓝湖温泉治愈之旅。</p>
+                    <span class="price">¥ 12,600 起</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=2073&auto=format" alt="巴厘岛梯田">
+                </div>
+                <div class="card-content">
+                    <h3>巴厘岛·众神之岛</h3>
+                    <p><i class="fas fa-map-pin"></i> 乌布 & 佩尼达岛</p>
+                    <p>稻田瑜伽，悬崖精灵沙滩，感受印尼传统文化与海风。</p>
+                    <span class="price">¥ 5,680 起</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=2074&auto=format" alt="秘鲁马丘比丘">
+                </div>
+                <div class="card-content">
+                    <h3>秘鲁·失落之城</h3>
+                    <p><i class="fas fa-map-pin"></i> 库斯科 & 马丘比丘</p>
+                    <p>穿越印加古道，安第斯山脉云雾缭绕，揭开神秘文明。</p>
+                    <span class="price">¥ 18,200 起</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1496440737103-cd596325d314?q=80&w=2070&auto=format" alt="新西兰南岛">
+                </div>
+                <div class="card-content">
+                    <h3>新西兰·星空露营</h3>
+                    <p><i class="fas fa-map-pin"></i> 特卡波湖 / 霍比屯</p>
+                    <p>暗夜保护区观星，极限运动与纯净风光并存。</p>
+                    <span class="price">¥ 11,999 起</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format" alt="坦桑尼亚 safari">
+                </div>
+                <div class="card-content">
+                    <h3>坦桑尼亚 · 狂野非洲</h3>
+                    <p><i class="fas fa-map-pin"></i> 塞伦盖蒂大迁徙</p>
+                    <p>Safari追逐动物大迁徙，恩戈罗火山口探秘。</p>
+                    <span class="price">¥ 28,800 起</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 呼吁加入旅行社区 -->
+<section class="cta" id="get-involved">
+    <div class="container">
+        <h2>与我们一起探索星球脉动</h2>
+        <p>免费获取旅行灵感手册，加入社群获取独家摄影攻略与低碳旅行技巧。</p>
+        <a href="#" class="btn">订阅足迹通讯 <i class="fas fa-paper-plane"></i></a>
+    </div>
+</section>
+
+<!-- 页脚 + 联系方式 -->
+<footer id="contact">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>足迹旅行<br>Eco-Travel</h3>
+                <p>倡导深度、可持续的旅行方式，连接人与自然，保护生物多样性。</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>快速链接</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">目的地指南</a></li>
+                    <li><a href="#about">我们的使命</a></li>
+                    <li><a href="#destinations">热门路线</a></li>
+                    <li><a href="#">博主合作</a></li>
+                    <li><a href="#">生态承诺</a></li>
                 </ul>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container hero-content">
-            <h1>Protect Our Planet, Preserve Our Future</h1>
-            <p>Join the global movement to create a sustainable world through conservation, education, and community action.</p>
-            <a href="#get-involved" class="btn">Join Our Network</a>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>About Green Network</h2>
-                <p>We are a global community dedicated to environmental protection and sustainable development.</p>
             </div>
-            <div class="about-content">
-                <div class="about-img">
-                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Team planting trees">
-                </div>
-                <div class="about-text">
-                    <h3>Our Mission</h3>
-                    <p>Green Network is committed to creating a sustainable future by protecting natural ecosystems, promoting renewable energy, and empowering communities to take environmental action.</p>
-                    <p>Founded in 2010, we've grown from a small grassroots organization to an international network with over 50,000 members across 120 countries.</p>
-                    <p>Our approach combines scientific research, community engagement, and policy advocacy to address the most pressing environmental challenges of our time.</p>
-                    <a href="#" class="btn">Learn More</a>
-                </div>
+            <div class="footer-column">
+                <h3>旅行支持</h3>
+                <ul class="footer-links">
+                    <li><a href="#">常见问题</a></li>
+                    <li><a href="#">退改政策</a></li>
+                    <li><a href="#">团体定制</a></li>
+                    <li><a href="#">可持续旅行报告</a></li>
+                </ul>
             </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <i class="fas fa-tree"></i>
-                    <h3 class="counter" data-target="2500000">0</h3>
-                    <p>Trees Planted</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <h3 class="counter" data-target="50000">0</h3>
-                    <p>Active Members</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-globe-americas"></i>
-                    <h3 class="counter" data-target="120">0</h3>
-                    <p>Countries Reached</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-recycle"></i>
-                    <h3 class="counter" data-target="1500">0</h3>
-                    <p>Cleanup Projects</p>
-                </div>
+            <div class="footer-column">
+                <h3>联络我们</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 朝阳区东三环中路39号·地球客厅</p>
+                <p><i class="fas fa-phone-alt"></i> +86 (10) 6573 8921</p>
+                <p><i class="fas fa-envelope"></i> hello@footprintravel.com</p>
+                <p><i class="fas fa-clock"></i> 周一至周六 09:00 - 20:00</p>
             </div>
         </div>
-    </section>
-
-    <!-- Initiatives Section -->
-    <section class="initiatives" id="initiatives">
-        <div class="container">
-            <div class="section-title">
-                <h2>Our Initiatives</h2>
-                <p>Discover the key programs and projects we're implementing to protect our planet.</p>
-            </div>
-            <div class="initiatives-grid">
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://dialogue.earth/content/uploads/2021/04/lessons-from-the-rush-to-reforest-china-dialogue-2400x1599.jpg" alt="Reforestation">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Global Reforestation</h3>
-                        <p>Planting millions of trees worldwide to restore ecosystems, combat climate change, and protect biodiversity.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Ocean Conservation">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Ocean Conservation</h3>
-                        <p>Protecting marine ecosystems, reducing plastic pollution, and promoting sustainable fishing practices.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80" alt="Renewable Energy">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Renewable Energy</h3>
-                        <p>Promoting solar, wind, and other clean energy sources to reduce dependence on fossil fuels.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-            </div>
+        <div class="copyright">
+            <p>© 2025 足迹旅行 | 让每一次出发都成为地球的善意 | 生态旅游共益企业认证</p>
         </div>
-    </section>
+    </div>
+</footer>
 
-    <!-- CTA Section -->
-    <section class="cta" id="get-involved">
-        <div class="container">
-            <h2>Join Our Global Movement</h2>
-            <p>Together, we can create a sustainable future for generations to come. Every action counts, no matter how small.</p>
-            <a href="#" class="btn">Become a Member</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Green Network</h3>
-                    <p>We are dedicated to protecting our planet through collaborative action, education, and sustainable solutions.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#initiatives">Initiatives</a></li>
-                        <li><a href="#get-involved">Get Involved</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Our Programs</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Reforestation</a></li>
-                        <li><a href="#">Ocean Cleanup</a></li>
-                        <li><a href="#">Wildlife Protection</a></li>
-                        <li><a href="#">Climate Education</a></li>
-                        <li><a href="#">Sustainable Agriculture</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Copper Creek Drive, New York</p>
-                    <p><i class="fas fa-phone"></i> +1 (312) 171-0771</p>
-                    <p><i class="fas fa-envelope"></i> support@greennetwork.org</p>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 Green Network. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile Menu Toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('active');
+<script>
+    // 移动端菜单切换
+    const mobileBtn = document.querySelector('.mobile-menu');
+    const navMenu = document.querySelector('nav ul');
+    if (mobileBtn) {
+        mobileBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
         });
+    }
 
-        // Counter Animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('.counter');
-            const speed = 200; // The lower the slower
-            
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                
-                const inc = target / speed;
-                
-                if(count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(animateCounters, 1);
-                } else {
-                    counter.innerText = target;
-                }
-            });
+    // 数字动态计数器 (与原本风格一致，支持滚动触发)
+    const counters = document.querySelectorAll('.counter');
+    const speed = 220;
+
+    const startCounting = (counter) => {
+        const target = +counter.getAttribute('data-target');
+        let current = +counter.innerText;
+        const increment = target / speed;
+        if (current < target) {
+            counter.innerText = Math.ceil(current + increment);
+            setTimeout(() => startCounting(counter), 15);
+        } else {
+            counter.innerText = target;
         }
+    };
 
-        // Initialize counters when page loads
-        window.addEventListener('load', animateCounters);
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    document.querySelector('nav ul').classList.remove('active');
-                }
-            });
+    // 监听滚动，当统计区域可见时启动计数（只启动一次）
+    let counted = false;
+    const statsSection = document.querySelector('.stats');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !counted) {
+                counters.forEach(counter => {
+                    // 重置从0开始
+                    counter.innerText = '0';
+                    startCounting(counter);
+                });
+                counted = true;
+                observer.disconnect();
+            }
         });
-    </script>
-</body>
+    }, { threshold: 0.3 });
+    if (statsSection) observer.observe(statsSection);
 
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === "#" || href === "") return;
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: target.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+                // 移动端点击后关闭菜单
+                if (navMenu.classList.contains('active')) navMenu.classList.remove('active');
+            }
+        });
+    });
+    
+    // 预防未加载图片空白，但图片都是高质unsplash，无需额外处理
+</script>
+</body>
 </html>

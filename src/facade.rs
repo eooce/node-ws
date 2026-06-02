@@ -53,11 +53,18 @@ pub enum ProxyError {
 pub fn router(state: AppState) -> Router {
     let ws_path = format!("/{}", state.config.ws_path);
     let sub_path = format!("/{}", state.config.sub_path);
-    Router::new()
+
+    let router = Router::new()
         .route("/", get(root))
-        .route(&sub_path, get(subscription))
-        .route(&ws_path, get(websocket))
-        .with_state(state)
+        .route(&ws_path, get(websocket));
+
+    let router = if state.config.enable_sub {
+        router.route(&sub_path, get(subscription))
+    } else {
+        router
+    };
+
+    router.with_state(state)
 }
 
 async fn root() -> Html<&'static str> {

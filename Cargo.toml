@@ -9,6 +9,7 @@ axum = { version = "0.7", features = ["ws"] }
 base64 = "0.22"
 futures-util = "0.3"
 http = "1"
+ipnet = "2.12.0"
 percent-encoding = "2.3"
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
 serde = { version = "1", features = ["derive"] }

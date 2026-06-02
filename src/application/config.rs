@@ -18,6 +18,7 @@ pub struct Config {
     pub sub_path: String,
     pub name: Option<String>,
     pub port: u16,
+    pub enable_sub: bool,
 }
 
 #[derive(Debug, Snafu)]
@@ -39,6 +40,13 @@ pub enum ConfigError {
 
     #[snafu(display("WSPATH is empty and UUID cannot provide an 8 byte prefix"))]
     InvalidWsPath,
+
+    #[snafu(display("invalid bool `{key}={value}`"))]
+    InvalidBoolValue {
+        key: String,
+        value: String,
+        source: std::str::ParseBoolError,
+    },
 }
 
 impl Config {
@@ -104,6 +112,13 @@ impl Config {
             ws_path,
             sub_path: non_empty(&values, "SUB_PATH").unwrap_or_else(|| "sub".to_string()),
             name: non_empty(&values, "NAME"),
+            enable_sub: non_empty(&values, "ENABLE_SUB")
+                .unwrap_or_else(|| "false".to_string())
+                .parse::<bool>()
+                .context(InvalidBoolValueSnafu {
+                    key: "ENABLE_SUB".to_string(),
+                    value: non_empty(&values, "ENABLE_SUB").unwrap_or_else(|| "false".to_string()),
+                })?,
             port,
         })
     }

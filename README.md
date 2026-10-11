@@ -1,7 +1,7 @@
 <div align="center">
 
 # Node-ws
-本分支是js实现的nezha-v1和vless+trojan+shadowsocks三协议代理,无二进制，轻量，无内核。
+本分支是js实现的nezha-v1和vless+trojan+shadowsocks三协议代理+ Telegram webproxy,无二进制，轻量，无内核。
 
 ---
 
@@ -26,6 +26,7 @@ Telegram交流反馈群组：https://t.me/eooceu
   | AUTO_ACCESS  | 否 |  false | 是否开启自动访问保活,false为关闭,true为开启,需同时填写DOMAIN变量 |
 
 * 域名/${SUB_APTH}查看节点信息，非标端口，域名:端口/${SUB_APTH}  SUB_APTH为自行设置的订阅token，未设置默认为sub
+* 域名/${SUB_APTH}-tg查看telegram webproxy信息
 
     
 * 温馨提示：READAME.md为说明文件，请不要上传。
